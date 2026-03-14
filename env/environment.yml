@@ -1,0 +1,12 @@
+name: vgm-assets
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip=25.0
+  - setuptools=75
+  - numpy=2.2
+  - pillow=11.3
+  - trimesh=4.7
+  - jsonschema=4.25
+  - pytest=8.4

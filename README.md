@@ -93,6 +93,32 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py validate \
   --protocol-root ../vgm-protocol
 ```
 
+Measure mesh bounds for the Kenney-backed catalog:
+
+```bash
+PYTHONPATH=src python3 tools/measure_asset_catalog.py measure-catalog \
+  catalogs/living_room_kenney_v0/assets.json \
+  --output catalogs/living_room_kenney_v0/measurements.json \
+  --pretty
+```
+
+## Environment
+
+`vgm-assets` now has a lightweight micromamba setup under `env/` and
+`scripts/env/`.
+
+Create the env:
+
+```bash
+./scripts/env/create_env.sh vgm-assets
+```
+
+Verify the env:
+
+```bash
+./scripts/env/verify_env.sh vgm-assets
+```
+
 ## Status Markers
 
 - `[ ]` planned
@@ -111,7 +137,7 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py validate \
 ### Milestone 2: Protocol-Aligned Asset Records
 
 - [x] load and validate protocol `AssetSpec`
-- [ ] define the normalized internal asset record used before export
+- [~] define the normalized internal asset record used before export
 - [x] map internal records to protocol `AssetSpec`
 - [x] export a first `AssetCatalogManifest`
 
@@ -124,6 +150,7 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py validate \
 - [x] create the first real mesh-backed Kenney asset catalog
 - [x] unpack and organize the Kenney Furniture Kit under the shared VGM asset
   data root
+- [x] add a lightweight dedicated micromamba env for `vgm-assets`
 - [~] support Poly Haven materials for at least one normalized asset package
 - [ ] support at least one Infinigen-derived asset path
 - [x] compute dimensions, footprint, walkability, support surfaces, tags, and
@@ -168,3 +195,4 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py validate \
   living-room categories
 - [x] added `catalogs/living_room_kenney_v0/assets.json` with real mesh and
   preview refs backed by the organized Kenney subset
+- [x] added a first mesh measurement CLI for catalog-backed asset meshes

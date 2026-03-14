@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from .catalog import build_catalog_manifest, validate_asset_catalog, write_catalog_manifest
+from .measure import measure_catalog_meshes
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -35,6 +37,14 @@ def build_parser() -> argparse.ArgumentParser:
     preview_parser.add_argument("--catalog-id", required=True)
     preview_parser.add_argument("--protocol-root", type=Path)
     preview_parser.add_argument("--created-at")
+
+    measure_parser = subparsers.add_parser(
+        "measure-catalog",
+        help="Measure mesh bounds for catalog entries with files.mesh refs",
+    )
+    measure_parser.add_argument("catalog", type=Path)
+    measure_parser.add_argument("--output", type=Path)
+    measure_parser.add_argument("--pretty", action="store_true")
 
     return parser
 
@@ -68,9 +78,18 @@ def main() -> int:
             protocol_root=args.protocol_root,
             created_at=args.created_at,
         )
-        import json
-
         print(json.dumps(manifest, indent=2))
+        return 0
+
+    if args.command == "measure-catalog":
+        report = measure_catalog_meshes(args.catalog)
+        text = json.dumps(report, indent=2 if args.pretty or args.output else None)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(text + "\n", encoding="utf-8")
+            print(f"Wrote measurement report to {args.output}")
+        else:
+            print(text)
         return 0
 
     parser.error(f"Unsupported command: {args.command}")

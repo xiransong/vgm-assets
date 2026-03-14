@@ -11,6 +11,7 @@ asset data root.
 Catalog:
 
 - `catalogs/living_room_kenney_v0/assets.json`
+- `catalogs/living_room_kenney_v0/measurements.json`
 
 ## Current Scope
 
@@ -49,3 +50,13 @@ What is real already:
 The next refinement pass should replace the scaffolded geometry priors with
 mesh-derived measurements and review whether the toy placement/support priors
 still make sense for each Kenney object.
+
+## Current Measurement Note
+
+The first mesh-bounds measurement pass now exists in:
+
+- `catalogs/living_room_kenney_v0/measurements.json`
+
+The measured mesh extents differ substantially from the current scaffolded toy
+dimensions for several assets, which means the Kenney models and the toy priors
+are not yet on the same scale contract.

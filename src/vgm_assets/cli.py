@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 from .catalog import build_catalog_manifest, validate_asset_catalog, write_catalog_manifest
-from .measure import measure_catalog_meshes
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -82,6 +81,8 @@ def main() -> int:
         return 0
 
     if args.command == "measure-catalog":
+        from .measure import measure_catalog_meshes
+
         report = measure_catalog_meshes(args.catalog)
         text = json.dumps(report, indent=2 if args.pretty or args.output else None)
         if args.output:

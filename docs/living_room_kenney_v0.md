@@ -60,3 +60,20 @@ The first mesh-bounds measurement pass now exists in:
 The measured mesh extents differ substantially from the current scaffolded toy
 dimensions for several assets, which means the Kenney models and the toy priors
 are not yet on the same scale contract.
+
+The current working axis interpretation for these Kenney GLBs is:
+
+- `x -> width`
+- `y -> height`
+- `z -> depth`
+
+## First Measured Revision
+
+The first measured-dimensions revision now updates:
+
+- `sofa`
+- `armchair`
+- `side_table`
+
+The remaining categories are still scaffolded from the toy catalog and should
+be updated in later passes.

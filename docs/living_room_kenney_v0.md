@@ -67,13 +67,26 @@ The current working axis interpretation for these Kenney GLBs is:
 - `y -> height`
 - `z -> depth`
 
-## First Measured Revision
+## Measured Geometry Revision
 
-The first measured-dimensions revision now updates:
+The current measured-geometry revision now updates all seven categories:
 
 - `sofa`
+- `coffee_table`
+- `tv_stand`
+- `bookshelf`
 - `armchair`
 - `side_table`
+- `floor_lamp`
 
-The remaining categories are still scaffolded from the toy catalog and should
-be updated in later passes.
+What is now measured:
+
+- `dimensions`
+- `footprint`
+- selected support-surface geometry for table-like assets
+
+What still remains scaffolded:
+
+- placement priors
+- walkability priors
+- affordance semantics

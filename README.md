@@ -155,7 +155,7 @@ Verify the env:
 - [ ] support at least one Infinigen-derived asset path
 - [x] compute dimensions, footprint, walkability, support surfaces, tags, and
   affordances
-- [~] replace scaffolded toy geometry priors with mesh-derived measurements
+- [x] replace scaffolded toy geometry priors with mesh-derived measurements
 - [ ] generate preview images or equivalent inspection artifacts
 
 ### Milestone 4: Materials and Payload Packaging
@@ -199,3 +199,5 @@ Verify the env:
 - [x] added a first mesh measurement CLI for catalog-backed asset meshes
 - [x] applied the first measured-dimensions revision to the Kenney catalog for
   `sofa`, `armchair`, and `side_table`
+- [x] completed the measured-geometry revision for all seven Kenney living-room
+  categories

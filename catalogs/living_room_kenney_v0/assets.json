@@ -70,14 +70,14 @@
     },
     "placement": {
       "placement_type": "near_anchor",
-      "min_wall_clearance": 0.2,
-      "min_object_clearance": 0.2,
+      "min_wall_clearance": 0.15,
+      "min_object_clearance": 0.12,
       "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
       "preferred_anchor_categories": ["sofa"]
     },
     "walkability": {
       "blocks_walking": true,
-      "clearance_buffer": 0.1
+      "clearance_buffer": 0.05
     },
     "semantics": {
       "tags": ["furniture", "table"],
@@ -133,12 +133,12 @@
     "placement": {
       "placement_type": "against_wall",
       "min_wall_clearance": 0.05,
-      "min_object_clearance": 0.25,
+      "min_object_clearance": 0.15,
       "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
     },
     "walkability": {
       "blocks_walking": true,
-      "clearance_buffer": 0.1
+      "clearance_buffer": 0.05
     },
     "semantics": {
       "tags": ["furniture", "media"],
@@ -178,7 +178,7 @@
   },
   {
     "asset_id": "kenney_bookcase_open_01",
-    "category": "bookshelf",
+    "category": "bookcase",
     "source": "kenney_furniture_kit",
     "sample_weight": 1.0,
     "dimensions": {
@@ -194,16 +194,16 @@
     "placement": {
       "placement_type": "against_wall",
       "min_wall_clearance": 0.05,
-      "min_object_clearance": 0.2,
+      "min_object_clearance": 0.1,
       "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
     },
     "walkability": {
       "blocks_walking": true,
-      "clearance_buffer": 0.1
+      "clearance_buffer": 0.05
     },
     "semantics": {
       "tags": ["furniture", "storage"],
-      "affordances": ["approachable_front", "view"]
+      "affordances": ["approachable_front"]
     },
     "support": {
       "supports_objects": false,
@@ -211,11 +211,11 @@
     },
     "files": {
       "mesh": {
-        "path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_open_01/model.glb",
+        "path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/model.glb",
         "format": "glb"
       },
       "preview_image": {
-        "path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_open_01/preview.png",
+        "path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/preview.png",
         "format": "png"
       }
     },
@@ -227,7 +227,7 @@
         "commit": "working_tree"
       },
       "config_id": "living_room_kenney_v0_measured_geometry_v1",
-      "upstream_ids": ["kenney_bookshelf_v0"]
+      "upstream_ids": ["kenney_bookcase_v0"]
     }
   },
   {

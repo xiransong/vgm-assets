@@ -5,8 +5,8 @@
     {
       "path": "catalogs/living_room_kenney_v0/assets.json",
       "format": "json",
-      "sha256": "bacdda301a81087cb054e1a5246466cc9453edce8bf8f6df771d48daeebd3447",
-      "size_bytes": 11373
+      "sha256": "9c8f37c97b4ddae841ce7369748795d4665eae932d69eac5548eb1eda2b1cae6",
+      "size_bytes": 11366
     }
   ],
   "protocol_version": "v0",
@@ -15,5 +15,5 @@
     "version": "0.1.0-dev",
     "commit": "working_tree"
   },
-  "created_at": "2026-03-14T00:00:00Z"
+  "created_at": "2026-03-14T19:38:09+00:00"
 }

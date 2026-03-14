@@ -26,13 +26,14 @@ The first organized Kenney-backed living-room slice currently covers:
 - `sofa`
 - `coffee_table`
 - `tv_stand`
-- `bookshelf`
+- `bookcase`
 - `armchair`
 - `side_table`
 - `floor_lamp`
 
-This mirrors the current living-room categories already used in
-`vgm-scene-engine`.
+This mostly mirrors the current living-room categories already used in
+`vgm-scene-engine`, with one important exception: the selected Kenney shelf
+asset is small enough that we classify it as `bookcase`, not `bookshelf`.
 
 The current organized subset lives at:
 

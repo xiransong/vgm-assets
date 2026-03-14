@@ -201,3 +201,5 @@ Verify the env:
   `sofa`, `armchair`, and `side_table`
 - [x] completed the measured-geometry revision for all seven Kenney living-room
   categories
+- [x] reclassified the small Kenney shelf asset as `bookcase` and relaxed
+  toy-era spacing priors for `coffee_table` and `tv_stand`

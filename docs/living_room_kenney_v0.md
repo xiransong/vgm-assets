@@ -15,41 +15,19 @@ Catalog:
 
 ## Current Scope
 
-This first Kenney-backed catalog covers the same seven categories as the toy
-catalog:
+This first Kenney-backed catalog covers seven living-room categories:
 
 - `sofa`
 - `coffee_table`
 - `tv_stand`
-- `bookshelf`
+- `bookcase`
 - `armchair`
 - `side_table`
 - `floor_lamp`
 
-## Important Limitation
-
-The current metadata is intentionally scaffolded:
-
-- `dimensions`
-- `footprint`
-- placement priors
-- walkability priors
-- affordances and support metadata
-
-These values are currently copied from the toy living-room catalog so that the
-new Kenney slice can plug into the existing scene work immediately.
-
-What is real already:
-
-- `files.mesh`
-- `files.preview_image`
-- source identity and category mapping
-
-## Next Upgrade
-
-The next refinement pass should replace the scaffolded geometry priors with
-mesh-derived measurements and review whether the toy placement/support priors
-still make sense for each Kenney object.
+This no longer exactly matches the toy catalog because the selected Kenney shelf
+asset is too small to call a large `bookshelf`, so it is classified here as
+`bookcase`.
 
 ## Current Measurement Note
 
@@ -74,7 +52,7 @@ The current measured-geometry revision now updates all seven categories:
 - `sofa`
 - `coffee_table`
 - `tv_stand`
-- `bookshelf`
+- `bookcase`
 - `armchair`
 - `side_table`
 - `floor_lamp`
@@ -90,3 +68,11 @@ What still remains scaffolded:
 - placement priors
 - walkability priors
 - affordance semantics
+
+## Current Semantics Review
+
+The latest review applied three truth-preserving adjustments:
+
+1. the small shelf asset was reclassified from `bookshelf` to `bookcase`
+2. `coffee_table` spacing priors were relaxed to match the smaller measured mesh
+3. `tv_stand` spacing priors were relaxed to match the measured mesh depth

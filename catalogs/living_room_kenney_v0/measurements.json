@@ -22,9 +22,9 @@
         "z": 0.4100000262260437
       },
       "current_dimensions": {
-        "width": 2.1,
-        "depth": 0.9,
-        "height": 0.9
+        "width": 0.98,
+        "depth": 0.41,
+        "height": 0.46
       }
     },
     {
@@ -47,9 +47,9 @@
         "z": 0.4000000134110451
       },
       "current_dimensions": {
-        "width": 1.1,
-        "depth": 0.6,
-        "height": 0.45
+        "width": 0.66,
+        "depth": 0.4,
+        "height": 0.23
       }
     },
     {
@@ -72,15 +72,15 @@
         "z": 0.25
       },
       "current_dimensions": {
-        "width": 1.4,
-        "depth": 0.45,
-        "height": 0.6
+        "width": 0.8,
+        "depth": 0.25,
+        "height": 0.31
       }
     },
     {
       "asset_id": "kenney_bookcase_open_01",
-      "category": "bookshelf",
-      "mesh_path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_open_01/model.glb",
+      "category": "bookcase",
+      "mesh_path": "/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -97,9 +97,9 @@
         "z": 0.25
       },
       "current_dimensions": {
-        "width": 1.0,
-        "depth": 0.35,
-        "height": 2.0
+        "width": 0.4,
+        "depth": 0.25,
+        "height": 0.88
       }
     },
     {
@@ -122,9 +122,9 @@
         "z": 0.4100000262260437
       },
       "current_dimensions": {
-        "width": 0.9,
-        "depth": 0.85,
-        "height": 0.95
+        "width": 0.49,
+        "depth": 0.41,
+        "height": 0.46
       }
     },
     {
@@ -147,9 +147,9 @@
         "z": 0.21999999321997166
       },
       "current_dimensions": {
-        "width": 0.55,
-        "depth": 0.55,
-        "height": 0.5
+        "width": 0.53,
+        "depth": 0.22,
+        "height": 0.38
       }
     },
     {
@@ -172,9 +172,9 @@
         "z": 0.1755599994212389
       },
       "current_dimensions": {
-        "width": 0.4,
-        "depth": 0.4,
-        "height": 1.6
+        "width": 0.15,
+        "depth": 0.18,
+        "height": 0.86
       }
     }
   ]

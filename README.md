@@ -41,6 +41,7 @@ See:
 - `docs/source_policy_v0.md`
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`
+- `docs/living_room_kenney_v0.md`
 
 Current organized real-source subset:
 - `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
@@ -84,6 +85,14 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   --protocol-root ../vgm-protocol
 ```
 
+Validate the first Kenney-backed catalog:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py validate \
+  catalogs/living_room_kenney_v0/assets.json \
+  --protocol-root ../vgm-protocol
+```
+
 ## Status Markers
 
 - `[ ]` planned
@@ -112,6 +121,7 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   `vgm-scene-engine`
 - [x] define the first open-source source policy
 - [~] support at least one Kenney-backed furniture slice
+- [x] create the first real mesh-backed Kenney asset catalog
 - [x] unpack and organize the Kenney Furniture Kit under the shared VGM asset
   data root
 - [~] support Poly Haven materials for at least one normalized asset package
@@ -156,3 +166,5 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
 - [x] selected first concrete Kenney candidates for all seven current
   living-room categories
+- [x] added `catalogs/living_room_kenney_v0/assets.json` with real mesh and
+  preview refs backed by the organized Kenney subset

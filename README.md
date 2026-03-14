@@ -32,6 +32,14 @@ Primary upstream sources:
 The goal is to keep raw source handling source-specific, while exported asset
 metadata and payload references remain protocol-shaped and source-agnostic.
 
+Current sourcing recommendation:
+- use toy assets first
+- use curated open-source assets next
+- prototype Infinigen only after the open-source path is stable
+
+See:
+- `docs/source_policy_v0.md`
+
 ## Output Goals
 
 This repo should eventually emit:
@@ -96,7 +104,9 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
 
 - [x] curate a minimal set of living-room categories used by
   `vgm-scene-engine`
-- [ ] support at least one open-source asset path
+- [x] define the first open-source source policy
+- [ ] support at least one Kenney-backed furniture slice
+- [ ] support Poly Haven materials for at least one normalized asset package
 - [ ] support at least one Infinigen-derived asset path
 - [x] compute dimensions, footprint, walkability, support surfaces, tags, and
   affordances
@@ -126,3 +136,5 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   scene-engine categories with per-asset provenance
 - [x] added the first workflow note for the toy-first, open-source-next,
   Infinigen-later source strategy
+- [x] added a first source policy note covering approved-now, later, and
+  deferred asset sources for the repo

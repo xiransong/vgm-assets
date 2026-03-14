@@ -1,0 +1,327 @@
+[
+  {
+    "asset_id": "sofa_basic_01",
+    "category": "sofa",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 2.1,
+      "depth": 0.9,
+      "height": 0.9
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 2.1,
+      "depth": 0.9
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.15
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "coffee_table_basic_01",
+    "category": "coffee_table",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 1.1,
+      "depth": 0.6,
+      "height": 0.45
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 1.1,
+      "depth": 0.6
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.2,
+      "min_object_clearance": 0.2,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["approachable", "support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.45,
+          "width": 1.0,
+          "depth": 0.5
+        }
+      ]
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "tv_stand_basic_01",
+    "category": "tv_stand",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 1.4,
+      "depth": 0.45,
+      "height": 0.6
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 1.4,
+      "depth": 0.45
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "media"],
+      "affordances": ["approachable_front", "view"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.6,
+          "width": 1.3,
+          "depth": 0.4
+        }
+      ]
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "bookshelf_basic_01",
+    "category": "bookshelf",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 1.0,
+      "depth": 0.35,
+      "height": 2.0
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 1.0,
+      "depth": 0.35
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.2,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "storage"],
+      "affordances": ["approachable_front", "view"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "armchair_basic_01",
+    "category": "armchair",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.9,
+      "depth": 0.85,
+      "height": 0.95
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.9,
+      "depth": 0.85
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "side_table_basic_01",
+    "category": "side_table",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.55,
+      "depth": 0.55,
+      "height": 0.5
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.55,
+      "depth": 0.55
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa", "armchair"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.5,
+          "width": 0.5,
+          "depth": 0.5
+        }
+      ]
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  },
+  {
+    "asset_id": "floor_lamp_basic_01",
+    "category": "floor_lamp",
+    "source": "toy",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.4,
+      "depth": 0.4,
+      "height": 1.6
+    },
+    "footprint": {
+      "shape": "circle",
+      "width": 0.4,
+      "depth": 0.4
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.1,
+      "allowed_orientations_deg": [0.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["lighting", "decor"],
+      "affordances": []
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_toy_v0"
+    }
+  }
+]

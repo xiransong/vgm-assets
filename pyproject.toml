@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vgm-assets"
+version = "0.1.0.dev0"
+description = "Asset normalization and protocol export for Vision-Grounded Motion"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "jsonschema>=4.23,<5",
+]
+
+[project.scripts]
+vgm-assets = "vgm_assets.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

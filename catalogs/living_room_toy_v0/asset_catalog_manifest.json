@@ -1,0 +1,19 @@
+{
+  "catalog_id": "living_room_toy_v0",
+  "asset_count": 7,
+  "catalog_files": [
+    {
+      "path": "catalogs/living_room_toy_v0/assets.json",
+      "format": "json",
+      "sha256": "c55d10ea7a30c758839467cde56d21be8a1b9ce77480d0c57c0469c037671fe2",
+      "size_bytes": 7564
+    }
+  ],
+  "protocol_version": "v0",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-14T00:00:00Z"
+}

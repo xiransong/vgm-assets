@@ -42,6 +42,9 @@ See:
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`
 
+Current organized real-source subset:
+- `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
+
 ## Output Goals
 
 This repo should eventually emit:
@@ -109,6 +112,8 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   `vgm-scene-engine`
 - [x] define the first open-source source policy
 - [~] support at least one Kenney-backed furniture slice
+- [x] unpack and organize the Kenney Furniture Kit under the shared VGM asset
+  data root
 - [~] support Poly Haven materials for at least one normalized asset package
 - [ ] support at least one Infinigen-derived asset path
 - [x] compute dimensions, footprint, walkability, support surfaces, tags, and
@@ -145,3 +150,9 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   selection list for `sofa`, `armchair`, and `side_table`
 - [x] added a first material-packaging note that keeps Poly Haven materials
   optional and backend-agnostic for `v0`
+- [x] unpacked the Kenney Furniture Kit from
+  `/home/ubuntu/scratch/transfer/kenney_furniture-kit.zip`
+- [x] organized a first mesh-backed living-room subset under
+  `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
+- [x] selected first concrete Kenney candidates for all seven current
+  living-room categories

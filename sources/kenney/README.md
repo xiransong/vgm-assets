@@ -21,14 +21,22 @@ asset pipeline.
 
 ## First Intake Scope
 
-The first Kenney-backed slice is intentionally narrow:
+The first organized Kenney-backed living-room slice currently covers:
 
 - `sofa`
+- `coffee_table`
+- `tv_stand`
+- `bookshelf`
 - `armchair`
 - `side_table`
+- `floor_lamp`
 
-These categories map directly onto the current living-room scene needs and
-cover both seating and support furniture.
+This mirrors the current living-room categories already used in
+`vgm-scene-engine`.
+
+The current organized subset lives at:
+
+- `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
 
 ## Intake Workflow
 
@@ -45,3 +53,5 @@ cover both seating and support furniture.
   sources.
 - This is only the first source-specific intake area.
 - The current selection list lives in `selection_v0.json`.
+- The current selection list records organized assets, but it is not yet a
+  protocol `AssetSpec` catalog.

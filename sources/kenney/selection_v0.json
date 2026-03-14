@@ -1,0 +1,41 @@
+[
+  {
+    "selection_id": "kenney_sofa_v0",
+    "category": "sofa",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 1,
+    "raw_dir": "sources/kenney/raw/sofa",
+    "normalized_dir": "sources/kenney/normalized/sofa",
+    "target_catalog": "catalogs/living_room_kenney_v0/assets.json",
+    "notes": "First real seating asset path to replace the toy sofa placeholder."
+  },
+  {
+    "selection_id": "kenney_armchair_v0",
+    "category": "armchair",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 2,
+    "raw_dir": "sources/kenney/raw/armchair",
+    "normalized_dir": "sources/kenney/normalized/armchair",
+    "target_catalog": "catalogs/living_room_kenney_v0/assets.json",
+    "notes": "Complements sofa placement and helps the anchor-near seating slice."
+  },
+  {
+    "selection_id": "kenney_side_table_v0",
+    "category": "side_table",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 3,
+    "raw_dir": "sources/kenney/raw/side_table",
+    "normalized_dir": "sources/kenney/normalized/side_table",
+    "target_catalog": "catalogs/living_room_kenney_v0/assets.json",
+    "notes": "Adds a simple support-surface object to the first real-source slice."
+  }
+]

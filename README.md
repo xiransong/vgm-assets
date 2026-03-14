@@ -39,6 +39,8 @@ Current sourcing recommendation:
 
 See:
 - `docs/source_policy_v0.md`
+- `sources/kenney/README.md`
+- `docs/material_packaging_v0.md`
 
 ## Output Goals
 
@@ -52,6 +54,7 @@ This repo should eventually emit:
 
 Likely top-level areas:
 - `docs/`: asset policy, naming, and provenance notes
+- `materials/`: source-specific material intake and normalized bundles
 - `sources/`: source-specific ingestion adapters
 - `processors/`: normalization, measurement, and metadata extraction
 - `catalogs/`: exported asset catalogs and manifests
@@ -105,8 +108,8 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
 - [x] curate a minimal set of living-room categories used by
   `vgm-scene-engine`
 - [x] define the first open-source source policy
-- [ ] support at least one Kenney-backed furniture slice
-- [ ] support Poly Haven materials for at least one normalized asset package
+- [~] support at least one Kenney-backed furniture slice
+- [~] support Poly Haven materials for at least one normalized asset package
 - [ ] support at least one Infinigen-derived asset path
 - [x] compute dimensions, footprint, walkability, support surfaces, tags, and
   affordances
@@ -138,3 +141,7 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py write-manifest \
   Infinigen-later source strategy
 - [x] added a first source policy note covering approved-now, later, and
   deferred asset sources for the repo
+- [x] added the first Kenney intake scaffolding and a concrete three-category
+  selection list for `sofa`, `armchair`, and `side_table`
+- [x] added a first material-packaging note that keeps Poly Haven materials
+  optional and backend-agnostic for `v0`

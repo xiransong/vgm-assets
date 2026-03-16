@@ -101,6 +101,19 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py organize-kenney-selection
   --source-spec sources/kenney/source_spec_v0.json
 ```
 
+Rebuild the full Kenney `living_room_v0` slice in one command:
+
+```bash
+./scripts/sources/rebuild_kenney_living_room_v0.sh /path/to/kenney_furniture-kit.zip
+```
+
+If the raw source archive has already been registered in `RAW_DATA_ROOT`, the
+same script can be rerun without the zip path:
+
+```bash
+./scripts/sources/rebuild_kenney_living_room_v0.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -247,3 +260,5 @@ Verify the env:
   root-relative output directories
 - [x] added CLI support to register a raw source archive, unpack a registered
   zip, and organize the selected Kenney normalized data slice
+- [x] added a single-command entrypoint to rebuild the Kenney `living_room_v0`
+  processed slice from repo metadata

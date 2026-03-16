@@ -48,6 +48,11 @@ The current CLI now handles:
 - unpack registered zip sources into the processed data root
 - organize the first Kenney selection into a normalized data layout
 
+For the current Kenney living-room slice, the repo also exposes a single
+wrapper script:
+
+- `scripts/sources/rebuild_kenney_living_room_v0.sh`
+
 It still does not yet:
 
 - generate previews

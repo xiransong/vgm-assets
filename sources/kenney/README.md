@@ -50,6 +50,12 @@ The current organized subset is generated into:
 4. write protocol-facing `AssetSpec` records into a dedicated catalog
 5. add preview images and material references when ready
 
+The repo now also provides a single-command wrapper for this flow:
+
+```bash
+./scripts/sources/rebuild_kenney_living_room_v0.sh /path/to/kenney_furniture-kit.zip
+```
+
 ## Notes
 
 - Do not treat this folder as the final normalized asset package layout for all

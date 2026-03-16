@@ -242,3 +242,54 @@ def organize_kenney_selection(
         "asset_count": len(manifest_assets),
         "slice_root": str(slice_root),
     }
+
+
+def rebuild_kenney_selection(
+    spec_path: Path,
+    selection_path: Path,
+    raw_file: Path | None = None,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    acquired_by: str | None = None,
+    acquired_at: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    raw_root = raw_data_root or default_raw_data_root()
+    archive_path = resolve_under(raw_root, spec["raw_archive"]["canonical_relpath"])
+
+    registered = False
+    if raw_file is not None or not archive_path.exists():
+        if raw_file is None:
+            raise FileNotFoundError(
+                f"Missing registered raw archive at {archive_path}; provide --raw-file"
+            )
+        register_raw_source(
+            spec_path=spec_path,
+            raw_file=raw_file,
+            raw_data_root=raw_root,
+            acquired_by=acquired_by,
+            acquired_at=acquired_at,
+            notes=notes,
+        )
+        registered = True
+
+    unpack_manifest = unpack_registered_zip(
+        spec_path=spec_path,
+        raw_data_root=raw_root,
+        data_root=data_root,
+    )
+    organize_summary = organize_kenney_selection(
+        spec_path=spec_path,
+        selection_path=selection_path,
+        raw_data_root=raw_root,
+        data_root=data_root,
+    )
+    return {
+        "registered_raw_source": registered,
+        "raw_archive": str(archive_path),
+        "unpack_relpath": unpack_manifest["unpack_relpath"],
+        "selection_id": organize_summary["selection_id"],
+        "asset_count": organize_summary["asset_count"],
+        "slice_root": organize_summary["slice_root"],
+    }

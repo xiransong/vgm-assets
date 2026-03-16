@@ -6,7 +6,12 @@ from pathlib import Path
 
 from .catalog import build_catalog_manifest, validate_asset_catalog, write_catalog_manifest
 from .paths import default_data_root, default_raw_data_root
-from .sources import organize_kenney_selection, register_raw_source, unpack_registered_zip
+from .sources import (
+    organize_kenney_selection,
+    rebuild_kenney_selection,
+    register_raw_source,
+    unpack_registered_zip,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -80,6 +85,19 @@ def build_parser() -> argparse.ArgumentParser:
     organize_parser.add_argument("--source-spec", type=Path, required=True)
     organize_parser.add_argument("--raw-data-root", type=Path)
     organize_parser.add_argument("--data-root", type=Path)
+
+    rebuild_parser = subparsers.add_parser(
+        "rebuild-kenney-selection",
+        help="Register, unpack, and organize the selected Kenney slice in one command",
+    )
+    rebuild_parser.add_argument("selection", type=Path)
+    rebuild_parser.add_argument("--source-spec", type=Path, required=True)
+    rebuild_parser.add_argument("--raw-file", type=Path)
+    rebuild_parser.add_argument("--raw-data-root", type=Path)
+    rebuild_parser.add_argument("--data-root", type=Path)
+    rebuild_parser.add_argument("--acquired-by")
+    rebuild_parser.add_argument("--acquired-at")
+    rebuild_parser.add_argument("--notes")
 
     return parser
 
@@ -164,6 +182,20 @@ def main() -> int:
             selection_path=args.selection,
             raw_data_root=args.raw_data_root,
             data_root=args.data_root,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "rebuild-kenney-selection":
+        summary = rebuild_kenney_selection(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            raw_file=args.raw_file,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            acquired_by=args.acquired_by,
+            acquired_at=args.acquired_at,
+            notes=args.notes,
         )
         print(json.dumps(summary, indent=2))
         return 0

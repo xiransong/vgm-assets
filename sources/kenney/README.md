@@ -1,6 +1,7 @@
 # Kenney Source Intake
 
 This folder tracks the first open-source asset intake path for `vgm-assets`.
+It stores repo-side metadata only, not the actual Kenney asset payloads.
 
 ## Source
 
@@ -35,24 +36,26 @@ This mostly mirrors the current living-room categories already used in
 `vgm-scene-engine`, with one important exception: the selected Kenney shelf
 asset is small enough that we classify it as `bookcase`, not `bookshelf`.
 
-The current organized subset lives at:
+The current organized subset is generated into:
 
-- `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
+- `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
 
 ## Intake Workflow
 
-1. download the source pack manually and record the source version/date
-2. identify candidate source files for the selected categories
-3. copy raw source files under `sources/kenney/raw/`
-4. normalize export layout under `sources/kenney/normalized/`
-5. write protocol-facing `AssetSpec` records into a dedicated catalog
-6. add preview images and material references when ready
+1. place the manually downloaded source zip into `RAW_DATA_ROOT` via
+   `register-raw-source`
+2. unpack the registered zip into `DATA_ROOT`
+3. organize the selected asset subset into the normalized `living_room_v0`
+   layout in `DATA_ROOT`
+4. write protocol-facing `AssetSpec` records into a dedicated catalog
+5. add preview images and material references when ready
 
 ## Notes
 
 - Do not treat this folder as the final normalized asset package layout for all
   sources.
 - This is only the first source-specific intake area.
+- The repo-side source contract lives in `source_spec_v0.json`.
 - The current selection list lives in `selection_v0.json`.
-- The current selection list records organized assets, but it is not yet a
-  protocol `AssetSpec` catalog.
+- The current selection list records normalized relative output directories in
+  `DATA_ROOT`, but it is not itself a protocol `AssetSpec` catalog.

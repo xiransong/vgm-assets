@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 
 from .catalog import build_catalog_manifest, validate_asset_catalog, write_catalog_manifest
+from .paths import default_data_root, default_raw_data_root
+from .sources import organize_kenney_selection, register_raw_source, unpack_registered_zip
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -44,6 +46,40 @@ def build_parser() -> argparse.ArgumentParser:
     measure_parser.add_argument("catalog", type=Path)
     measure_parser.add_argument("--output", type=Path)
     measure_parser.add_argument("--pretty", action="store_true")
+
+    paths_parser = subparsers.add_parser(
+        "print-paths",
+        help="Print the default RAW_DATA_ROOT and DATA_ROOT for vgm-assets",
+    )
+    paths_parser.add_argument("--pretty", action="store_true")
+
+    register_parser = subparsers.add_parser(
+        "register-raw-source",
+        help="Copy a raw source archive into RAW_DATA_ROOT and write source_manifest.json",
+    )
+    register_parser.add_argument("spec", type=Path)
+    register_parser.add_argument("--raw-file", type=Path, required=True)
+    register_parser.add_argument("--raw-data-root", type=Path)
+    register_parser.add_argument("--acquired-by")
+    register_parser.add_argument("--acquired-at")
+    register_parser.add_argument("--notes")
+
+    unpack_parser = subparsers.add_parser(
+        "unpack-registered-zip",
+        help="Unpack a registered zip archive into DATA_ROOT",
+    )
+    unpack_parser.add_argument("spec", type=Path)
+    unpack_parser.add_argument("--raw-data-root", type=Path)
+    unpack_parser.add_argument("--data-root", type=Path)
+
+    organize_parser = subparsers.add_parser(
+        "organize-kenney-selection",
+        help="Build the normalized Kenney selection tree in DATA_ROOT from the unpacked source",
+    )
+    organize_parser.add_argument("selection", type=Path)
+    organize_parser.add_argument("--source-spec", type=Path, required=True)
+    organize_parser.add_argument("--raw-data-root", type=Path)
+    organize_parser.add_argument("--data-root", type=Path)
 
     return parser
 
@@ -91,6 +127,45 @@ def main() -> int:
             print(f"Wrote measurement report to {args.output}")
         else:
             print(text)
+        return 0
+
+    if args.command == "print-paths":
+        payload = {
+            "raw_data_root": str(default_raw_data_root()),
+            "data_root": str(default_data_root()),
+        }
+        print(json.dumps(payload, indent=2 if args.pretty else None))
+        return 0
+
+    if args.command == "register-raw-source":
+        manifest = register_raw_source(
+            spec_path=args.spec,
+            raw_file=args.raw_file,
+            raw_data_root=args.raw_data_root,
+            acquired_by=args.acquired_by,
+            acquired_at=args.acquired_at,
+            notes=args.notes,
+        )
+        print(json.dumps(manifest, indent=2))
+        return 0
+
+    if args.command == "unpack-registered-zip":
+        manifest = unpack_registered_zip(
+            spec_path=args.spec,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+        )
+        print(json.dumps(manifest, indent=2))
+        return 0
+
+    if args.command == "organize-kenney-selection":
+        summary = organize_kenney_selection(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     parser.error(f"Unsupported command: {args.command}")

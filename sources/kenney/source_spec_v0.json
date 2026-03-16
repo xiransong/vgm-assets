@@ -1,0 +1,15 @@
+{
+  "source_id": "kenney_furniture_kit",
+  "source_url": "https://kenney.nl/assets/furniture-kit",
+  "license": "CC0",
+  "acquisition_method": "manual_download",
+  "raw_archive": {
+    "canonical_relpath": "sources/kenney/furniture_kit/kenney_furniture-kit.zip",
+    "filename": "kenney_furniture-kit.zip",
+    "sha256": "e67652d0932cee41683f74711c03d3e192a2af9979ef8e6b237711f5482d46b0"
+  },
+  "processing": {
+    "unpack_relpath": "sources/kenney/furniture_kit/unpacked",
+    "normalized_root_relpath": "sources/kenney/furniture_kit/normalized"
+  }
+}

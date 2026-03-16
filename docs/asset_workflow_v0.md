@@ -39,14 +39,17 @@ It covers these categories:
 
 ## Tooling
 
-The first CLI only handles protocol alignment:
+The current CLI now handles:
 
 - validate an asset catalog against `vgm-protocol`
 - generate an `AssetCatalogManifest`
-
-It does not yet:
-
-- ingest raw third-party assets
-- generate previews
 - compute measurements from meshes
+- register raw third-party source archives
+- unpack registered zip sources into the processed data root
+- organize the first Kenney selection into a normalized data layout
+
+It still does not yet:
+
+- generate previews
 - package materials
+- derive full catalog metadata automatically from normalized source data

@@ -39,12 +39,17 @@ Current sourcing recommendation:
 
 See:
 - `docs/source_policy_v0.md`
+- `docs/storage_layout_v0.md`
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`
 - `docs/living_room_kenney_v0.md`
 
 Current organized real-source subset:
-- `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
+- `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
+
+Default roots:
+- `RAW_DATA_ROOT=~/scratch/data/vgm/vgm-assets`
+- `DATA_ROOT=~/scratch/processed/vgm/vgm-assets`
 
 ## Output Goals
 
@@ -66,6 +71,35 @@ Likely top-level areas:
 - `src/vgm_assets/`: Python helpers for protocol validation and manifest export
 
 ## Current Bootstrap Commands
+
+Print the default data roots:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py print-paths --pretty
+```
+
+Register the manually downloaded Kenney source zip:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py register-raw-source \
+  sources/kenney/source_spec_v0.json \
+  --raw-file /path/to/kenney_furniture-kit.zip
+```
+
+Unpack the registered Kenney source zip into `DATA_ROOT`:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py unpack-registered-zip \
+  sources/kenney/source_spec_v0.json
+```
+
+Organize the selected Kenney slice into the normalized data tree:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py organize-kenney-selection \
+  sources/kenney/selection_v0.json \
+  --source-spec sources/kenney/source_spec_v0.json
+```
 
 Validate the first toy catalog:
 
@@ -148,8 +182,9 @@ Verify the env:
 - [x] define the first open-source source policy
 - [~] support at least one Kenney-backed furniture slice
 - [x] create the first real mesh-backed Kenney asset catalog
-- [x] unpack and organize the Kenney Furniture Kit under the shared VGM asset
-  data root
+- [x] unpack and organize the Kenney Furniture Kit under the shared VGM
+  processed data root
+- [x] define a raw-data versus processed-data storage contract
 - [x] add a lightweight dedicated micromamba env for `vgm-assets`
 - [~] support Poly Haven materials for at least one normalized asset package
 - [ ] support at least one Infinigen-derived asset path
@@ -191,7 +226,7 @@ Verify the env:
 - [x] unpacked the Kenney Furniture Kit from
   `/home/ubuntu/scratch/transfer/kenney_furniture-kit.zip`
 - [x] organized a first mesh-backed living-room subset under
-  `/home/ubuntu/scratch/data/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0`
+  `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
 - [x] selected first concrete Kenney candidates for all seven current
   living-room categories
 - [x] added `catalogs/living_room_kenney_v0/assets.json` with real mesh and
@@ -203,3 +238,12 @@ Verify the env:
   categories
 - [x] reclassified the small Kenney shelf asset as `bookcase` and relaxed
   toy-era spacing priors for `coffee_table` and `tv_stand`
+
+## 2026-03-16
+
+- [x] formalized `RAW_DATA_ROOT` and `DATA_ROOT` for `vgm-assets`
+- [x] added a repo-side Kenney source spec with an expected raw archive hash
+- [x] replaced absolute normalized data paths in the Kenney selection list with
+  root-relative output directories
+- [x] added CLI support to register a raw source archive, unpack a registered
+  zip, and organize the selected Kenney normalized data slice

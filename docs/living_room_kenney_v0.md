@@ -6,7 +6,7 @@ This note describes the first real mesh-backed Kenney catalog in `vgm-assets`.
 
 Replace the pure toy-only asset slice with a first catalog whose payload
 references point to real organized meshes and previews under the shared VGM
-asset data root.
+processed data root.
 
 Catalog:
 

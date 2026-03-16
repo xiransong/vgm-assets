@@ -1,6 +1,6 @@
 {
   "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
-  "asset_count": 7,
+  "asset_count": 8,
   "measurements": [
     {
       "asset_id": "kenney_lounge_sofa_01",
@@ -24,6 +24,31 @@
       "current_dimensions": {
         "width": 0.98,
         "depth": 0.41,
+        "height": 0.46
+      }
+    },
+    {
+      "asset_id": "kenney_lounge_sofa_long_01",
+      "category": "sofa",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01/model.glb",
+      "bounds_min": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.4100000262260437
+      },
+      "bounds_max": {
+        "x": 0.9799999594688416,
+        "y": 0.46000000834465027,
+        "z": 0.4100000262260437
+      },
+      "extents": {
+        "x": 0.9799999594688416,
+        "y": 0.46000000834465027,
+        "z": 0.8200000524520874
+      },
+      "current_dimensions": {
+        "width": 0.98,
+        "depth": 0.82,
         "height": 0.46
       }
     },

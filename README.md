@@ -285,3 +285,5 @@ Verify the env:
   measurement report and manifest
 - [x] added a top-level single-command pipeline to refresh both the processed
   Kenney slice and the repo-side catalog artifacts
+- [x] added a second Kenney sofa candidate to start testing within-category
+  variation in the living-room slice

@@ -1,12 +1,12 @@
 {
   "catalog_id": "living_room_kenney_v0",
-  "asset_count": 7,
+  "asset_count": 8,
   "catalog_files": [
     {
       "path": "catalogs/living_room_kenney_v0/assets.json",
       "format": "json",
-      "sha256": "31398f623bb0d3ea08734cbce2ee3bba305940c956fefcce55df9d511de903ee",
-      "size_bytes": 11436
+      "sha256": "8b785e92e8c0268eded3a93082963d711c038fde22e4e4028bc4dd2867399fec",
+      "size_bytes": 12999
     }
   ],
   "protocol_version": "v0",
@@ -15,5 +15,5 @@
     "version": "0.1.0-dev",
     "commit": "working_tree"
   },
-  "created_at": "2026-03-16T15:31:32+00:00"
+  "created_at": "2026-03-16T15:36:45+00:00"
 }

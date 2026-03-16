@@ -15,6 +15,21 @@
     "notes": "Organized as the first Kenney-backed sofa candidate."
   },
   {
+    "selection_id": "kenney_sofa_long_v0",
+    "category": "sofa",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 1,
+    "source_name": "loungeSofaLong",
+    "raw_model_rel": "Models/GLTF format/loungeSofaLong.glb",
+    "raw_preview_rel": "Isometric/loungeSofaLong_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01",
+    "asset_id": "kenney_lounge_sofa_long_01",
+    "notes": "Organized as the second Kenney-backed sofa candidate to test within-category variation."
+  },
+  {
     "selection_id": "kenney_coffee_table_v0",
     "category": "coffee_table",
     "source_pack": "kenney_furniture_kit",

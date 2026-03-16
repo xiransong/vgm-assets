@@ -36,6 +36,9 @@ The current slice now includes two `sofa` candidates and two `coffee_table`
 candidates so we can start testing within-category variation with a minimal
 increase in catalog complexity.
 
+Under the current `v0` sampling policy, those assets are sampled uniformly
+within their category.
+
 ## Current Measurement Note
 
 The first mesh-bounds measurement pass now exists in:

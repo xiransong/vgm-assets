@@ -39,6 +39,7 @@ Current sourcing recommendation:
 
 See:
 - `docs/source_policy_v0.md`
+- `docs/category_sampling_v0.md`
 - `docs/storage_layout_v0.md`
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`
@@ -131,6 +132,24 @@ the zip path:
 
 ```bash
 ./scripts/pipelines/refresh_kenney_living_room_v0.sh
+```
+
+Summarize category-level sampling candidates in a catalog:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py summarize-categories \
+  catalogs/living_room_kenney_v0/assets.json \
+  --pretty
+```
+
+Sample one asset uniformly within a category with a fixed seed:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py sample-category-asset \
+  catalogs/living_room_kenney_v0/assets.json \
+  sofa \
+  --seed 7 \
+  --pretty
 ```
 
 Validate the first toy catalog:
@@ -289,3 +308,5 @@ Verify the env:
   variation in the living-room slice
 - [x] added a second Kenney coffee-table candidate to extend within-category
   variation beyond seating assets
+- [x] formalized `v0` category-level sampling as uniform within category and
+  added small CLI helpers to inspect and reproduce it

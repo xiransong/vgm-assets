@@ -11,6 +11,7 @@ from .catalog import (
     write_catalog_manifest,
 )
 from .paths import default_data_root, default_raw_data_root
+from .sampling import category_summary, sample_uniform_asset
 from .sources import (
     organize_kenney_selection,
     rebuild_kenney_selection,
@@ -114,6 +115,22 @@ def build_parser() -> argparse.ArgumentParser:
     refresh_parser.add_argument("--measure-output", type=Path)
     refresh_parser.add_argument("--protocol-root", type=Path)
     refresh_parser.add_argument("--created-at")
+
+    summary_parser = subparsers.add_parser(
+        "summarize-categories",
+        help="Print category counts and current v0 sampling policy for a catalog",
+    )
+    summary_parser.add_argument("catalog", type=Path)
+    summary_parser.add_argument("--pretty", action="store_true")
+
+    sample_parser = subparsers.add_parser(
+        "sample-category-asset",
+        help="Sample one asset uniformly at random from a category",
+    )
+    sample_parser.add_argument("catalog", type=Path)
+    sample_parser.add_argument("category")
+    sample_parser.add_argument("--seed", type=int)
+    sample_parser.add_argument("--pretty", action="store_true")
 
     return parser
 
@@ -226,6 +243,20 @@ def main() -> int:
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "summarize-categories":
+        summary = category_summary(args.catalog)
+        print(json.dumps(summary, indent=2 if args.pretty else None))
+        return 0
+
+    if args.command == "sample-category-asset":
+        summary = sample_uniform_asset(
+            catalog_path=args.catalog,
+            category=args.category,
+            seed=args.seed,
+        )
+        print(json.dumps(summary, indent=2 if args.pretty else None))
         return 0
 
     parser.error(f"Unsupported command: {args.command}")

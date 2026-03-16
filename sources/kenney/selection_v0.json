@@ -45,6 +45,21 @@
     "notes": "Organized as the first Kenney-backed coffee table candidate."
   },
   {
+    "selection_id": "kenney_coffee_table_square_v0",
+    "category": "coffee_table",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 2,
+    "source_name": "tableCoffeeSquare",
+    "raw_model_rel": "Models/GLTF format/tableCoffeeSquare.glb",
+    "raw_preview_rel": "Isometric/tableCoffeeSquare_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_square_01",
+    "asset_id": "kenney_table_coffee_square_01",
+    "notes": "Organized as the second Kenney-backed coffee table candidate to test within-category variation."
+  },
+  {
     "selection_id": "kenney_tv_stand_v0",
     "category": "tv_stand",
     "source_pack": "kenney_furniture_kit",

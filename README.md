@@ -287,3 +287,5 @@ Verify the env:
   Kenney slice and the repo-side catalog artifacts
 - [x] added a second Kenney sofa candidate to start testing within-category
   variation in the living-room slice
+- [x] added a second Kenney coffee-table candidate to extend within-category
+  variation beyond seating assets

@@ -120,6 +120,19 @@ Refresh the Kenney catalog measurement report and manifest in one command:
 ./scripts/catalogs/refresh_living_room_kenney_v0.sh
 ```
 
+Run the full Kenney `living_room_v0` refresh pipeline in one command:
+
+```bash
+./scripts/pipelines/refresh_kenney_living_room_v0.sh /path/to/kenney_furniture-kit.zip
+```
+
+If the raw archive is already registered in `RAW_DATA_ROOT`, rerun it without
+the zip path:
+
+```bash
+./scripts/pipelines/refresh_kenney_living_room_v0.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -270,3 +283,5 @@ Verify the env:
   processed slice from repo metadata
 - [x] added a single-command entrypoint to refresh the Kenney catalog
   measurement report and manifest
+- [x] added a top-level single-command pipeline to refresh both the processed
+  Kenney slice and the repo-side catalog artifacts

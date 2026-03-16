@@ -13,6 +13,7 @@ Catalog:
 - `catalogs/living_room_kenney_v0/assets.json`
 - `catalogs/living_room_kenney_v0/measurements.json`
 - `scripts/catalogs/refresh_living_room_kenney_v0.sh`
+- `scripts/pipelines/refresh_kenney_living_room_v0.sh`
 
 ## Current Scope
 

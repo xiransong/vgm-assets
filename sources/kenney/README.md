@@ -22,13 +22,14 @@ asset pipeline.
 
 ## First Intake Scope
 
-The first organized Kenney-backed living-room slice currently covers nine
-assets across these seven categories:
+The first organized Kenney-backed living-room slice currently covers fourteen
+assets across these eight categories:
 
 - `sofa`
 - `coffee_table`
 - `tv_stand`
 - `bookcase`
+- `bookshelf`
 - `armchair`
 - `side_table`
 - `floor_lamp`
@@ -37,8 +38,9 @@ This mostly mirrors the current living-room categories already used in
 `vgm-scene-engine`, with one important exception: the selected Kenney shelf
 asset is small enough that we classify it as `bookcase`, not `bookshelf`.
 
-It now also includes two `sofa` candidates and two `coffee_table` candidates so
-the slice can test a first small amount of within-category variation.
+It now includes second candidates for the major living-room furniture classes
+and restores a large `bookshelf` category in addition to the smaller
+`bookcase`.
 
 The current organized subset is generated into:
 

@@ -316,6 +316,9 @@ Verify the env:
   variation in the living-room slice
 - [x] added a second Kenney coffee-table candidate to extend within-category
   variation beyond seating assets
+- [x] expanded the living-room slice to 14 assets across 8 categories by
+  filling the remaining single-candidate gaps and restoring a large
+  `bookshelf` category
 - [x] formalized `v0` category-level sampling as uniform within category and
   added small CLI helpers to inspect and reproduce it
 - [x] added a generated category-to-asset index artifact for downstream

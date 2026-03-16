@@ -18,13 +18,14 @@ Catalog:
 
 ## Current Scope
 
-This first Kenney-backed catalog now covers nine assets across seven
+This first Kenney-backed catalog now covers fourteen assets across eight
 living-room categories:
 
 - `sofa`
 - `coffee_table`
 - `tv_stand`
 - `bookcase`
+- `bookshelf`
 - `armchair`
 - `side_table`
 - `floor_lamp`
@@ -33,9 +34,16 @@ This no longer exactly matches the toy catalog because the selected Kenney shelf
 asset is too small to call a large `bookshelf`, so it is classified here as
 `bookcase`.
 
-The current slice now includes two `sofa` candidates and two `coffee_table`
-candidates so we can start testing within-category variation with a minimal
-increase in catalog complexity.
+The current slice now includes:
+
+- two `sofa` candidates
+- two `coffee_table` candidates
+- two `armchair` candidates
+- two `side_table` candidates
+- two `tv_stand` candidates
+- two `floor_lamp` candidates
+- one small `bookcase`
+- one large `bookshelf`
 
 Under the current `v0` sampling policy, those assets are sampled uniformly
 within their category.

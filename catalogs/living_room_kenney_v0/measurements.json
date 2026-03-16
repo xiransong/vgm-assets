@@ -1,6 +1,6 @@
 {
   "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
-  "asset_count": 9,
+  "asset_count": 14,
   "measurements": [
     {
       "asset_id": "kenney_lounge_sofa_01",
@@ -178,6 +178,31 @@
       }
     },
     {
+      "asset_id": "kenney_lounge_chair_relax_01",
+      "category": "armchair",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01/model.glb",
+      "bounds_min": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.674692690372467
+      },
+      "bounds_max": {
+        "x": 0.4899999797344208,
+        "y": 0.6299999952316284,
+        "z": 0.0
+      },
+      "extents": {
+        "x": 0.4899999797344208,
+        "y": 0.6299999952316284,
+        "z": 0.674692690372467
+      },
+      "current_dimensions": {
+        "width": 0.49,
+        "depth": 0.67,
+        "height": 0.63
+      }
+    },
+    {
       "asset_id": "kenney_side_table_01",
       "category": "side_table",
       "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_01/model.glb",
@@ -195,6 +220,31 @@
         "x": 0.5344754550606012,
         "y": 0.38440755009651184,
         "z": 0.21999999321997166
+      },
+      "current_dimensions": {
+        "width": 0.53,
+        "depth": 0.22,
+        "height": 0.38
+      }
+    },
+    {
+      "asset_id": "kenney_side_table_drawers_01",
+      "category": "side_table",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01/model.glb",
+      "bounds_min": {
+        "x": -0.009999999776482582,
+        "y": 0.0,
+        "z": -0.20999999344348907
+      },
+      "bounds_max": {
+        "x": 0.5244754552841187,
+        "y": 0.38440755009651184,
+        "z": 0.012299999223480212
+      },
+      "extents": {
+        "x": 0.5344754550606012,
+        "y": 0.38440755009651184,
+        "z": 0.2222999926669693
       },
       "current_dimensions": {
         "width": 0.53,
@@ -225,6 +275,81 @@
         "width": 0.15,
         "depth": 0.18,
         "height": 0.86
+      }
+    },
+    {
+      "asset_id": "kenney_lamp_square_floor_01",
+      "category": "floor_lamp",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01/model.glb",
+      "bounds_min": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.12000000476837158
+      },
+      "bounds_max": {
+        "x": 0.12000000476837158,
+        "y": 0.8600000143051147,
+        "z": 0.0
+      },
+      "extents": {
+        "x": 0.12000000476837158,
+        "y": 0.8600000143051147,
+        "z": 0.12000000476837158
+      },
+      "current_dimensions": {
+        "width": 0.12,
+        "depth": 0.12,
+        "height": 0.86
+      }
+    },
+    {
+      "asset_id": "kenney_cabinet_television_doors_01",
+      "category": "tv_stand",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01/model.glb",
+      "bounds_min": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.25
+      },
+      "bounds_max": {
+        "x": 0.800000011920929,
+        "y": 0.3100000023841858,
+        "z": 0.010000001192092895
+      },
+      "extents": {
+        "x": 0.800000011920929,
+        "y": 0.3100000023841858,
+        "z": 0.2600000011920929
+      },
+      "current_dimensions": {
+        "width": 0.8,
+        "depth": 0.26,
+        "height": 0.31
+      }
+    },
+    {
+      "asset_id": "kenney_bookcase_closed_wide_01",
+      "category": "bookshelf",
+      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01/model.glb",
+      "bounds_min": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.25
+      },
+      "bounds_max": {
+        "x": 0.800000011920929,
+        "y": 0.7899999618530273,
+        "z": 0.0
+      },
+      "extents": {
+        "x": 0.800000011920929,
+        "y": 0.7899999618530273,
+        "z": 0.25
+      },
+      "current_dimensions": {
+        "width": 0.8,
+        "depth": 0.25,
+        "height": 0.79
       }
     }
   ]

@@ -105,6 +105,21 @@
     "notes": "Organized as the first Kenney-backed armchair candidate."
   },
   {
+    "selection_id": "kenney_armchair_relax_v0",
+    "category": "armchair",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 5,
+    "source_name": "loungeChairRelax",
+    "raw_model_rel": "Models/GLTF format/loungeChairRelax.glb",
+    "raw_preview_rel": "Isometric/loungeChairRelax_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01",
+    "asset_id": "kenney_lounge_chair_relax_01",
+    "notes": "Organized as the second Kenney-backed armchair candidate."
+  },
+  {
     "selection_id": "kenney_side_table_v0",
     "category": "side_table",
     "source_pack": "kenney_furniture_kit",
@@ -120,6 +135,21 @@
     "notes": "Organized as the first Kenney-backed side-table candidate."
   },
   {
+    "selection_id": "kenney_side_table_drawers_v0",
+    "category": "side_table",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 6,
+    "source_name": "sideTableDrawers",
+    "raw_model_rel": "Models/GLTF format/sideTableDrawers.glb",
+    "raw_preview_rel": "Isometric/sideTableDrawers_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01",
+    "asset_id": "kenney_side_table_drawers_01",
+    "notes": "Organized as the second Kenney-backed side-table candidate."
+  },
+  {
     "selection_id": "kenney_floor_lamp_v0",
     "category": "floor_lamp",
     "source_pack": "kenney_furniture_kit",
@@ -133,5 +163,50 @@
     "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_round_floor_01",
     "asset_id": "kenney_lamp_round_floor_01",
     "notes": "Organized as the first Kenney-backed floor-lamp candidate."
+  },
+  {
+    "selection_id": "kenney_floor_lamp_square_v0",
+    "category": "floor_lamp",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 7,
+    "source_name": "lampSquareFloor",
+    "raw_model_rel": "Models/GLTF format/lampSquareFloor.glb",
+    "raw_preview_rel": "Isometric/lampSquareFloor_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01",
+    "asset_id": "kenney_lamp_square_floor_01",
+    "notes": "Organized as the second Kenney-backed floor-lamp candidate."
+  },
+  {
+    "selection_id": "kenney_tv_stand_doors_v0",
+    "category": "tv_stand",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 3,
+    "source_name": "cabinetTelevisionDoors",
+    "raw_model_rel": "Models/GLTF format/cabinetTelevisionDoors.glb",
+    "raw_preview_rel": "Isometric/cabinetTelevisionDoors_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01",
+    "asset_id": "kenney_cabinet_television_doors_01",
+    "notes": "Organized as the second Kenney-backed tv-stand candidate."
+  },
+  {
+    "selection_id": "kenney_bookshelf_wide_v0",
+    "category": "bookshelf",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "organized",
+    "priority": 4,
+    "source_name": "bookcaseClosedWide",
+    "raw_model_rel": "Models/GLTF format/bookcaseClosedWide.glb",
+    "raw_preview_rel": "Isometric/bookcaseClosedWide_NE.png",
+    "normalized_rel_dir": "sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01",
+    "asset_id": "kenney_bookcase_closed_wide_01",
+    "notes": "Organized as the first large bookshelf candidate for the living-room slice."
   }
 ]

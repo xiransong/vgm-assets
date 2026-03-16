@@ -109,6 +109,7 @@ def refresh_catalog_artifacts(
     catalog_id: str,
     manifest_output: Path,
     measure_output: Path | None = None,
+    category_index_output: Path | None = None,
     protocol_root: Path | None = None,
     created_at: str | None = None,
     producer: dict | None = None,
@@ -125,6 +126,12 @@ def refresh_catalog_artifacts(
             json.dump(measurement_report, handle, indent=2)
             handle.write("\n")
 
+    category_index = None
+    if category_index_output is not None:
+        from .sampling import write_category_index
+
+        category_index = write_category_index(catalog_path, category_index_output)
+
     manifest = write_catalog_manifest(
         catalog_path=catalog_path,
         output_path=manifest_output,
@@ -139,6 +146,12 @@ def refresh_catalog_artifacts(
         "catalog_path": str(catalog_path.resolve()),
         "measurement_output": str(measure_output.resolve())
         if measure_output is not None
+        else None,
+        "category_index_output": str(category_index_output.resolve())
+        if category_index_output is not None
+        else None,
+        "category_count": category_index["category_count"]
+        if category_index is not None
         else None,
         "manifest_output": str(manifest_output.resolve()),
         "manifest_created_at": manifest["created_at"],

@@ -152,6 +152,14 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py sample-category-asset \
   --pretty
 ```
 
+Write a category-to-asset-id index for downstream consumers:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py write-category-index \
+  catalogs/living_room_kenney_v0/assets.json \
+  --output catalogs/living_room_kenney_v0/category_index.json
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -310,3 +318,5 @@ Verify the env:
   variation beyond seating assets
 - [x] formalized `v0` category-level sampling as uniform within category and
   added small CLI helpers to inspect and reproduce it
+- [x] added a generated category-to-asset index artifact for downstream
+  consumers of the Kenney catalog

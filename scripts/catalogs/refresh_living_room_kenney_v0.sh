@@ -11,4 +11,5 @@ source scripts/lib/micromamba.sh
   catalogs/living_room_kenney_v0/assets.json \
   --catalog-id living_room_kenney_v0 \
   --measure-output catalogs/living_room_kenney_v0/measurements.json \
+  --category-index-output catalogs/living_room_kenney_v0/category_index.json \
   --manifest-output catalogs/living_room_kenney_v0/asset_catalog_manifest.json

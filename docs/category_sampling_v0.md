@@ -48,3 +48,17 @@ It does not define:
 - how categories are chosen
 - how scene-specific validity filtering is implemented
 - how future learned or empirical sampling priors should work
+
+## Export Artifact
+
+For downstream consumers that only need category-level asset lookup, `vgm-assets`
+can emit a compact category index JSON that records:
+
+- category name
+- sampling policy
+- asset count
+- ordered asset id list
+
+For the current Kenney living-room slice, this artifact is:
+
+- `catalogs/living_room_kenney_v0/category_index.json`

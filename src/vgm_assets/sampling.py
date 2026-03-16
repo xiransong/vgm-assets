@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import random
 from pathlib import Path
 
@@ -32,6 +33,30 @@ def category_summary(catalog_path: Path) -> dict:
         "category_count": len(categories),
         "categories": categories,
     }
+
+
+def build_category_index(catalog_path: Path) -> dict:
+    grouped = assets_by_category(catalog_path)
+    categories = {}
+    for category in sorted(grouped):
+        assets = grouped[category]
+        categories[category] = {
+            "sampling_policy": "uniform",
+            "asset_count": len(assets),
+            "asset_ids": [asset["asset_id"] for asset in assets],
+        }
+    return {
+        "catalog_path": str(catalog_path.resolve()),
+        "category_count": len(categories),
+        "categories": categories,
+    }
+
+
+def write_category_index(catalog_path: Path, output_path: Path) -> dict:
+    index = build_category_index(catalog_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
+    return index
 
 
 def sample_uniform_asset(

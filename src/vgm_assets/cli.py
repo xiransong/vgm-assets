@@ -11,7 +11,7 @@ from .catalog import (
     write_catalog_manifest,
 )
 from .paths import default_data_root, default_raw_data_root
-from .sampling import category_summary, sample_uniform_asset
+from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
     organize_kenney_selection,
     rebuild_kenney_selection,
@@ -113,6 +113,7 @@ def build_parser() -> argparse.ArgumentParser:
     refresh_parser.add_argument("--catalog-id", required=True)
     refresh_parser.add_argument("--manifest-output", type=Path, required=True)
     refresh_parser.add_argument("--measure-output", type=Path)
+    refresh_parser.add_argument("--category-index-output", type=Path)
     refresh_parser.add_argument("--protocol-root", type=Path)
     refresh_parser.add_argument("--created-at")
 
@@ -131,6 +132,14 @@ def build_parser() -> argparse.ArgumentParser:
     sample_parser.add_argument("category")
     sample_parser.add_argument("--seed", type=int)
     sample_parser.add_argument("--pretty", action="store_true")
+
+    index_parser = subparsers.add_parser(
+        "write-category-index",
+        help="Write a category-to-asset-id index JSON for a catalog",
+    )
+    index_parser.add_argument("catalog", type=Path)
+    index_parser.add_argument("--output", type=Path, required=True)
+    index_parser.add_argument("--pretty", action="store_true")
 
     return parser
 
@@ -239,6 +248,7 @@ def main() -> int:
             catalog_id=args.catalog_id,
             manifest_output=args.manifest_output,
             measure_output=args.measure_output,
+            category_index_output=args.category_index_output,
             protocol_root=args.protocol_root,
             created_at=args.created_at,
         )
@@ -257,6 +267,22 @@ def main() -> int:
             seed=args.seed,
         )
         print(json.dumps(summary, indent=2 if args.pretty else None))
+        return 0
+
+    if args.command == "write-category-index":
+        index = write_category_index(args.catalog, args.output)
+        if args.pretty:
+            print(json.dumps(index, indent=2))
+        else:
+            print(
+                json.dumps(
+                    {
+                        "catalog_path": index["catalog_path"],
+                        "output": str(args.output.resolve()),
+                        "category_count": index["category_count"],
+                    }
+                )
+            )
         return 0
 
     parser.error(f"Unsupported command: {args.command}")

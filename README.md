@@ -114,6 +114,12 @@ same script can be rerun without the zip path:
 ./scripts/sources/rebuild_kenney_living_room_v0.sh
 ```
 
+Refresh the Kenney catalog measurement report and manifest in one command:
+
+```bash
+./scripts/catalogs/refresh_living_room_kenney_v0.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -262,3 +268,5 @@ Verify the env:
   zip, and organize the selected Kenney normalized data slice
 - [x] added a single-command entrypoint to rebuild the Kenney `living_room_v0`
   processed slice from repo metadata
+- [x] added a single-command entrypoint to refresh the Kenney catalog
+  measurement report and manifest

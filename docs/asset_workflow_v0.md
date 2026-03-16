@@ -52,6 +52,7 @@ For the current Kenney living-room slice, the repo also exposes a single
 wrapper script:
 
 - `scripts/sources/rebuild_kenney_living_room_v0.sh`
+- `scripts/catalogs/refresh_living_room_kenney_v0.sh`
 
 It still does not yet:
 

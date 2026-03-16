@@ -104,5 +104,46 @@ def write_catalog_manifest(
     return manifest
 
 
+def refresh_catalog_artifacts(
+    catalog_path: Path,
+    catalog_id: str,
+    manifest_output: Path,
+    measure_output: Path | None = None,
+    protocol_root: Path | None = None,
+    created_at: str | None = None,
+    producer: dict | None = None,
+) -> dict:
+    records = validate_asset_catalog(catalog_path, protocol_root)
+
+    measurement_report = None
+    if measure_output is not None:
+        from .measure import measure_catalog_meshes
+
+        measurement_report = measure_catalog_meshes(catalog_path)
+        measure_output.parent.mkdir(parents=True, exist_ok=True)
+        with measure_output.open("w", encoding="utf-8") as handle:
+            json.dump(measurement_report, handle, indent=2)
+            handle.write("\n")
+
+    manifest = write_catalog_manifest(
+        catalog_path=catalog_path,
+        output_path=manifest_output,
+        catalog_id=catalog_id,
+        protocol_root=protocol_root,
+        created_at=created_at,
+        producer=producer,
+    )
+    return {
+        "catalog_id": catalog_id,
+        "asset_count": len(records),
+        "catalog_path": str(catalog_path.resolve()),
+        "measurement_output": str(measure_output.resolve())
+        if measure_output is not None
+        else None,
+        "manifest_output": str(manifest_output.resolve()),
+        "manifest_created_at": manifest["created_at"],
+    }
+
+
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[2]

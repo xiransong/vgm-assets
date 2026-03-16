@@ -4,7 +4,12 @@ import argparse
 import json
 from pathlib import Path
 
-from .catalog import build_catalog_manifest, validate_asset_catalog, write_catalog_manifest
+from .catalog import (
+    build_catalog_manifest,
+    refresh_catalog_artifacts,
+    validate_asset_catalog,
+    write_catalog_manifest,
+)
 from .paths import default_data_root, default_raw_data_root
 from .sources import (
     organize_kenney_selection,
@@ -98,6 +103,17 @@ def build_parser() -> argparse.ArgumentParser:
     rebuild_parser.add_argument("--acquired-by")
     rebuild_parser.add_argument("--acquired-at")
     rebuild_parser.add_argument("--notes")
+
+    refresh_parser = subparsers.add_parser(
+        "refresh-catalog-artifacts",
+        help="Validate a catalog, refresh its measurement report, and write its manifest",
+    )
+    refresh_parser.add_argument("catalog", type=Path)
+    refresh_parser.add_argument("--catalog-id", required=True)
+    refresh_parser.add_argument("--manifest-output", type=Path, required=True)
+    refresh_parser.add_argument("--measure-output", type=Path)
+    refresh_parser.add_argument("--protocol-root", type=Path)
+    refresh_parser.add_argument("--created-at")
 
     return parser
 
@@ -196,6 +212,18 @@ def main() -> int:
             acquired_by=args.acquired_by,
             acquired_at=args.acquired_at,
             notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "refresh-catalog-artifacts":
+        summary = refresh_catalog_artifacts(
+            catalog_path=args.catalog,
+            catalog_id=args.catalog_id,
+            manifest_output=args.manifest_output,
+            measure_output=args.measure_output,
+            protocol_root=args.protocol_root,
+            created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
         return 0

@@ -1,0 +1,806 @@
+[
+  {
+    "asset_id": "kenney_lounge_sofa_01",
+    "category": "sofa",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.98,
+      "depth": 0.41,
+      "height": 0.46
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.98,
+      "depth": 0.41
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.15
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_sofa_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_lounge_sofa_long_01",
+    "category": "sofa",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.98,
+      "depth": 0.82,
+      "height": 0.46
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.98,
+      "depth": 0.82
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.15
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_sofa_long_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_table_coffee_01",
+    "category": "coffee_table",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.66,
+      "depth": 0.4,
+      "height": 0.23
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.66,
+      "depth": 0.4
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.15,
+      "min_object_clearance": 0.12,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["approachable", "support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.23,
+          "width": 0.6,
+          "depth": 0.36
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_coffee_table_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_table_coffee_square_01",
+    "category": "coffee_table",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.4,
+      "depth": 0.4,
+      "height": 0.23
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.4,
+      "depth": 0.4
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.15,
+      "min_object_clearance": 0.12,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["approachable", "support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.23,
+          "width": 0.34,
+          "depth": 0.34
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_square_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_square_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_coffee_table_square_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_cabinet_television_01",
+    "category": "tv_stand",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.8,
+      "depth": 0.25,
+      "height": 0.31
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.8,
+      "depth": 0.25
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "media"],
+      "affordances": ["approachable_front", "view"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.31,
+          "width": 0.75,
+          "depth": 0.22
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_tv_stand_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_bookcase_open_01",
+    "category": "bookcase",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.4,
+      "depth": 0.25,
+      "height": 0.88
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.4,
+      "depth": 0.25
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.1,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "storage"],
+      "affordances": ["approachable_front"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_bookcase_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_lounge_chair_01",
+    "category": "armchair",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.49,
+      "depth": 0.41,
+      "height": 0.46
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.49,
+      "depth": 0.41
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_armchair_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_lounge_chair_relax_01",
+    "category": "armchair",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.49,
+      "depth": 0.67,
+      "height": 0.63
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.49,
+      "depth": 0.67
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.1
+    },
+    "semantics": {
+      "tags": ["furniture", "seating"],
+      "affordances": ["approachable_front", "sit"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_armchair_relax_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_side_table_01",
+    "category": "side_table",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.53,
+      "depth": 0.22,
+      "height": 0.38
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.53,
+      "depth": 0.22
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa", "armchair"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.38,
+          "width": 0.48,
+          "depth": 0.2
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_side_table_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_side_table_drawers_01",
+    "category": "side_table",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.53,
+      "depth": 0.22,
+      "height": 0.38
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.53,
+      "depth": 0.22
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+      "preferred_anchor_categories": ["sofa", "armchair"]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "table"],
+      "affordances": ["support_surface"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.38,
+          "width": 0.48,
+          "depth": 0.2
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_side_table_drawers_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_lamp_round_floor_01",
+    "category": "floor_lamp",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.15,
+      "depth": 0.18,
+      "height": 0.86
+    },
+    "footprint": {
+      "shape": "circle",
+      "width": 0.18,
+      "depth": 0.18
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.1,
+      "allowed_orientations_deg": [0.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["lighting", "decor"],
+      "affordances": []
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_round_floor_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_round_floor_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_floor_lamp_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_lamp_square_floor_01",
+    "category": "floor_lamp",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.12,
+      "depth": 0.12,
+      "height": 0.86
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.12,
+      "depth": 0.12
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.1,
+      "allowed_orientations_deg": [0.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["lighting", "decor"],
+      "affordances": []
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_floor_lamp_square_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_cabinet_television_doors_01",
+    "category": "tv_stand",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.8,
+      "depth": 0.26,
+      "height": 0.31
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.8,
+      "depth": 0.26
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "media"],
+      "affordances": ["approachable_front", "view"]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.31,
+          "width": 0.75,
+          "depth": 0.22
+        }
+      ]
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_tv_stand_doors_v0"]
+    }
+  },
+  {
+    "asset_id": "kenney_bookcase_closed_wide_01",
+    "category": "bookshelf",
+    "source": "kenney_furniture_kit",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.8,
+      "depth": 0.25,
+      "height": 0.79
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.8,
+      "depth": 0.25
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": ["furniture", "storage"],
+      "affordances": ["approachable_front"]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01/model.glb",
+        "format": "glb"
+      },
+      "preview_image": {
+        "path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01/preview.png",
+        "format": "png"
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_kenney_v0_measured_geometry_v1",
+      "upstream_ids": ["kenney_bookshelf_wide_v0"]
+    }
+  }
+]

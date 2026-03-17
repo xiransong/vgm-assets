@@ -1,0 +1,68 @@
+{
+  "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
+  "category_count": 8,
+  "categories": {
+    "armchair": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_lounge_chair_01",
+        "kenney_lounge_chair_relax_01"
+      ]
+    },
+    "bookcase": {
+      "sampling_policy": "uniform",
+      "asset_count": 1,
+      "asset_ids": [
+        "kenney_bookcase_open_01"
+      ]
+    },
+    "bookshelf": {
+      "sampling_policy": "uniform",
+      "asset_count": 1,
+      "asset_ids": [
+        "kenney_bookcase_closed_wide_01"
+      ]
+    },
+    "coffee_table": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_table_coffee_01",
+        "kenney_table_coffee_square_01"
+      ]
+    },
+    "floor_lamp": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_lamp_round_floor_01",
+        "kenney_lamp_square_floor_01"
+      ]
+    },
+    "side_table": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_side_table_01",
+        "kenney_side_table_drawers_01"
+      ]
+    },
+    "sofa": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_lounge_sofa_01",
+        "kenney_lounge_sofa_long_01"
+      ]
+    },
+    "tv_stand": {
+      "sampling_policy": "uniform",
+      "asset_count": 2,
+      "asset_ids": [
+        "kenney_cabinet_television_01",
+        "kenney_cabinet_television_doors_01"
+      ]
+    }
+  }
+}

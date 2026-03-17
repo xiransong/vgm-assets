@@ -40,6 +40,7 @@ Current sourcing recommendation:
 See:
 - `docs/source_policy_v0.md`
 - `docs/category_sampling_v0.md`
+- `docs/export_snapshots_v0.md`
 - `docs/storage_layout_v0.md`
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`
@@ -161,6 +162,12 @@ Write a category-to-asset-id index for downstream consumers:
 PYTHONPATH=src python3 tools/validate_asset_catalog.py write-category-index \
   catalogs/living_room_kenney_v0/assets.json \
   --output catalogs/living_room_kenney_v0/category_index.json
+```
+
+Export the first frozen scene-engine snapshot:
+
+```bash
+./scripts/exports/export_living_room_kenney_v0_r1.sh
 ```
 
 Validate the first toy catalog:
@@ -328,3 +335,5 @@ Verify the env:
   consumers of the Kenney catalog
 - [x] switched repo catalog file refs from absolute processed-data paths to
   `DATA_ROOT`-relative refs for better portability
+- [x] added a frozen scene-engine snapshot export path for
+  `living_room_kenney_v0_r1`

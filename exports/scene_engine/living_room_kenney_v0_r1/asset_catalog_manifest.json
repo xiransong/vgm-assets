@@ -1,0 +1,19 @@
+{
+  "catalog_id": "living_room_kenney_v0",
+  "asset_count": 14,
+  "catalog_files": [
+    {
+      "path": "catalogs/living_room_kenney_v0/assets.json",
+      "format": "json",
+      "sha256": "557027ed68928cd82a06eff0b3c6cac5d2d11250daac05a51c1695e69f6e2ec3",
+      "size_bytes": 21752
+    }
+  ],
+  "protocol_version": "v0",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-17T15:05:18+00:00"
+}

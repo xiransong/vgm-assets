@@ -1,0 +1,47 @@
+# Export Snapshots v0
+
+This note defines how `vgm-assets` hands stable catalog revisions to downstream
+repos such as `vgm-scene-engine`.
+
+## Rule
+
+Downstream repos should not depend directly on mutable working catalogs under
+`catalogs/`.
+
+Instead, `vgm-assets` should publish frozen export snapshots under `exports/`.
+
+## Scene-Engine Snapshot Layout
+
+```text
+exports/
+  scene_engine/
+    <export_id>/
+      asset_catalog.json
+      category_index.json
+      asset_catalog_manifest.json
+      export_metadata.json
+```
+
+## Required Snapshot Files
+
+- `asset_catalog.json`
+- `category_index.json`
+- `asset_catalog_manifest.json`
+- `export_metadata.json`
+
+## Metadata
+
+`export_metadata.json` should record:
+
+- `export_id`
+- downstream consumer name
+- source catalog id
+- creation timestamp
+- producer metadata
+- checksummed file refs for the exported snapshot contents
+
+## Current Snapshot
+
+The first frozen scene-engine snapshot is:
+
+- `exports/scene_engine/living_room_kenney_v0_r1`

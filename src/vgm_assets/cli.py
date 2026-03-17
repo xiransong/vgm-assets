@@ -10,6 +10,7 @@ from .catalog import (
     validate_asset_catalog,
     write_catalog_manifest,
 )
+from .exports import export_scene_engine_snapshot
 from .paths import default_data_root, default_raw_data_root
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
@@ -140,6 +141,18 @@ def build_parser() -> argparse.ArgumentParser:
     index_parser.add_argument("catalog", type=Path)
     index_parser.add_argument("--output", type=Path, required=True)
     index_parser.add_argument("--pretty", action="store_true")
+
+    export_parser = subparsers.add_parser(
+        "export-scene-engine-snapshot",
+        help="Export a frozen scene-engine snapshot from current catalog artifacts",
+    )
+    export_parser.add_argument("--export-id", required=True)
+    export_parser.add_argument("--source-catalog-id", required=True)
+    export_parser.add_argument("--catalog", type=Path, required=True)
+    export_parser.add_argument("--category-index", type=Path, required=True)
+    export_parser.add_argument("--manifest", type=Path, required=True)
+    export_parser.add_argument("--output-dir", type=Path, required=True)
+    export_parser.add_argument("--notes")
 
     return parser
 
@@ -283,6 +296,19 @@ def main() -> int:
                     }
                 )
             )
+        return 0
+
+    if args.command == "export-scene-engine-snapshot":
+        summary = export_scene_engine_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            category_index_path=args.category_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     parser.error(f"Unsupported command: {args.command}")

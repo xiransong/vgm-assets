@@ -52,6 +52,9 @@ Default roots:
 - `RAW_DATA_ROOT=~/scratch/data/vgm/vgm-assets`
 - `DATA_ROOT=~/scratch/processed/vgm/vgm-assets`
 
+Repo catalogs store payload file refs relative to `DATA_ROOT` so they remain
+portable across machines with different local path layouts.
+
 ## Output Goals
 
 This repo should eventually emit:
@@ -323,3 +326,5 @@ Verify the env:
   added small CLI helpers to inspect and reproduce it
 - [x] added a generated category-to-asset index artifact for downstream
   consumers of the Kenney catalog
+- [x] switched repo catalog file refs from absolute processed-data paths to
+  `DATA_ROOT`-relative refs for better portability

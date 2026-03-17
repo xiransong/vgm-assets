@@ -5,6 +5,7 @@ from pathlib import Path
 import trimesh
 
 from .catalog import load_asset_specs
+from .paths import resolve_data_ref
 
 
 def _scene_bounds(mesh_path: Path) -> tuple[list[float], list[float]]:
@@ -23,7 +24,7 @@ def _measurement_for_asset(asset: dict) -> dict:
     if not isinstance(mesh_ref, dict):
         raise ValueError(f"Asset {asset.get('asset_id')} has no files.mesh ref")
 
-    mesh_path = Path(mesh_ref["path"]).expanduser().resolve()
+    mesh_path = resolve_data_ref(mesh_ref["path"])
     mins, maxs = _scene_bounds(mesh_path)
     extents = [maxs[i] - mins[i] for i in range(3)]
 

@@ -62,3 +62,16 @@ Given:
 
 the repo scripts should be able to rebuild the Kenney unpacked tree and the
 normalized `living_room_v0` slice in `DATA_ROOT`.
+
+## File Ref Rule
+
+Repo-owned catalogs should not hardcode machine-specific absolute payload paths.
+
+For `vgm-assets v0`:
+
+- `files.*.path` in repo catalogs should be stored relative to `DATA_ROOT`
+- local tools should resolve those refs against `DATA_ROOT` at runtime
+- derived reports may record resolved absolute paths when needed for inspection
+
+This keeps repo metadata portable across machines while still allowing local
+tooling to work with the actual payload files on disk.

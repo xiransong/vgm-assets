@@ -8,6 +8,9 @@ Replace the pure toy-only asset slice with a first catalog whose payload
 references point to real organized meshes and previews under the shared VGM
 processed data root.
 
+In the repo catalog itself, those payload refs are stored relative to
+`DATA_ROOT` rather than as machine-specific absolute paths.
+
 Catalog:
 
 - `catalogs/living_room_kenney_v0/assets.json`

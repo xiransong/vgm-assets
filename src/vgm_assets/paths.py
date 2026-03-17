@@ -27,3 +27,11 @@ def default_data_root() -> Path:
 
 def resolve_under(root: Path, relative_path: str | Path) -> Path:
     return root / Path(relative_path)
+
+
+def resolve_data_ref(path_str: str | Path, data_root: Path | None = None) -> Path:
+    path = Path(path_str).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    root = data_root or default_data_root()
+    return resolve_under(root, path).resolve()

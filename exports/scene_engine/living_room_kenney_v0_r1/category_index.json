@@ -1,5 +1,5 @@
 {
-  "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
+  "catalog_path": "asset_catalog.json",
   "category_count": 8,
   "categories": {
     "armchair": {

@@ -2,24 +2,38 @@
   "export_id": "living_room_kenney_v0_r1",
   "consumer": "vgm-scene-engine",
   "source_catalog_id": "living_room_kenney_v0",
-  "created_at": "2026-03-17T15:17:39+00:00",
+  "created_at": "2026-03-17T15:26:36+00:00",
   "producer": {
     "repo": "vgm-assets",
     "version": "0.1.0-dev",
     "commit": "working_tree"
   },
-  "files": {
+  "source_artifacts": {
     "asset_catalog": {
-      "path": "exports/scene_engine/living_room_kenney_v0_r1/asset_catalog.json",
+      "path": "catalogs/living_room_kenney_v0/assets.json",
       "sha256": "557027ed68928cd82a06eff0b3c6cac5d2d11250daac05a51c1695e69f6e2ec3"
     },
     "category_index": {
-      "path": "exports/scene_engine/living_room_kenney_v0_r1/category_index.json",
+      "path": "catalogs/living_room_kenney_v0/category_index.json",
       "sha256": "7ce2dbf086e980ab27192aa2e8b209ac4d92f0708981cefd782670473ba43bf6"
     },
     "asset_catalog_manifest": {
-      "path": "exports/scene_engine/living_room_kenney_v0_r1/asset_catalog_manifest.json",
+      "path": "catalogs/living_room_kenney_v0/asset_catalog_manifest.json",
       "sha256": "e1cb6434ce038f2e396ad2506c6749e7420be3f87e8ab6aa59b49fd60e51b3f5"
+    }
+  },
+  "files": {
+    "asset_catalog": {
+      "path": "asset_catalog.json",
+      "sha256": "557027ed68928cd82a06eff0b3c6cac5d2d11250daac05a51c1695e69f6e2ec3"
+    },
+    "category_index": {
+      "path": "category_index.json",
+      "sha256": "72473682cbd32c0773f662c1148e58c8d3779fdb84936829e9398b8fb0014495"
+    },
+    "asset_catalog_manifest": {
+      "path": "asset_catalog_manifest.json",
+      "sha256": "ab5631ed0d89060b966bb5088df2cfdac7865cf883d5405303b69e084f628fb8"
     }
   },
   "notes": "Frozen snapshot for vgm-scene-engine consumption."

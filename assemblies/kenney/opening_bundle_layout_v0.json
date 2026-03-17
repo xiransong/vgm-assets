@@ -1,0 +1,59 @@
+{
+  "layout_id": "kenney_opening_bundle_layout_v0",
+  "source_id": "kenney_furniture_kit",
+  "selection_path": "sources/kenney/opening_selection_v0.json",
+  "planned_at": "2026-03-17T19:20:00+00:00",
+  "data_root_env_var": "VGM_ASSETS_DATA_ROOT",
+  "normalized_root_relpath": "assemblies/openings/kenney/opening_assemblies_v0",
+  "bundle_count": 4,
+  "bundles": [
+    {
+      "selection_id": "kenney_opening_door_wall_doorway_v0",
+      "opening_type": "door",
+      "assembly_id": "kenney_wall_doorway_01",
+      "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "kenney_opening_window_wall_window_v0",
+      "opening_type": "window",
+      "assembly_id": "kenney_wall_window_01",
+      "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "kenney_opening_door_wall_doorway_wide_v0",
+      "opening_type": "door",
+      "assembly_id": "kenney_wall_doorway_wide_01",
+      "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_wide_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "kenney_opening_window_wall_window_slide_v0",
+      "opening_type": "window",
+      "assembly_id": "kenney_wall_window_slide_01",
+      "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_slide_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+[
+  {
+    "selection_id": "kenney_opening_door_wall_doorway_v0",
+    "opening_type": "door",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 1,
+    "source_name": "wallDoorway",
+    "raw_model_rel": "Models/GLTF format/wallDoorway.glb",
+    "raw_preview_rel": "Isometric/wallDoorway_NE.png",
+    "assembly_id": "kenney_wall_doorway_01",
+    "display_name": "Kenney Wall Doorway 01",
+    "style_tags": ["interior", "simple", "frame", "doorway"],
+    "compatibility": {
+      "nominal_width_m": 0.9,
+      "nominal_height_m": 2.1,
+      "max_width_delta_m": 0.1,
+      "max_height_delta_m": 0.1
+    },
+    "frame_depth_m": 0.12,
+    "door_swing": "fixed",
+    "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_01",
+    "notes": "Primary v0 interior-door opening assembly candidate. Raw Kenney bounds appear undersized, so a scene-scale normalization layer is expected later."
+  },
+  {
+    "selection_id": "kenney_opening_window_wall_window_v0",
+    "opening_type": "window",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 1,
+    "source_name": "wallWindow",
+    "raw_model_rel": "Models/GLTF format/wallWindow.glb",
+    "raw_preview_rel": "Isometric/wallWindow_NE.png",
+    "assembly_id": "kenney_wall_window_01",
+    "display_name": "Kenney Wall Window 01",
+    "style_tags": ["interior", "simple", "frame", "window"],
+    "compatibility": {
+      "nominal_width_m": 1.2,
+      "nominal_height_m": 1.2,
+      "max_width_delta_m": 0.2,
+      "max_height_delta_m": 0.2
+    },
+    "frame_depth_m": 0.12,
+    "glazing": {
+      "is_glazed": true,
+      "transparency": 0.7
+    },
+    "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_01",
+    "notes": "Primary v0 framed-window assembly candidate. Raw Kenney bounds appear undersized, so a scene-scale normalization layer is expected later."
+  },
+  {
+    "selection_id": "kenney_opening_door_wall_doorway_wide_v0",
+    "opening_type": "door",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned_later",
+    "priority": 2,
+    "source_name": "wallDoorwayWide",
+    "raw_model_rel": "Models/GLTF format/wallDoorwayWide.glb",
+    "raw_preview_rel": "Isometric/wallDoorwayWide_NE.png",
+    "assembly_id": "kenney_wall_doorway_wide_01",
+    "display_name": "Kenney Wall Doorway Wide 01",
+    "style_tags": ["interior", "simple", "frame", "doorway", "wide"],
+    "compatibility": {
+      "nominal_width_m": 1.4,
+      "nominal_height_m": 2.1,
+      "max_width_delta_m": 0.1,
+      "max_height_delta_m": 0.1
+    },
+    "frame_depth_m": 0.12,
+    "door_swing": "fixed",
+    "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_wide_01",
+    "notes": "Likely second door-side candidate once the first v0 doorway path is stable."
+  },
+  {
+    "selection_id": "kenney_opening_window_wall_window_slide_v0",
+    "opening_type": "window",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned_later",
+    "priority": 2,
+    "source_name": "wallWindowSlide",
+    "raw_model_rel": "Models/GLTF format/wallWindowSlide.glb",
+    "raw_preview_rel": "Isometric/wallWindowSlide_NE.png",
+    "assembly_id": "kenney_wall_window_slide_01",
+    "display_name": "Kenney Wall Sliding Window 01",
+    "style_tags": ["interior", "simple", "frame", "window", "sliding"],
+    "compatibility": {
+      "nominal_width_m": 1.2,
+      "nominal_height_m": 1.2,
+      "max_width_delta_m": 0.2,
+      "max_height_delta_m": 0.2
+    },
+    "frame_depth_m": 0.12,
+    "glazing": {
+      "is_glazed": true,
+      "transparency": 0.7
+    },
+    "normalized_rel_dir": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_slide_01",
+    "notes": "Likely second window-side candidate once the first v0 window path is stable."
+  }
+]

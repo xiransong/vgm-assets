@@ -446,3 +446,5 @@ Verify the env:
   - `exports/scene_engine/living_room_kenney_v0_r2`
 - [x] added the initial opening-assemblies design and planning notes, using
   Kenney door/window candidates as the first likely `v0` source
+- [x] added the first repo-side Kenney opening selection and bundle-layout
+  metadata for one door path and one window path

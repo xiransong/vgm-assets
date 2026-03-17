@@ -46,6 +46,21 @@ The current organized subset is generated into:
 
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
 
+The next planned Kenney intake track is opening-bound assemblies:
+
+- `sources/kenney/opening_selection_v0.json`
+- `assemblies/kenney/opening_bundle_layout_v0.json`
+
+The current starter candidates are:
+
+- `wallDoorway`
+- `wallWindow`
+
+With likely later expansions:
+
+- `wallDoorwayWide`
+- `wallWindowSlide`
+
 ## Intake Workflow
 
 1. place the manually downloaded source zip into `RAW_DATA_ROOT` via
@@ -69,5 +84,6 @@ The repo now also provides a single-command wrapper for this flow:
 - This is only the first source-specific intake area.
 - The repo-side source contract lives in `source_spec_v0.json`.
 - The current selection list lives in `selection_v0.json`.
+- The opening-assembly selection list lives in `opening_selection_v0.json`.
 - The current selection list records normalized relative output directories in
   `DATA_ROOT`, but it is not itself a protocol `AssetSpec` catalog.

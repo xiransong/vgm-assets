@@ -20,6 +20,7 @@ from .room_surface_materials import (
     validate_room_surface_material_catalog,
 )
 from .sampling import category_summary, sample_uniform_asset, write_category_index
+from .size_normalization import apply_size_normalization
 from .sources import (
     fetch_poly_haven_room_surface_material,
     organize_kenney_selection,
@@ -215,6 +216,14 @@ def build_parser() -> argparse.ArgumentParser:
     refresh_parser.add_argument("--category-index-output", type=Path)
     refresh_parser.add_argument("--protocol-root", type=Path)
     refresh_parser.add_argument("--created-at")
+
+    normalize_sizes_parser = subparsers.add_parser(
+        "apply-size-normalization",
+        help="Apply a repo-side size-normalization plan to an asset catalog",
+    )
+    normalize_sizes_parser.add_argument("catalog", type=Path)
+    normalize_sizes_parser.add_argument("--plan", type=Path, required=True)
+    normalize_sizes_parser.add_argument("--output", type=Path)
 
     summary_parser = subparsers.add_parser(
         "summarize-categories",
@@ -451,6 +460,15 @@ def main() -> int:
             category_index_output=args.category_index_output,
             protocol_root=args.protocol_root,
             created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "apply-size-normalization":
+        summary = apply_size_normalization(
+            catalog_path=args.catalog,
+            plan_path=args.plan,
+            output_path=args.output,
         )
         print(json.dumps(summary, indent=2))
         return 0

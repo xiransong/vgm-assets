@@ -1,0 +1,76 @@
+{
+  "config_id": "living_room_kenney_v0_size_normalized_v1",
+  "notes": "Normalize Kenney furniture dimensions toward the living-room scene-scale contract already used by the scene-engine toy slice.",
+  "targets": {
+    "kenney_lounge_sofa_01": {
+      "width": 2.1,
+      "depth": 0.9,
+      "height": 0.9
+    },
+    "kenney_lounge_sofa_long_01": {
+      "width": 2.35,
+      "depth": 1.0,
+      "height": 0.9
+    },
+    "kenney_table_coffee_01": {
+      "width": 1.1,
+      "depth": 0.6,
+      "height": 0.45
+    },
+    "kenney_table_coffee_square_01": {
+      "width": 0.8,
+      "depth": 0.8,
+      "height": 0.45
+    },
+    "kenney_cabinet_television_01": {
+      "width": 1.4,
+      "depth": 0.45,
+      "height": 0.6
+    },
+    "kenney_bookcase_open_01": {
+      "width": 0.8,
+      "depth": 0.35,
+      "height": 1.4
+    },
+    "kenney_lounge_chair_01": {
+      "width": 0.9,
+      "depth": 0.85,
+      "height": 0.95
+    },
+    "kenney_lounge_chair_relax_01": {
+      "width": 0.95,
+      "depth": 1.0,
+      "height": 1.0
+    },
+    "kenney_side_table_01": {
+      "width": 0.55,
+      "depth": 0.55,
+      "height": 0.5
+    },
+    "kenney_side_table_drawers_01": {
+      "width": 0.6,
+      "depth": 0.55,
+      "height": 0.55
+    },
+    "kenney_lamp_round_floor_01": {
+      "width": 0.35,
+      "depth": 0.35,
+      "height": 1.6
+    },
+    "kenney_lamp_square_floor_01": {
+      "width": 0.3,
+      "depth": 0.3,
+      "height": 1.6
+    },
+    "kenney_cabinet_television_doors_01": {
+      "width": 1.5,
+      "depth": 0.45,
+      "height": 0.65
+    },
+    "kenney_bookcase_closed_wide_01": {
+      "width": 1.0,
+      "depth": 0.35,
+      "height": 2.0
+    }
+  }
+}

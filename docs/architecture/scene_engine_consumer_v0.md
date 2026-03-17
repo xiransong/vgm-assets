@@ -7,7 +7,7 @@ living-room asset snapshot.
 
 `vgm-scene-engine` should consume the frozen snapshot:
 
-- `exports/scene_engine/living_room_kenney_v0_r1`
+- `exports/scene_engine/living_room_kenney_v0_r2`
 
 It should not depend directly on the mutable working catalog under `catalogs/`.
 
@@ -27,7 +27,7 @@ It should not depend directly on the mutable working catalog under `catalogs/`.
 Payload refs in the exported catalog point to the export-owned processed payload
 snapshot under:
 
-- `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r1/assets/...`
+- `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r2/assets/...`
 
 They remain relative to `DATA_ROOT` in the JSON itself.
 

@@ -15,8 +15,11 @@ Catalog:
 
 - `catalogs/living_room_kenney_v0/assets.json`
 - `catalogs/living_room_kenney_v0/measurements.json`
+- `catalogs/living_room_kenney_v0/size_normalization_v1.json`
 - `catalogs/living_room_kenney_v0/category_index.json`
 - `exports/scene_engine/living_room_kenney_v0_r1`
+- `exports/scene_engine/living_room_kenney_v0_r2`
+- `scripts/catalogs/normalize_living_room_kenney_v0.sh`
 - `scripts/catalogs/refresh_living_room_kenney_v0.sh`
 - `scripts/pipelines/refresh_kenney_living_room_v0.sh`
 
@@ -52,15 +55,15 @@ The current slice now includes:
 Under the current `v0` sampling policy, those assets are sampled uniformly
 within their category.
 
-## Current Measurement Note
+## Raw Measurement Note
 
 The first mesh-bounds measurement pass now exists in:
 
 - `catalogs/living_room_kenney_v0/measurements.json`
 
-The measured mesh extents differ substantially from the current scaffolded toy
-dimensions for several assets, which means the Kenney models and the toy priors
-are not yet on the same scale contract.
+These values are raw mesh-bounds measurements from the Kenney GLBs. They remain
+useful for debugging source geometry, but they are no longer the working
+scene-scale dimensions for the catalog.
 
 The current working axis interpretation for these Kenney GLBs is:
 
@@ -68,9 +71,20 @@ The current working axis interpretation for these Kenney GLBs is:
 - `y -> height`
 - `z -> depth`
 
-## Measured Geometry Revision
+## Size Normalization Revision
 
-The current measured-geometry revision now updates all eight categories:
+The current working catalog now applies a scene-scale normalization layer on top
+of the raw Kenney mesh measurements.
+
+The normalization plan is:
+
+- `catalogs/living_room_kenney_v0/size_normalization_v1.json`
+
+It pushes the current Kenney slice toward the same approximate room-scale
+contract used by the original toy living-room assets in `vgm-scene-engine`,
+while preserving candidate-level variation.
+
+The current normalization revision updates all eight categories:
 
 - `sofa`
 - `coffee_table`
@@ -83,15 +97,26 @@ The current measured-geometry revision now updates all eight categories:
 
 What is now measured:
 
-- `dimensions`
-- `footprint`
-- selected support-surface geometry for table-like assets
+- raw mesh `dimensions`
+- raw mesh `footprint`
+- raw support-surface geometry for table-like assets
+
+What is now normalized in the working catalog:
+
+- scene-scale `dimensions`
+- scene-scale `footprint`
+- scene-scale support-surface geometry
+- provenance `config_id`
 
 What still remains scaffolded:
 
 - placement priors
 - walkability priors
 - affordance semantics
+
+The current normalized geometry is intended to be consumed through:
+
+- `exports/scene_engine/living_room_kenney_v0_r2`
 
 ## Current Semantics Review
 

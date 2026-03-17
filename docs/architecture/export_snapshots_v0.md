@@ -61,6 +61,10 @@ The first frozen scene-engine snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r1`
 
+The current size-normalized scene-engine snapshot is:
+
+- `exports/scene_engine/living_room_kenney_v0_r2`
+
 The first frozen room-surface material snapshot is:
 
 - `exports/scene_engine/room_surface_materials_v0_r1`

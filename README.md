@@ -182,6 +182,19 @@ Export the first frozen scene-engine snapshot:
 This writes repo-side snapshot metadata under `exports/scene_engine/` and an
 export-owned processed payload snapshot under `DATA_ROOT/exports/scene_engine/`.
 
+Apply the current Kenney size-normalization plan and refresh the catalog:
+
+```bash
+./scripts/catalogs/normalize_living_room_kenney_v0.sh
+./scripts/catalogs/refresh_living_room_kenney_v0.sh
+```
+
+Export the current size-normalized scene-engine snapshot:
+
+```bash
+./scripts/exports/export_living_room_kenney_v0_r2.sh
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash
@@ -423,3 +436,9 @@ Verify the env:
 - [x] added the frozen room-surface scene-engine snapshot:
   - `exports/scene_engine/room_surface_materials_v0_r1`
   - export-owned payload snapshot under `DATA_ROOT/exports/scene_engine/room_surface_materials_v0_r1/`
+- [x] added a reproducible Kenney size-normalization plan and helper for
+  `living_room_kenney_v0`
+- [x] normalized the Kenney living-room catalog toward the original toy
+  scene-scale contract while keeping category-level variation
+- [x] added the current size-normalized scene-engine snapshot:
+  - `exports/scene_engine/living_room_kenney_v0_r2`

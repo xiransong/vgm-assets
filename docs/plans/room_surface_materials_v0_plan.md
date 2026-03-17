@@ -124,11 +124,22 @@ The repo now has the first planning artifacts for this track:
 
 The next move should still avoid bulk implementation.
 
-The next practical step should be a single-material vertical slice:
+The single-material vertical slice now exists:
 
-- define the raw `source_manifest.json` shape for one downloaded Poly Haven
-  material
-- define the processed `bundle_manifest.json` shape for one normalized material
-- implement a first registration/normalization helper for one material only
+- raw `source_manifest.json` shape
+- processed `bundle_manifest.json` shape
+- first registration helper for one material
+- first normalization helper for one material
 
-Only after that slice works should we add broader Poly Haven download logic.
+It has been exercised locally with a dummy `white_plaster_02` material tree in
+`/tmp`.
+
+## Immediate Next Step
+
+After this, the next practical step should be:
+
+- implement one real Poly Haven API fetch path for one selected material
+- connect that fetch step to the existing raw-source registration flow
+
+Only after one real fetch works should we generalize to the full 8-material
+room-surface slice.

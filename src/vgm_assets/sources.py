@@ -60,6 +60,84 @@ def _require_entry(entry: dict, key: str) -> str:
     return value
 
 
+def find_selection_entry(selection_path: Path, selection_id: str) -> dict:
+    for entry in load_selection_list(selection_path):
+        if entry.get("selection_id") == selection_id:
+            return entry
+    raise ValueError(
+        f"Selection id '{selection_id}' not found in {selection_path.as_posix()}"
+    )
+
+
+def _poly_haven_expected_files(entry: dict) -> list[dict]:
+    preferred_format = _require_entry(entry, "preferred_format")
+    return [
+        {
+            "logical_name": "base_color",
+            "filename": f"base_color.{preferred_format}",
+            "required": True,
+        },
+        {
+            "logical_name": "roughness",
+            "filename": f"roughness.{preferred_format}",
+            "required": True,
+        },
+        {
+            "logical_name": "normal",
+            "filename": f"normal_gl.{preferred_format}",
+            "required": True,
+        },
+        {
+            "logical_name": "ao",
+            "filename": f"ao.{preferred_format}",
+            "required": False,
+        },
+        {
+            "logical_name": "displacement",
+            "filename": f"displacement.{preferred_format}",
+            "required": False,
+        },
+        {
+            "logical_name": "preview_image",
+            "filename": "preview.jpg",
+            "required": True,
+        },
+    ]
+
+
+def _poly_haven_raw_rel_dir(spec: dict, entry: dict) -> Path:
+    raw_storage = spec.get("raw_storage")
+    if not isinstance(raw_storage, dict):
+        raise TypeError("Poly Haven source spec must define raw_storage")
+    source_asset_id = _require_entry(entry, "source_asset_id")
+    preferred_resolution = _require_entry(entry, "preferred_resolution")
+    preferred_format = _require_entry(entry, "preferred_format")
+    return (
+        Path(raw_storage["root_relpath"])
+        / source_asset_id
+        / f"{preferred_resolution}_{preferred_format}"
+    )
+
+
+def _poly_haven_normalized_rel_dir(spec: dict, entry: dict) -> Path:
+    processing = spec.get("processing")
+    if not isinstance(processing, dict):
+        raise TypeError("Poly Haven source spec must define processing")
+    return (
+        Path(processing["normalized_root_relpath"])
+        / _require_entry(entry, "surface_type")
+        / _require_entry(entry, "material_id")
+    )
+
+
+def _poly_haven_source_manifest_path(
+    spec: dict,
+    entry: dict,
+    raw_root: Path,
+) -> Path:
+    return resolve_under(raw_root, _poly_haven_raw_rel_dir(spec, entry)) / "source_manifest.json"
+
+
 def build_poly_haven_room_surface_download_plan(
     spec_path: Path,
     selection_path: Path,
@@ -245,6 +323,191 @@ def write_poly_haven_room_surface_layout_plan(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
     return plan
+
+
+def register_poly_haven_room_surface_material(
+    spec_path: Path,
+    selection_path: Path,
+    selection_id: str,
+    raw_material_dir: Path,
+    raw_data_root: Path | None = None,
+    acquired_at: str | None = None,
+    acquired_by: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    entry = find_selection_entry(selection_path, selection_id)
+    raw_root = raw_data_root or default_raw_data_root()
+
+    source_dir = raw_material_dir.expanduser().resolve()
+    if not source_dir.is_dir():
+        raise FileNotFoundError(f"Missing raw material directory: {source_dir}")
+
+    raw_rel_dir = _poly_haven_raw_rel_dir(spec, entry)
+    destination_dir = resolve_under(raw_root, raw_rel_dir)
+    destination_dir.mkdir(parents=True, exist_ok=True)
+
+    files_manifest: list[dict] = []
+    missing_optional: list[str] = []
+    for file_spec in _poly_haven_expected_files(entry):
+        logical_name = file_spec["logical_name"]
+        filename = file_spec["filename"]
+        required = file_spec["required"]
+        source_path = source_dir / filename
+        if not source_path.exists():
+            if required:
+                raise FileNotFoundError(
+                    f"Missing required Poly Haven file for {selection_id}: {source_path}"
+                )
+            missing_optional.append(logical_name)
+            continue
+
+        destination_path = destination_dir / filename
+        if source_path != destination_path:
+            shutil.copy2(source_path, destination_path)
+
+        files_manifest.append(
+            {
+                "logical_name": logical_name,
+                "filename": filename,
+                "raw_relpath": (raw_rel_dir / filename).as_posix(),
+                "sha256": _sha256(destination_path),
+                "size_bytes": destination_path.stat().st_size,
+            }
+        )
+
+    manifest = {
+        "manifest_version": "v0",
+        "source_id": spec["source_id"],
+        "source_asset_id": _require_entry(entry, "source_asset_id"),
+        "selection_id": selection_id,
+        "surface_type": _require_entry(entry, "surface_type"),
+        "material_id": _require_entry(entry, "material_id"),
+        "source_url": _require_entry(entry, "source_url"),
+        "license": entry.get("license", spec["license"]),
+        "preferred_resolution": _require_entry(entry, "preferred_resolution"),
+        "preferred_format": _require_entry(entry, "preferred_format"),
+        "raw_asset_rel_dir": raw_rel_dir.as_posix(),
+        "registered_at": _timestamp(acquired_at),
+        "registered_by": acquired_by or os.environ.get("USER", "unknown"),
+        "files": files_manifest,
+        "missing_optional_files": missing_optional,
+        "notes": notes or "",
+    }
+
+    manifest_path = destination_dir / "source_manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest
+
+
+def normalize_poly_haven_room_surface_material(
+    spec_path: Path,
+    selection_path: Path,
+    selection_id: str,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    entry = find_selection_entry(selection_path, selection_id)
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+
+    source_manifest_path = _poly_haven_source_manifest_path(spec, entry, raw_root)
+    if not source_manifest_path.exists():
+        raise FileNotFoundError(
+            f"Missing registered Poly Haven source manifest: {source_manifest_path}"
+        )
+    source_manifest = load_json(source_manifest_path)
+    if not isinstance(source_manifest, dict):
+        raise TypeError(f"Source manifest at {source_manifest_path} must be an object")
+
+    normalized_rel_dir = _poly_haven_normalized_rel_dir(spec, entry)
+    normalized_dir = resolve_under(processed_root, normalized_rel_dir)
+    normalized_dir.mkdir(parents=True, exist_ok=True)
+
+    available_files = {
+        item["logical_name"]: item
+        for item in source_manifest.get("files", [])
+        if isinstance(item, dict) and "logical_name" in item and "raw_relpath" in item
+    }
+
+    normalized_files: dict[str, dict] = {}
+    for file_spec in _poly_haven_expected_files(entry):
+        logical_name = file_spec["logical_name"]
+        required = file_spec["required"]
+        source_file_entry = available_files.get(logical_name)
+        if source_file_entry is None:
+            if required:
+                raise FileNotFoundError(
+                    f"Registered source for {selection_id} is missing required file '{logical_name}'"
+                )
+            continue
+
+        raw_file_path = resolve_under(raw_root, source_file_entry["raw_relpath"])
+        if not raw_file_path.exists():
+            raise FileNotFoundError(f"Missing registered raw file: {raw_file_path}")
+
+        destination_path = normalized_dir / source_file_entry["filename"]
+        shutil.copy2(raw_file_path, destination_path)
+        normalized_files[logical_name] = {
+            "path": (normalized_rel_dir / destination_path.name).as_posix(),
+            "format": destination_path.suffix.lstrip(".") or "bin",
+            "sha256": _sha256(destination_path),
+            "size_bytes": destination_path.stat().st_size,
+        }
+
+    source_metadata = {
+        "selection_id": selection_id,
+        "surface_type": _require_entry(entry, "surface_type"),
+        "material_id": _require_entry(entry, "material_id"),
+        "display_name": _require_entry(entry, "display_name"),
+        "source": spec["source_id"],
+        "source_asset_id": _require_entry(entry, "source_asset_id"),
+        "source_url": _require_entry(entry, "source_url"),
+        "license": entry.get("license", spec["license"]),
+        "style_tags": entry.get("style_tags", []),
+        "tile_scale_m": entry.get("tile_scale_m", 1.0),
+        "normalized_files": {key: Path(value["path"]).name for key, value in normalized_files.items()},
+        "upstream": {
+            "raw_source_manifest_relpath": source_manifest_path.relative_to(raw_root).as_posix()
+        },
+    }
+    (normalized_dir / "source_metadata.json").write_text(
+        json.dumps(source_metadata, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    bundle_manifest = {
+        "manifest_version": "v0",
+        "bundle_id": _require_entry(entry, "material_id"),
+        "selection_id": selection_id,
+        "surface_type": _require_entry(entry, "surface_type"),
+        "material_id": _require_entry(entry, "material_id"),
+        "display_name": _require_entry(entry, "display_name"),
+        "source": spec["source_id"],
+        "normalized_rel_dir": normalized_rel_dir.as_posix(),
+        "created_at": _timestamp(created_at),
+        "tile_scale_m": entry.get("tile_scale_m", 1.0),
+        "style_tags": entry.get("style_tags", []),
+        "files": normalized_files,
+        "upstream": {
+            "raw_source_manifest_relpath": source_manifest_path.relative_to(raw_root).as_posix()
+        },
+    }
+    (normalized_dir / "bundle_manifest.json").write_text(
+        json.dumps(bundle_manifest, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    return {
+        "selection_id": selection_id,
+        "material_id": bundle_manifest["material_id"],
+        "surface_type": bundle_manifest["surface_type"],
+        "normalized_rel_dir": normalized_rel_dir.as_posix(),
+        "normalized_file_count": len(normalized_files),
+        "bundle_manifest": (normalized_rel_dir / "bundle_manifest.json").as_posix(),
+    }
 
 
 def register_raw_source(

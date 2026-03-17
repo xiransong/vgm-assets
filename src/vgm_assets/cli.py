@@ -15,8 +15,10 @@ from .paths import default_data_root, default_raw_data_root
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
     organize_kenney_selection,
+    normalize_poly_haven_room_surface_material,
     rebuild_kenney_selection,
     register_raw_source,
+    register_poly_haven_room_surface_material,
     unpack_registered_zip,
     write_poly_haven_room_surface_download_plan,
     write_poly_haven_room_surface_layout_plan,
@@ -107,6 +109,30 @@ def build_parser() -> argparse.ArgumentParser:
     rebuild_parser.add_argument("--acquired-by")
     rebuild_parser.add_argument("--acquired-at")
     rebuild_parser.add_argument("--notes")
+
+    register_polyhaven_material_parser = subparsers.add_parser(
+        "register-poly-haven-room-surface-material",
+        help="Register one manually downloaded Poly Haven room-surface material into RAW_DATA_ROOT",
+    )
+    register_polyhaven_material_parser.add_argument("selection_id")
+    register_polyhaven_material_parser.add_argument("--selection", type=Path, required=True)
+    register_polyhaven_material_parser.add_argument("--source-spec", type=Path, required=True)
+    register_polyhaven_material_parser.add_argument("--raw-material-dir", type=Path, required=True)
+    register_polyhaven_material_parser.add_argument("--raw-data-root", type=Path)
+    register_polyhaven_material_parser.add_argument("--acquired-at")
+    register_polyhaven_material_parser.add_argument("--acquired-by")
+    register_polyhaven_material_parser.add_argument("--notes")
+
+    normalize_polyhaven_material_parser = subparsers.add_parser(
+        "normalize-poly-haven-room-surface-material",
+        help="Normalize one registered Poly Haven room-surface material into DATA_ROOT",
+    )
+    normalize_polyhaven_material_parser.add_argument("selection_id")
+    normalize_polyhaven_material_parser.add_argument("--selection", type=Path, required=True)
+    normalize_polyhaven_material_parser.add_argument("--source-spec", type=Path, required=True)
+    normalize_polyhaven_material_parser.add_argument("--raw-data-root", type=Path)
+    normalize_polyhaven_material_parser.add_argument("--data-root", type=Path)
+    normalize_polyhaven_material_parser.add_argument("--created-at")
 
     polyhaven_download_plan_parser = subparsers.add_parser(
         "write-poly-haven-room-surface-download-plan",
@@ -271,6 +297,32 @@ def main() -> int:
             acquired_by=args.acquired_by,
             acquired_at=args.acquired_at,
             notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "register-poly-haven-room-surface-material":
+        summary = register_poly_haven_room_surface_material(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            selection_id=args.selection_id,
+            raw_material_dir=args.raw_material_dir,
+            raw_data_root=args.raw_data_root,
+            acquired_at=args.acquired_at,
+            acquired_by=args.acquired_by,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "normalize-poly-haven-room-surface-material":
+        summary = normalize_poly_haven_room_surface_material(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            selection_id=args.selection_id,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
         return 0

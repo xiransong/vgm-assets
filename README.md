@@ -45,6 +45,7 @@ See:
 - `docs/architecture/scene_engine_consumer_v0.md`
 - `docs/architecture/storage_layout_v0.md`
 - `docs/architecture/room_surface_material_catalog_v0.md`
+- `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/poly_haven/README.md`
 - `docs/architecture/material_packaging_v0.md`
@@ -182,6 +183,14 @@ Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash
 ./scripts/sources/plan_poly_haven_room_surface_v0.sh
+```
+
+Prepare one manually downloaded Poly Haven material end to end:
+
+```bash
+./scripts/sources/prepare_poly_haven_room_surface_material_v0.sh \
+  polyhaven_wall_white_plaster_02_v0 \
+  /path/to/downloaded/material_dir
 ```
 
 Validate the first toy catalog:
@@ -370,3 +379,8 @@ Verify the env:
   - `sources/poly_haven/room_surface_download_plan_v0.json`
   - `materials/poly_haven/room_surface_bundle_layout_v0.json`
   - `scripts/sources/plan_poly_haven_room_surface_v0.sh`
+- [x] added the first single-material Poly Haven vertical slice:
+  - raw `source_manifest.json` support
+  - processed `bundle_manifest.json` support
+  - one-material registration and normalization commands
+  - one-material helper script

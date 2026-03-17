@@ -51,6 +51,14 @@ This writes:
 - `sources/poly_haven/room_surface_download_plan_v0.json`
 - `materials/poly_haven/room_surface_bundle_layout_v0.json`
 
+Prepare one manually downloaded Poly Haven material end to end:
+
+```bash
+./scripts/sources/prepare_poly_haven_room_surface_material_v0.sh \
+  <selection_id> \
+  /path/to/downloaded/material_dir
+```
+
 ## Planned Data Layout
 
 Raw source files:

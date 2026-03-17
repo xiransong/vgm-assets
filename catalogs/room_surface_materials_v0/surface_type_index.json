@@ -1,0 +1,13 @@
+{
+  "catalog_path": "catalogs/room_surface_materials_v0/materials.json",
+  "surface_type_count": 1,
+  "surface_types": {
+    "wall": {
+      "sampling_policy": "uniform",
+      "material_count": 1,
+      "material_ids": [
+        "polyhaven_white_plaster_wall_02"
+      ]
+    }
+  }
+}

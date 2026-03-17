@@ -12,6 +12,7 @@ from .catalog import (
 )
 from .exports import export_scene_engine_snapshot
 from .paths import default_data_root, default_raw_data_root
+from .room_surface_materials import refresh_room_surface_material_catalog
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
     fetch_poly_haven_room_surface_material,
@@ -165,6 +166,31 @@ def build_parser() -> argparse.ArgumentParser:
     polyhaven_layout_plan_parser.add_argument("--source-spec", type=Path, required=True)
     polyhaven_layout_plan_parser.add_argument("--output", type=Path, required=True)
     polyhaven_layout_plan_parser.add_argument("--created-at")
+
+    refresh_room_surface_material_catalog_parser = subparsers.add_parser(
+        "refresh-room-surface-material-catalog",
+        help="Build a room-surface material catalog from normalized bundle manifests and write its index and manifest",
+    )
+    refresh_room_surface_material_catalog_parser.add_argument(
+        "--catalog-id", required=True
+    )
+    refresh_room_surface_material_catalog_parser.add_argument(
+        "--bundle-manifest",
+        type=Path,
+        action="append",
+        required=True,
+        dest="bundle_manifests",
+    )
+    refresh_room_surface_material_catalog_parser.add_argument(
+        "--catalog-output", type=Path, required=True
+    )
+    refresh_room_surface_material_catalog_parser.add_argument(
+        "--surface-type-index-output", type=Path, required=True
+    )
+    refresh_room_surface_material_catalog_parser.add_argument(
+        "--manifest-output", type=Path, required=True
+    )
+    refresh_room_surface_material_catalog_parser.add_argument("--created-at")
 
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
@@ -370,6 +396,18 @@ def main() -> int:
             spec_path=args.source_spec,
             selection_path=args.selection,
             output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "refresh-room-surface-material-catalog":
+        summary = refresh_room_surface_material_catalog(
+            catalog_id=args.catalog_id,
+            bundle_manifest_paths=args.bundle_manifests,
+            catalog_output=args.catalog_output,
+            surface_type_index_output=args.surface_type_index_output,
+            manifest_output=args.manifest_output,
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))

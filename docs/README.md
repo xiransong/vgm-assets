@@ -30,6 +30,7 @@ notes for `vgm-assets`.
 ### Catalogs
 
 - `catalogs/living_room_kenney_v0.md`
+- `catalogs/room_surface_materials_v0.md`
 
 ### Active Plans
 

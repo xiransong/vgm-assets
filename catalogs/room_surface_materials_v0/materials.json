@@ -1,0 +1,70 @@
+[
+  {
+    "material_id": "polyhaven_white_plaster_wall_02",
+    "surface_type": "wall",
+    "sample_weight": 1.0,
+    "source": "poly_haven_materials",
+    "display_name": "White Plaster 02",
+    "style_tags": [
+      "wall",
+      "plaster",
+      "white",
+      "neutral"
+    ],
+    "tile_scale_m": 1.0,
+    "files": {
+      "base_color": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/base_color.jpg",
+        "format": "jpg",
+        "sha256": "0ca5245ba70777d3e41ff4566c9f8d363855461891802c55cb7dc0f6f85f084e",
+        "size_bytes": 2568315
+      },
+      "roughness": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/roughness.jpg",
+        "format": "jpg",
+        "sha256": "a3dc1911f6e25d88fdb0031fe0cfb602eec5496084c508774c60691bed087417",
+        "size_bytes": 1604444
+      },
+      "normal": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/normal_gl.jpg",
+        "format": "jpg",
+        "sha256": "083579b03a8f31ec1886512e5972f3b893610bf26a2098f97910e0f46745cdc9",
+        "size_bytes": 3379814
+      },
+      "ao": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/ao.jpg",
+        "format": "jpg",
+        "sha256": "4dd72e594056fae1653118bdc86638381c65605edcbdf37e6a27c762782d55fe",
+        "size_bytes": 2141148
+      },
+      "displacement": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/displacement.jpg",
+        "format": "jpg",
+        "sha256": "7a477010377e267bbf3c650037f0659c9b5b0c7860f8056e0145600145ef66fc",
+        "size_bytes": 1007108
+      },
+      "preview_image": {
+        "path": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/preview.png",
+        "format": "png",
+        "sha256": "2dc5ad4bb9f5a9d5e3e3360888d7494be681d422fbb1e32c50b93f393173469d",
+        "size_bytes": 100382
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "room_surface_materials_v0_bundle_import_v1",
+      "upstream_ids": [
+        "polyhaven_wall_white_plaster_02_v0"
+      ],
+      "upstream_bundle_relpath": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/bundle_manifest.json"
+    },
+    "selection_id": "polyhaven_wall_white_plaster_02_v0",
+    "source_asset_id": "white_plaster_02",
+    "source_url": "https://polyhaven.com/a/white_plaster_02",
+    "license": "CC0"
+  }
+]

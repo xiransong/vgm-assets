@@ -142,7 +142,7 @@ It has also been exercised against the live Poly Haven API for:
 
 After this, the next practical step should be:
 
-- add the first room-surface material catalog artifact for the fetched slice
 - repeat the live fetch flow for one `floor` material and one `ceiling` material
+- refresh the room-surface material catalog with those new normalized bundles
 
 Only after that should we generalize to the full 8-material room-surface slice.

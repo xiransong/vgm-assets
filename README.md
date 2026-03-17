@@ -50,6 +50,7 @@ See:
 - `sources/poly_haven/README.md`
 - `docs/architecture/material_packaging_v0.md`
 - `docs/catalogs/living_room_kenney_v0.md`
+- `docs/catalogs/room_surface_materials_v0.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
 
 Current organized real-source subset:
@@ -200,6 +201,12 @@ Fetch one selected Poly Haven material from the live API and normalize it:
   polyhaven_wall_white_plaster_02_v0
 ```
 
+Refresh the first room-surface material catalog artifact:
+
+```bash
+./scripts/catalogs/refresh_room_surface_materials_v0.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -299,6 +306,7 @@ Verify the env:
   material payloads
 - [ ] document backend-agnostic versus backend-specific payload fields
 - [x] define the first room-surface material planning artifacts for Poly Haven
+- [~] build the first room-surface material catalog artifact from normalized bundles
 
 ## Development Log
 
@@ -393,3 +401,7 @@ Verify the env:
   - one-material helper script
 - [x] added the first live Poly Haven API fetch path and fetched
   `polyhaven_wall_white_plaster_02_v0` into the real raw and processed roots
+- [x] added the first repo-side room-surface material catalog artifact:
+  - `catalogs/room_surface_materials_v0/materials.json`
+  - `catalogs/room_surface_materials_v0/surface_type_index.json`
+  - `catalogs/room_surface_materials_v0/material_catalog_manifest.json`

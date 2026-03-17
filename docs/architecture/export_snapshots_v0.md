@@ -63,4 +63,4 @@ The first frozen scene-engine snapshot is:
 
 The current downstream-consumer note is:
 
-- `docs/scene_engine_consumer_v0.md`
+- `docs/architecture/scene_engine_consumer_v0.md`

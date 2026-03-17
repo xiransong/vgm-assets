@@ -38,14 +38,16 @@ Current sourcing recommendation:
 - prototype Infinigen only after the open-source path is stable
 
 See:
-- `docs/source_policy_v0.md`
-- `docs/category_sampling_v0.md`
-- `docs/export_snapshots_v0.md`
-- `docs/scene_engine_consumer_v0.md`
-- `docs/storage_layout_v0.md`
+- `docs/README.md`
+- `docs/architecture/source_policy_v0.md`
+- `docs/architecture/category_sampling_v0.md`
+- `docs/architecture/export_snapshots_v0.md`
+- `docs/architecture/scene_engine_consumer_v0.md`
+- `docs/architecture/storage_layout_v0.md`
 - `sources/kenney/README.md`
-- `docs/material_packaging_v0.md`
-- `docs/living_room_kenney_v0.md`
+- `docs/architecture/material_packaging_v0.md`
+- `docs/catalogs/living_room_kenney_v0.md`
+- `docs/plans/room_surface_materials_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`

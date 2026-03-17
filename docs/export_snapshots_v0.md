@@ -45,3 +45,7 @@ exports/
 The first frozen scene-engine snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r1`
+
+The current downstream-consumer note is:
+
+- `docs/scene_engine_consumer_v0.md`

@@ -41,6 +41,7 @@ See:
 - `docs/source_policy_v0.md`
 - `docs/category_sampling_v0.md`
 - `docs/export_snapshots_v0.md`
+- `docs/scene_engine_consumer_v0.md`
 - `docs/storage_layout_v0.md`
 - `sources/kenney/README.md`
 - `docs/material_packaging_v0.md`

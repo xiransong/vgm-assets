@@ -197,6 +197,12 @@ Export the current size-normalized scene-engine snapshot:
 ./scripts/exports/export_living_room_kenney_v0_r2.sh
 ```
 
+Organize the first Kenney opening-assembly bundles:
+
+```bash
+./scripts/sources/organize_kenney_openings_v0.sh
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash
@@ -448,3 +454,5 @@ Verify the env:
   Kenney door/window candidates as the first likely `v0` source
 - [x] added the first repo-side Kenney opening selection and bundle-layout
   metadata for one door path and one window path
+- [x] organized the first normalized Kenney opening bundles in `DATA_ROOT` for
+  one `door` and one `window`

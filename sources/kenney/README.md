@@ -61,6 +61,16 @@ With likely later expansions:
 - `wallDoorwayWide`
 - `wallWindowSlide`
 
+The first opening bundles are now organized under:
+
+- `DATA_ROOT/assemblies/openings/kenney/opening_assemblies_v0`
+
+You can rebuild the first `door` + `window` bundle pair with:
+
+```bash
+./scripts/sources/organize_kenney_openings_v0.sh
+```
+
 ## Intake Workflow
 
 1. place the manually downloaded source zip into `RAW_DATA_ROOT` via

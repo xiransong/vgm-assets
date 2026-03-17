@@ -23,6 +23,16 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _file_ref(path: Path, base_dir: Path) -> dict:
+    relative = path.resolve().relative_to(base_dir.resolve())
+    return {
+        "path": relative.as_posix(),
+        "format": path.suffix.lstrip(".") or "bin",
+        "sha256": _sha256(path),
+        "size_bytes": path.stat().st_size,
+    }
+
+
 def _timestamp(value: str | None = None) -> str:
     if value:
         return value
@@ -857,6 +867,172 @@ def organize_kenney_selection(
         "selection_id": selection_manifest["selection_id"],
         "asset_count": len(manifest_assets),
         "slice_root": str(slice_root),
+    }
+
+
+def organize_kenney_opening_selection(
+    spec_path: Path,
+    selection_path: Path,
+    selection_ids: list[str] | None = None,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+    processing = spec["processing"]
+    archive_path = resolve_under(raw_root, spec["raw_archive"]["canonical_relpath"])
+    if not archive_path.exists():
+        raise FileNotFoundError(
+            f"Missing registered raw archive at {archive_path}; run register-raw-source first"
+        )
+
+    unpack_dir = resolve_under(processed_root, processing["unpack_relpath"])
+    if not unpack_dir.exists():
+        raise FileNotFoundError(
+            f"Missing unpacked source tree at {unpack_dir}; run unpack-registered-zip first"
+        )
+
+    payload = load_selection_list(selection_path)
+    selected_payload = []
+    selected_ids = set(selection_ids or [])
+    for entry in payload:
+        if not isinstance(entry, dict):
+            raise TypeError("Selection entries must be objects")
+        entry_id = entry.get("selection_id")
+        if selected_ids and entry_id not in selected_ids:
+            continue
+        selected_payload.append(entry)
+
+    if selected_ids:
+        found_ids = {entry.get("selection_id") for entry in selected_payload}
+        missing_ids = sorted(selected_ids - found_ids)
+        if missing_ids:
+            raise ValueError(
+                f"Opening selection ids not found in {selection_path.as_posix()}: {missing_ids}"
+            )
+
+    if not selected_payload:
+        raise ValueError(f"No opening selections chosen from {selection_path.as_posix()}")
+
+    manifest_assemblies: list[dict] = []
+    rel_dirs: list[Path] = []
+    for entry in selected_payload:
+        normalized_rel_dir = entry.get("normalized_rel_dir")
+        if not isinstance(normalized_rel_dir, str):
+            raise ValueError(
+                f"Selection entry {entry.get('selection_id')} is missing normalized_rel_dir"
+            )
+        rel_dir = Path(normalized_rel_dir)
+        rel_dirs.append(rel_dir)
+        destination = resolve_under(processed_root, rel_dir)
+        destination.mkdir(parents=True, exist_ok=True)
+
+        model_src = unpack_dir / _require_entry(entry, "raw_model_rel")
+        preview_src = unpack_dir / _require_entry(entry, "raw_preview_rel")
+        if not model_src.exists():
+            raise FileNotFoundError(f"Missing raw model file: {model_src}")
+        if not preview_src.exists():
+            raise FileNotFoundError(f"Missing raw preview file: {preview_src}")
+
+        mesh_dst = destination / "model.glb"
+        preview_dst = destination / "preview.png"
+        shutil.copy2(model_src, mesh_dst)
+        shutil.copy2(preview_src, preview_dst)
+
+        source_metadata = {
+            "assembly_id": _require_entry(entry, "assembly_id"),
+            "opening_type": _require_entry(entry, "opening_type"),
+            "source": _require_entry(entry, "source_pack"),
+            "license": _require_entry(entry, "license"),
+            "source_name": _require_entry(entry, "source_name"),
+            "source_url": _require_entry(entry, "source_url"),
+            "source_model_path": _require_entry(entry, "raw_model_rel"),
+            "source_preview_path": _require_entry(entry, "raw_preview_rel"),
+            "normalized_files": {
+                "mesh": "model.glb",
+                "preview_image": "preview.png",
+            },
+        }
+        with (destination / "source_metadata.json").open("w", encoding="utf-8") as handle:
+            json.dump(source_metadata, handle, indent=2)
+            handle.write("\n")
+
+        bundle_manifest = {
+            "manifest_version": "v0",
+            "bundle_id": _require_entry(entry, "assembly_id"),
+            "selection_id": _require_entry(entry, "selection_id"),
+            "opening_type": _require_entry(entry, "opening_type"),
+            "assembly_id": _require_entry(entry, "assembly_id"),
+            "display_name": _require_entry(entry, "display_name"),
+            "source": _require_entry(entry, "source_pack"),
+            "normalized_rel_dir": normalized_rel_dir,
+            "created_at": _timestamp(created_at),
+            "compatibility": entry["compatibility"],
+            "files": {
+                "mesh": _file_ref(mesh_dst, processed_root),
+                "preview_image": _file_ref(preview_dst, processed_root),
+            },
+            "upstream": {
+                "raw_archive_relpath": spec["raw_archive"]["canonical_relpath"],
+            },
+        }
+        optional_pairs = {
+            "style_tags": entry.get("style_tags"),
+            "frame_depth_m": entry.get("frame_depth_m"),
+            "door_swing": entry.get("door_swing"),
+            "glazing": entry.get("glazing"),
+            "license": entry.get("license"),
+            "source_url": entry.get("source_url"),
+        }
+        for key, value in optional_pairs.items():
+            if value is not None:
+                bundle_manifest[key] = value
+
+        with (destination / "bundle_manifest.json").open("w", encoding="utf-8") as handle:
+            json.dump(bundle_manifest, handle, indent=2)
+            handle.write("\n")
+
+        manifest_assemblies.append(
+            {
+                "opening_type": entry["opening_type"],
+                "assembly_id": entry["assembly_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": rel_dir.as_posix(),
+            }
+        )
+
+    slice_root_rel = Path(os.path.commonpath([path.as_posix() for path in rel_dirs]))
+    slice_root = resolve_under(processed_root, slice_root_rel)
+    root_level_assemblies = []
+    for entry in manifest_assemblies:
+        normalized_dir = Path(entry["normalized_dir"]).relative_to(slice_root_rel)
+        root_level_assemblies.append(
+            {
+                "opening_type": entry["opening_type"],
+                "assembly_id": entry["assembly_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": normalized_dir.as_posix(),
+            }
+        )
+
+    selection_manifest = {
+        "selection_id": f"{spec['source_id']}_{slice_root_rel.name}",
+        "source_pack": spec["source_id"],
+        "license": spec["license"],
+        "assembly_count": len(root_level_assemblies),
+        "assemblies": root_level_assemblies,
+    }
+    with (slice_root / "selection_manifest.json").open("w", encoding="utf-8") as handle:
+        json.dump(selection_manifest, handle, indent=2)
+        handle.write("\n")
+
+    return {
+        "selection_id": selection_manifest["selection_id"],
+        "assembly_count": len(root_level_assemblies),
+        "slice_root": str(slice_root),
+        "selected_ids": [entry["selection_id"] for entry in selected_payload],
     }
 
 

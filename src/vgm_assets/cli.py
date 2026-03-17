@@ -24,6 +24,7 @@ from .size_normalization import apply_size_normalization
 from .sources import (
     fetch_poly_haven_room_surface_material,
     organize_kenney_selection,
+    organize_kenney_opening_selection,
     normalize_poly_haven_room_surface_material,
     rebuild_kenney_selection,
     register_raw_source,
@@ -105,6 +106,22 @@ def build_parser() -> argparse.ArgumentParser:
     organize_parser.add_argument("--source-spec", type=Path, required=True)
     organize_parser.add_argument("--raw-data-root", type=Path)
     organize_parser.add_argument("--data-root", type=Path)
+
+    organize_opening_parser = subparsers.add_parser(
+        "organize-kenney-opening-selection",
+        help="Build the normalized Kenney opening-assembly selection tree in DATA_ROOT from the unpacked source",
+    )
+    organize_opening_parser.add_argument("selection", type=Path)
+    organize_opening_parser.add_argument("--source-spec", type=Path, required=True)
+    organize_opening_parser.add_argument(
+        "--selection-id",
+        action="append",
+        dest="selection_ids",
+        help="Specific opening selection id to organize; may be passed multiple times",
+    )
+    organize_opening_parser.add_argument("--raw-data-root", type=Path)
+    organize_opening_parser.add_argument("--data-root", type=Path)
+    organize_opening_parser.add_argument("--created-at")
 
     rebuild_parser = subparsers.add_parser(
         "rebuild-kenney-selection",
@@ -356,6 +373,18 @@ def main() -> int:
             selection_path=args.selection,
             raw_data_root=args.raw_data_root,
             data_root=args.data_root,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "organize-kenney-opening-selection":
+        summary = organize_kenney_opening_selection(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            selection_ids=args.selection_ids,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
         return 0

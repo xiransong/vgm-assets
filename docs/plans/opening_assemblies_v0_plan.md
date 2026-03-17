@@ -128,4 +128,14 @@ Do only this first:
   window candidates
 - define the processed bundle layout for opening assemblies
 
+That first step is now done, and the first normalized bundle pair also exists
+under:
+
+- `DATA_ROOT/assemblies/openings/kenney/opening_assemblies_v0`
+
+So the next immediate step is now:
+
+- build the first repo-side `opening_assemblies_v0` catalog from the two bundle
+  manifests already in `DATA_ROOT`
+
 Only after that should we build the first actual `door` and `window` bundles.

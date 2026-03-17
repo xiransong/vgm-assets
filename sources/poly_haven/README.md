@@ -35,6 +35,21 @@ The intended rule is:
   - source-level expectations and storage layout
 - `room_surface_selection_v0.json`
   - small curated room-surface material pool for the first snapshot
+- `room_surface_download_plan_v0.json`
+  - generated repo-side download planning artifact
+
+## Current Planning Command
+
+Generate the current Poly Haven planning artifacts:
+
+```bash
+./scripts/sources/plan_poly_haven_room_surface_v0.sh
+```
+
+This writes:
+
+- `sources/poly_haven/room_surface_download_plan_v0.json`
+- `materials/poly_haven/room_surface_bundle_layout_v0.json`
 
 ## Planned Data Layout
 

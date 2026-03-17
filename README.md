@@ -178,6 +178,12 @@ Export the first frozen scene-engine snapshot:
 This writes repo-side snapshot metadata under `exports/scene_engine/` and an
 export-owned processed payload snapshot under `DATA_ROOT/exports/scene_engine/`.
 
+Generate the current Poly Haven room-surface planning artifacts:
+
+```bash
+./scripts/sources/plan_poly_haven_room_surface_v0.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -276,7 +282,7 @@ Verify the env:
 - [ ] define canonical `FileRef` coverage for mesh, collision, preview, and
   material payloads
 - [ ] document backend-agnostic versus backend-specific payload fields
-- [~] define the first room-surface material planning artifacts for Poly Haven
+- [x] define the first room-surface material planning artifacts for Poly Haven
 
 ## Development Log
 
@@ -360,3 +366,7 @@ Verify the env:
   - `sources/poly_haven/room_surface_selection_v0.json`
   - `sources/poly_haven/README.md`
 - [x] added the first room-surface material catalog-shape note for `vgm-assets`
+- [x] added repo-side Poly Haven planning helpers and generated:
+  - `sources/poly_haven/room_surface_download_plan_v0.json`
+  - `materials/poly_haven/room_surface_bundle_layout_v0.json`
+  - `scripts/sources/plan_poly_haven_room_surface_v0.sh`

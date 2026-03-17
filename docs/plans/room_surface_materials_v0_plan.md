@@ -115,16 +115,20 @@ The repo now has the first planning artifacts for this track:
 
 - `sources/poly_haven/source_spec_v0.json`
 - `sources/poly_haven/room_surface_selection_v0.json`
+- `sources/poly_haven/room_surface_download_plan_v0.json`
+- `materials/poly_haven/room_surface_bundle_layout_v0.json`
 - `docs/architecture/room_surface_material_catalog_v0.md`
+- `scripts/sources/plan_poly_haven_room_surface_v0.sh`
 
 ## Immediate Next Step
 
 The next move should still avoid bulk implementation.
 
-Add the first repo-side source helpers for:
+The next practical step should be a single-material vertical slice:
 
-- source registration expectations
-- download-manifest planning
-- normalized room-surface bundle layout
+- define the raw `source_manifest.json` shape for one downloaded Poly Haven
+  material
+- define the processed `bundle_manifest.json` shape for one normalized material
+- implement a first registration/normalization helper for one material only
 
-Only after that should we add actual Poly Haven download logic.
+Only after that slice works should we add broader Poly Haven download logic.

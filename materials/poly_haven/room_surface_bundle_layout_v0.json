@@ -1,0 +1,139 @@
+{
+  "layout_id": "poly_haven_room_surface_layout_v0",
+  "source_id": "poly_haven_materials",
+  "selection_path": "sources/poly_haven/room_surface_selection_v0.json",
+  "planned_at": "2026-03-17T18:01:32+00:00",
+  "data_root_env_var": "VGM_ASSETS_DATA_ROOT",
+  "normalized_root_relpath": "materials/room_surfaces/poly_haven",
+  "bundle_count": 8,
+  "bundles": [
+    {
+      "selection_id": "polyhaven_floor_wood_floor_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_wood_floor_01",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_wood_floor_01",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_floor_laminate_floor_02_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_laminate_floor_02",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_laminate_floor_02",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_floor_herringbone_parquet_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_herringbone_parquet_01",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_herringbone_parquet_01",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_wall_white_plaster_02_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_white_plaster_wall_02",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_wall_plaster_grey_04_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_plaster_grey_wall_04",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_plaster_grey_wall_04",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_wall_plastered_wall_04_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_plastered_wall_04",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_plastered_wall_04",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_ceiling_white_plaster_02_v0",
+      "surface_type": "ceiling",
+      "material_id": "polyhaven_white_plaster_ceiling_02",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/ceiling/polyhaven_white_plaster_ceiling_02",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "polyhaven_ceiling_plaster_grey_04_v0",
+      "surface_type": "ceiling",
+      "material_id": "polyhaven_plaster_grey_ceiling_04",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/ceiling/polyhaven_plaster_grey_ceiling_04",
+      "files": {
+        "base_color": "base_color.jpg",
+        "roughness": "roughness.jpg",
+        "normal": "normal_gl.jpg",
+        "ao": "ao.jpg",
+        "displacement": "displacement.jpg",
+        "preview_image": "preview.jpg",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    }
+  ]
+}

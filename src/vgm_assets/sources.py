@@ -30,11 +30,221 @@ def load_source_spec(spec_path: Path) -> dict:
     payload = load_json(spec_path)
     if not isinstance(payload, dict):
         raise TypeError(f"Source spec at {spec_path} must be a JSON object")
-    required = ["source_id", "source_url", "license", "raw_archive", "processing"]
+    required = ["source_id", "source_url", "license", "processing"]
     for key in required:
         if key not in payload:
             raise ValueError(f"Source spec at {spec_path} is missing '{key}'")
     return payload
+
+
+def load_selection_list(selection_path: Path) -> list[dict]:
+    payload = load_json(selection_path)
+    if not isinstance(payload, list):
+        raise TypeError(f"Selection file at {selection_path} must be a JSON array")
+    records: list[dict] = []
+    for index, entry in enumerate(payload):
+        if not isinstance(entry, dict):
+            raise TypeError(
+                f"Selection file at {selection_path} contains a non-object entry at index {index}"
+            )
+        records.append(entry)
+    return records
+
+
+def _require_entry(entry: dict, key: str) -> str:
+    value = entry.get(key)
+    if not isinstance(value, str) or not value:
+        raise ValueError(
+            f"Selection entry {entry.get('selection_id', '<unknown>')} is missing '{key}'"
+        )
+    return value
+
+
+def build_poly_haven_room_surface_download_plan(
+    spec_path: Path,
+    selection_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    raw_storage = spec.get("raw_storage")
+    if not isinstance(raw_storage, dict):
+        raise TypeError("Poly Haven source spec must define raw_storage")
+
+    selection_records = load_selection_list(selection_path)
+    downloads: list[dict] = []
+    for entry in selection_records:
+        selection_id = _require_entry(entry, "selection_id")
+        surface_type = _require_entry(entry, "surface_type")
+        material_id = _require_entry(entry, "material_id")
+        source_asset_id = _require_entry(entry, "source_asset_id")
+        preferred_resolution = _require_entry(entry, "preferred_resolution")
+        preferred_format = _require_entry(entry, "preferred_format")
+
+        raw_asset_rel_dir = (
+            Path(raw_storage["root_relpath"])
+            / source_asset_id
+            / f"{preferred_resolution}_{preferred_format}"
+        )
+        bundle_rel_dir = (
+            Path(spec["processing"]["normalized_root_relpath"])
+            / surface_type
+            / material_id
+        )
+        downloads.append(
+            {
+                "selection_id": selection_id,
+                "surface_type": surface_type,
+                "material_id": material_id,
+                "source_asset_id": source_asset_id,
+                "source_url": _require_entry(entry, "source_url"),
+                "preferred_resolution": preferred_resolution,
+                "preferred_format": preferred_format,
+                "tile_scale_m": entry.get("tile_scale_m", 1.0),
+                "style_tags": entry.get("style_tags", []),
+                "raw_asset_rel_dir": raw_asset_rel_dir.as_posix(),
+                "source_manifest_relpath": (
+                    raw_asset_rel_dir / "source_manifest.json"
+                ).as_posix(),
+                "normalized_rel_dir": bundle_rel_dir.as_posix(),
+                "api_request": {
+                    "asset_id": source_asset_id,
+                    "resolution": preferred_resolution,
+                    "format": preferred_format,
+                    "normal_space": "gl",
+                },
+                "expected_files": [
+                    {
+                        "logical_name": "base_color",
+                        "source_map": "Diffuse",
+                        "filename": f"base_color.{preferred_format}",
+                        "required": True,
+                    },
+                    {
+                        "logical_name": "roughness",
+                        "source_map": "Rough",
+                        "filename": f"roughness.{preferred_format}",
+                        "required": True,
+                    },
+                    {
+                        "logical_name": "normal",
+                        "source_map": "NormalGL",
+                        "filename": f"normal_gl.{preferred_format}",
+                        "required": True,
+                    },
+                    {
+                        "logical_name": "ao",
+                        "source_map": "AO",
+                        "filename": f"ao.{preferred_format}",
+                        "required": False,
+                    },
+                    {
+                        "logical_name": "displacement",
+                        "source_map": "Displacement",
+                        "filename": f"displacement.{preferred_format}",
+                        "required": False,
+                    },
+                    {
+                        "logical_name": "preview_image",
+                        "source_map": "Thumbnail",
+                        "filename": "preview.jpg",
+                        "required": True,
+                    },
+                ],
+            }
+        )
+
+    return {
+        "plan_id": "poly_haven_room_surface_download_plan_v0",
+        "source_id": spec["source_id"],
+        "selection_path": selection_path.as_posix(),
+        "planned_at": _timestamp(created_at),
+        "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
+        "raw_storage_root_relpath": raw_storage["root_relpath"],
+        "api": spec.get("api", {}),
+        "download_count": len(downloads),
+        "downloads": downloads,
+    }
+
+
+def write_poly_haven_room_surface_download_plan(
+    spec_path: Path,
+    selection_path: Path,
+    output_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    plan = build_poly_haven_room_surface_download_plan(
+        spec_path=spec_path,
+        selection_path=selection_path,
+        created_at=created_at,
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+    return plan
+
+
+def build_poly_haven_room_surface_layout_plan(
+    spec_path: Path,
+    selection_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    selection_records = load_selection_list(selection_path)
+
+    bundles: list[dict] = []
+    for entry in selection_records:
+        surface_type = _require_entry(entry, "surface_type")
+        material_id = _require_entry(entry, "material_id")
+        preferred_format = _require_entry(entry, "preferred_format")
+        normalized_rel_dir = (
+            Path(spec["processing"]["normalized_root_relpath"])
+            / surface_type
+            / material_id
+        )
+        bundles.append(
+            {
+                "selection_id": _require_entry(entry, "selection_id"),
+                "surface_type": surface_type,
+                "material_id": material_id,
+                "normalized_rel_dir": normalized_rel_dir.as_posix(),
+                "files": {
+                    "base_color": f"base_color.{preferred_format}",
+                    "roughness": f"roughness.{preferred_format}",
+                    "normal": f"normal_gl.{preferred_format}",
+                    "ao": f"ao.{preferred_format}",
+                    "displacement": f"displacement.{preferred_format}",
+                    "preview_image": "preview.jpg",
+                    "source_metadata": "source_metadata.json",
+                    "bundle_manifest": "bundle_manifest.json",
+                },
+            }
+        )
+
+    return {
+        "layout_id": "poly_haven_room_surface_layout_v0",
+        "source_id": spec["source_id"],
+        "selection_path": selection_path.as_posix(),
+        "planned_at": _timestamp(created_at),
+        "data_root_env_var": "VGM_ASSETS_DATA_ROOT",
+        "normalized_root_relpath": spec["processing"]["normalized_root_relpath"],
+        "bundle_count": len(bundles),
+        "bundles": bundles,
+    }
+
+
+def write_poly_haven_room_surface_layout_plan(
+    spec_path: Path,
+    selection_path: Path,
+    output_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    plan = build_poly_haven_room_surface_layout_plan(
+        spec_path=spec_path,
+        selection_path=selection_path,
+        created_at=created_at,
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+    return plan
 
 
 def register_raw_source(
@@ -156,9 +366,7 @@ def organize_kenney_selection(
             f"Missing unpacked source tree at {unpack_dir}; run unpack-registered-zip first"
         )
 
-    payload = load_json(selection_path)
-    if not isinstance(payload, list):
-        raise TypeError(f"Selection file at {selection_path} must be a JSON array")
+    payload = load_selection_list(selection_path)
 
     selection_records: list[dict] = []
     rel_dirs: list[Path] = []

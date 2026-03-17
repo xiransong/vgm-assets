@@ -1,0 +1,520 @@
+{
+  "plan_id": "poly_haven_room_surface_download_plan_v0",
+  "source_id": "poly_haven_materials",
+  "selection_path": "sources/poly_haven/room_surface_selection_v0.json",
+  "planned_at": "2026-03-17T18:01:32+00:00",
+  "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
+  "raw_storage_root_relpath": "sources/poly_haven/materials",
+  "api": {
+    "base_url": "https://api.polyhaven.com",
+    "overview_url": "https://polyhaven.com/af/our-api",
+    "requires_unique_user_agent": true,
+    "website_html_scraping_allowed": false
+  },
+  "download_count": 8,
+  "downloads": [
+    {
+      "selection_id": "polyhaven_floor_wood_floor_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_wood_floor_01",
+      "source_asset_id": "wood_floor",
+      "source_url": "https://polyhaven.com/a/wood_floor",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "wood",
+        "warm",
+        "interior"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/wood_floor/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/wood_floor/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_wood_floor_01",
+      "api_request": {
+        "asset_id": "wood_floor",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_floor_laminate_floor_02_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_laminate_floor_02",
+      "source_asset_id": "laminate_floor_02",
+      "source_url": "https://polyhaven.com/a/laminate_floor_02",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "laminate",
+        "wood",
+        "clean",
+        "interior"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/laminate_floor_02/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/laminate_floor_02/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_laminate_floor_02",
+      "api_request": {
+        "asset_id": "laminate_floor_02",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_floor_herringbone_parquet_v0",
+      "surface_type": "floor",
+      "material_id": "polyhaven_herringbone_parquet_01",
+      "source_asset_id": "herringbone_parquet",
+      "source_url": "https://polyhaven.com/a/herringbone_parquet",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "wood",
+        "parquet",
+        "patterned",
+        "interior"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/herringbone_parquet/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/herringbone_parquet/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/floor/polyhaven_herringbone_parquet_01",
+      "api_request": {
+        "asset_id": "herringbone_parquet",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_wall_white_plaster_02_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_white_plaster_wall_02",
+      "source_asset_id": "white_plaster_02",
+      "source_url": "https://polyhaven.com/a/white_plaster_02",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "wall",
+        "plaster",
+        "white",
+        "neutral"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/white_plaster_02/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/white_plaster_02/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02",
+      "api_request": {
+        "asset_id": "white_plaster_02",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_wall_plaster_grey_04_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_plaster_grey_wall_04",
+      "source_asset_id": "plaster_grey_04",
+      "source_url": "https://polyhaven.com/a/plaster_grey_04",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "wall",
+        "plaster",
+        "grey",
+        "cool"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/plaster_grey_04/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/plaster_grey_04/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_plaster_grey_wall_04",
+      "api_request": {
+        "asset_id": "plaster_grey_04",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_wall_plastered_wall_04_v0",
+      "surface_type": "wall",
+      "material_id": "polyhaven_plastered_wall_04",
+      "source_asset_id": "plastered_wall_04",
+      "source_url": "https://polyhaven.com/a/plastered_wall_04",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "wall",
+        "plaster",
+        "textured",
+        "interior"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/plastered_wall_04/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/plastered_wall_04/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/wall/polyhaven_plastered_wall_04",
+      "api_request": {
+        "asset_id": "plastered_wall_04",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_ceiling_white_plaster_02_v0",
+      "surface_type": "ceiling",
+      "material_id": "polyhaven_white_plaster_ceiling_02",
+      "source_asset_id": "white_plaster_02",
+      "source_url": "https://polyhaven.com/a/white_plaster_02",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "ceiling",
+        "plaster",
+        "white",
+        "neutral"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/white_plaster_02/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/white_plaster_02/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/ceiling/polyhaven_white_plaster_ceiling_02",
+      "api_request": {
+        "asset_id": "white_plaster_02",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    },
+    {
+      "selection_id": "polyhaven_ceiling_plaster_grey_04_v0",
+      "surface_type": "ceiling",
+      "material_id": "polyhaven_plaster_grey_ceiling_04",
+      "source_asset_id": "plaster_grey_04",
+      "source_url": "https://polyhaven.com/a/plaster_grey_04",
+      "preferred_resolution": "2k",
+      "preferred_format": "jpg",
+      "tile_scale_m": 1.0,
+      "style_tags": [
+        "ceiling",
+        "plaster",
+        "grey",
+        "backup"
+      ],
+      "raw_asset_rel_dir": "sources/poly_haven/materials/plaster_grey_04/2k_jpg",
+      "source_manifest_relpath": "sources/poly_haven/materials/plaster_grey_04/2k_jpg/source_manifest.json",
+      "normalized_rel_dir": "materials/room_surfaces/poly_haven/ceiling/polyhaven_plaster_grey_ceiling_04",
+      "api_request": {
+        "asset_id": "plaster_grey_04",
+        "resolution": "2k",
+        "format": "jpg",
+        "normal_space": "gl"
+      },
+      "expected_files": [
+        {
+          "logical_name": "base_color",
+          "source_map": "Diffuse",
+          "filename": "base_color.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "roughness",
+          "source_map": "Rough",
+          "filename": "roughness.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "normal",
+          "source_map": "NormalGL",
+          "filename": "normal_gl.jpg",
+          "required": true
+        },
+        {
+          "logical_name": "ao",
+          "source_map": "AO",
+          "filename": "ao.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "displacement",
+          "source_map": "Displacement",
+          "filename": "displacement.jpg",
+          "required": false
+        },
+        {
+          "logical_name": "preview_image",
+          "source_map": "Thumbnail",
+          "filename": "preview.jpg",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

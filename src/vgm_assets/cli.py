@@ -18,6 +18,8 @@ from .sources import (
     rebuild_kenney_selection,
     register_raw_source,
     unpack_registered_zip,
+    write_poly_haven_room_surface_download_plan,
+    write_poly_haven_room_surface_layout_plan,
 )
 
 
@@ -105,6 +107,24 @@ def build_parser() -> argparse.ArgumentParser:
     rebuild_parser.add_argument("--acquired-by")
     rebuild_parser.add_argument("--acquired-at")
     rebuild_parser.add_argument("--notes")
+
+    polyhaven_download_plan_parser = subparsers.add_parser(
+        "write-poly-haven-room-surface-download-plan",
+        help="Write a repo-side Poly Haven room-surface download plan JSON",
+    )
+    polyhaven_download_plan_parser.add_argument("selection", type=Path)
+    polyhaven_download_plan_parser.add_argument("--source-spec", type=Path, required=True)
+    polyhaven_download_plan_parser.add_argument("--output", type=Path, required=True)
+    polyhaven_download_plan_parser.add_argument("--created-at")
+
+    polyhaven_layout_plan_parser = subparsers.add_parser(
+        "write-poly-haven-room-surface-layout-plan",
+        help="Write a repo-side normalized bundle layout plan for Poly Haven room-surface materials",
+    )
+    polyhaven_layout_plan_parser.add_argument("selection", type=Path)
+    polyhaven_layout_plan_parser.add_argument("--source-spec", type=Path, required=True)
+    polyhaven_layout_plan_parser.add_argument("--output", type=Path, required=True)
+    polyhaven_layout_plan_parser.add_argument("--created-at")
 
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
@@ -251,6 +271,26 @@ def main() -> int:
             acquired_by=args.acquired_by,
             acquired_at=args.acquired_at,
             notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "write-poly-haven-room-surface-download-plan":
+        summary = write_poly_haven_room_surface_download_plan(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "write-poly-haven-room-surface-layout-plan":
+        summary = write_poly_haven_room_surface_layout_plan(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            output_path=args.output,
+            created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
         return 0

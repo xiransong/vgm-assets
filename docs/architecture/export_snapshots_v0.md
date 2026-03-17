@@ -69,3 +69,8 @@ The current downstream-consumer note is:
 
 - `docs/architecture/scene_engine_consumer_v0.md`
 - `docs/architecture/room_surface_scene_engine_consumer_v0.md`
+
+For the room-surface material snapshot, the frozen catalog contract is also
+documented in:
+
+- `docs/architecture/room_surface_material_consumer_guarantees_v0.md`

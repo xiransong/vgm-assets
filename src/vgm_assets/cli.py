@@ -15,7 +15,10 @@ from .exports import (
     export_scene_engine_snapshot,
 )
 from .paths import default_data_root, default_raw_data_root
-from .room_surface_materials import refresh_room_surface_material_catalog
+from .room_surface_materials import (
+    refresh_room_surface_material_catalog,
+    validate_room_surface_material_catalog,
+)
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
     fetch_poly_haven_room_surface_material,
@@ -194,6 +197,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--manifest-output", type=Path, required=True
     )
     refresh_room_surface_material_catalog_parser.add_argument("--created-at")
+
+    validate_room_surface_material_catalog_parser = subparsers.add_parser(
+        "validate-room-surface-material-catalog",
+        help="Validate a room-surface material catalog against the local vgm-assets v0 schema",
+    )
+    validate_room_surface_material_catalog_parser.add_argument("catalog", type=Path)
 
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
@@ -426,6 +435,11 @@ def main() -> int:
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "validate-room-surface-material-catalog":
+        records = validate_room_surface_material_catalog(args.catalog)
+        print(f"Validated {len(records)} room-surface materials in {args.catalog}")
         return 0
 
     if args.command == "refresh-catalog-artifacts":

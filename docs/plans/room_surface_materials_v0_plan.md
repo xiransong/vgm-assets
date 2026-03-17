@@ -108,6 +108,7 @@ coverage.
 4. implement normalization into processed material bundles under `DATA_ROOT`
 5. build the first working catalog and `surface_type_index.json`
 6. export `room_surface_materials_v0_r1` as a frozen scene-engine snapshot
+7. freeze the export shape with a local schema and a short consumer-guarantees note
 
 ## Current Planning Baseline
 
@@ -144,6 +145,7 @@ After this, the next practical step should be:
 
 - keep the current six-material slice stable while scene-engine starts consuming
   the frozen snapshot
+- treat the local schema and consumer-guarantees note as the `v0` contract
 - only add more materials after the downstream appearance flow is exercised once
 
 Only after that should we generalize beyond the current six-material room-surface slice.

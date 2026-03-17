@@ -12,6 +12,7 @@ from .protocol import repo_root
 from .room_surface_materials import (
     build_material_catalog_manifest,
     build_surface_type_index,
+    validate_room_surface_material_catalog_data,
 )
 from .sampling import build_category_index
 
@@ -250,11 +251,13 @@ def export_room_surface_material_snapshot(
     manifest_out = output_dir / "material_catalog_manifest.json"
 
     source_records = json.loads(catalog_path.read_text(encoding="utf-8"))
+    validate_room_surface_material_catalog_data(source_records)
     exported_records, payload_manifest = _materialize_room_surface_payload_snapshot(
         records=source_records,
         export_id=export_id,
         data_root=data_root,
     )
+    validate_room_surface_material_catalog_data(exported_records)
     material_catalog_out.write_text(
         json.dumps(exported_records, indent=2) + "\n",
         encoding="utf-8",
@@ -312,6 +315,10 @@ def export_room_surface_material_snapshot(
             },
         },
         "data_snapshot": payload_manifest,
+        "contract": {
+            "schema_path": "schemas/local/room_surface_material_catalog_v0.schema.json",
+            "consumer_guarantees_note": "docs/architecture/room_surface_material_consumer_guarantees_v0.md",
+        },
         "notes": notes or "",
     }
 

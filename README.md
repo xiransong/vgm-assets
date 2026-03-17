@@ -44,6 +44,7 @@ See:
 - `docs/architecture/export_snapshots_v0.md`
 - `docs/architecture/scene_engine_consumer_v0.md`
 - `docs/architecture/room_surface_scene_engine_consumer_v0.md`
+- `docs/architecture/room_surface_material_consumer_guarantees_v0.md`
 - `docs/architecture/storage_layout_v0.md`
 - `docs/architecture/room_surface_material_catalog_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`

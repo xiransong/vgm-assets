@@ -88,6 +88,14 @@ DATA_ROOT/exports/scene_engine/room_surface_materials_v0_r1/
     ceiling/
 ```
 
+The frozen `v0` export shape is now validated locally by:
+
+- `schemas/local/room_surface_material_catalog_v0.schema.json`
+
+And the downstream guarantees are summarized in:
+
+- `docs/architecture/room_surface_material_consumer_guarantees_v0.md`
+
 ## First Implementation Rule
 
 Before adding download or normalization logic, lock these first:

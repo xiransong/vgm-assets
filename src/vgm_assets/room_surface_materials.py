@@ -4,15 +4,20 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from jsonschema.validators import validator_for
+
 from .catalog import _file_ref_for
 from .paths import default_data_root
-from .protocol import load_json
+from .protocol import load_json, repo_root
 
 DEFAULT_PRODUCER = {
     "repo": "vgm-assets",
     "version": "0.1.0-dev",
     "commit": "working_tree",
 }
+ROOM_SURFACE_MATERIAL_CATALOG_SCHEMA = (
+    Path("schemas") / "local" / "room_surface_material_catalog_v0.schema.json"
+)
 
 
 def _timestamp(value: str | None = None) -> str:
@@ -33,6 +38,27 @@ def load_room_surface_material_catalog(catalog_path: Path) -> list[dict]:
             )
         normalized.append(record)
     return normalized
+
+
+def room_surface_material_catalog_schema_path() -> Path:
+    return repo_root() / ROOM_SURFACE_MATERIAL_CATALOG_SCHEMA
+
+
+def validate_room_surface_material_catalog_data(payload: object) -> list[dict]:
+    schema_path = room_surface_material_catalog_schema_path()
+    schema = load_json(schema_path)
+    validator_cls = validator_for(schema)
+    validator_cls.check_schema(schema)
+    validator = validator_cls(schema)
+    validator.validate(payload)
+    if not isinstance(payload, list):
+        raise TypeError("Room-surface material catalog payload must be a list after validation")
+    return payload
+
+
+def validate_room_surface_material_catalog(catalog_path: Path) -> list[dict]:
+    payload = load_room_surface_material_catalog(catalog_path)
+    return validate_room_surface_material_catalog_data(payload)
 
 
 def _source_metadata_path(bundle_manifest_path: Path) -> Path:
@@ -119,6 +145,7 @@ def write_room_surface_material_catalog(
         )
         for path in bundle_manifest_paths
     ]
+    validate_room_surface_material_catalog_data(records)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(records, indent=2) + "\n", encoding="utf-8")
     return records
@@ -126,7 +153,7 @@ def write_room_surface_material_catalog(
 
 def build_surface_type_index(catalog_path: Path) -> dict:
     grouped: dict[str, list[dict]] = {}
-    for record in load_room_surface_material_catalog(catalog_path):
+    for record in validate_room_surface_material_catalog(catalog_path):
         surface_type = record["surface_type"]
         grouped.setdefault(surface_type, []).append(record)
 
@@ -160,7 +187,7 @@ def build_material_catalog_manifest(
     created_at: str | None = None,
     producer: dict | None = None,
 ) -> dict:
-    records = load_room_surface_material_catalog(catalog_path)
+    records = validate_room_surface_material_catalog(catalog_path)
     return {
         "catalog_id": catalog_id,
         "material_count": len(records),

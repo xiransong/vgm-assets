@@ -2,7 +2,7 @@
   "export_id": "room_surface_materials_v0_r1",
   "consumer": "vgm-scene-engine",
   "source_catalog_id": "room_surface_materials_v0",
-  "created_at": "2026-03-17T18:33:29+00:00",
+  "created_at": "2026-03-17T18:53:11+00:00",
   "producer": {
     "repo": "vgm-assets",
     "version": "0.1.0-dev",
@@ -19,7 +19,7 @@
     },
     "material_catalog_manifest": {
       "path": "catalogs/room_surface_materials_v0/material_catalog_manifest.json",
-      "sha256": "082ecf028c3b897c864f3d25f258b1609aea7edaa5ba30e68cd9b7db80aba3b5"
+      "sha256": "fea4ff2c4739a5f6c2ec132792da858b984ff78479cd2ac9b26e3579e478811b"
     }
   },
   "files": {
@@ -33,7 +33,7 @@
     },
     "material_catalog_manifest": {
       "path": "material_catalog_manifest.json",
-      "sha256": "f72c9c7d5ebdcd1d3f9d24fe5c10e7fc6ac5f28ff32cc28a042ba46fc8bb2169"
+      "sha256": "58b1a43fcab62f8c064fc3a3126cf220c1ad91a57908a47f5e17f353977d3cce"
     }
   },
   "data_snapshot": {
@@ -294,6 +294,10 @@
         "size_bytes": 103725
       }
     ]
+  },
+  "contract": {
+    "schema_path": "schemas/local/room_surface_material_catalog_v0.schema.json",
+    "consumer_guarantees_note": "docs/architecture/room_surface_material_consumer_guarantees_v0.md"
   },
   "notes": "Frozen room-surface material snapshot for vgm-scene-engine consumption."
 }

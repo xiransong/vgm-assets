@@ -18,6 +18,7 @@ It should not depend directly on the mutable working catalog under
   - use for surface-type lookup and uniform within-surface sampling
 - `room_surface_material_catalog.json`
   - use for full material metadata and payload refs
+  - contract details are frozen in `docs/architecture/room_surface_material_consumer_guarantees_v0.md`
 - `material_catalog_manifest.json`
   - use for snapshot integrity and provenance checks
 - `export_metadata.json`
@@ -44,3 +45,8 @@ For `v0`, the expected downstream flow is:
 2. sample one material uniformly within each of `floor`, `wall`, and `ceiling`
 3. load the chosen materials from `room_surface_material_catalog.json`
 4. resolve `files.*.path` against `VGM_ASSETS_DATA_ROOT`
+
+Consumers should treat `files` as opaque payload refs and should not infer
+extra semantics from filenames beyond the keyed file contract defined in:
+
+- `docs/architecture/room_surface_material_consumer_guarantees_v0.md`

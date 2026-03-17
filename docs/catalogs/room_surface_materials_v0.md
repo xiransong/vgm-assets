@@ -14,6 +14,8 @@ material.
 - `catalogs/room_surface_materials_v0/materials.json`
 - `catalogs/room_surface_materials_v0/surface_type_index.json`
 - `catalogs/room_surface_materials_v0/material_catalog_manifest.json`
+- `schemas/local/room_surface_material_catalog_v0.schema.json`
+- `docs/architecture/room_surface_material_consumer_guarantees_v0.md`
 - `scripts/catalogs/refresh_room_surface_materials_v0.sh`
 - `exports/scene_engine/room_surface_materials_v0_r1`
 - `scripts/exports/export_room_surface_materials_v0_r1.sh`

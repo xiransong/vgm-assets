@@ -4,9 +4,12 @@ import hashlib
 import json
 import os
 import shutil
+import tempfile
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 from .paths import default_data_root, default_raw_data_root, resolve_under
 from .protocol import load_json
@@ -74,32 +77,38 @@ def _poly_haven_expected_files(entry: dict) -> list[dict]:
     return [
         {
             "logical_name": "base_color",
+            "source_map": "Diffuse",
             "filename": f"base_color.{preferred_format}",
             "required": True,
         },
         {
             "logical_name": "roughness",
+            "source_map": "Rough",
             "filename": f"roughness.{preferred_format}",
             "required": True,
         },
         {
             "logical_name": "normal",
+            "source_map": "nor_gl",
             "filename": f"normal_gl.{preferred_format}",
             "required": True,
         },
         {
             "logical_name": "ao",
+            "source_map": "AO",
             "filename": f"ao.{preferred_format}",
             "required": False,
         },
         {
             "logical_name": "displacement",
+            "source_map": "Displacement",
             "filename": f"displacement.{preferred_format}",
             "required": False,
         },
         {
             "logical_name": "preview_image",
-            "filename": "preview.jpg",
+            "source_map": "thumbnail_url",
+            "filename": "preview.png",
             "required": True,
         },
     ]
@@ -136,6 +145,12 @@ def _poly_haven_source_manifest_path(
     raw_root: Path,
 ) -> Path:
     return resolve_under(raw_root, _poly_haven_raw_rel_dir(spec, entry)) / "source_manifest.json"
+
+
+def _download_url(url: str, destination: Path, user_agent: str) -> None:
+    request = Request(url, headers={"User-Agent": user_agent})
+    with urlopen(request) as response, destination.open("wb") as handle:
+        shutil.copyfileobj(response, handle)
 
 
 def build_poly_haven_room_surface_download_plan(
@@ -205,7 +220,7 @@ def build_poly_haven_room_surface_download_plan(
                     },
                     {
                         "logical_name": "normal",
-                        "source_map": "NormalGL",
+                        "source_map": "nor_gl",
                         "filename": f"normal_gl.{preferred_format}",
                         "required": True,
                     },
@@ -223,8 +238,8 @@ def build_poly_haven_room_surface_download_plan(
                     },
                     {
                         "logical_name": "preview_image",
-                        "source_map": "Thumbnail",
-                        "filename": "preview.jpg",
+                        "source_map": "thumbnail_url",
+                        "filename": "preview.png",
                         "required": True,
                     },
                 ],
@@ -290,7 +305,7 @@ def build_poly_haven_room_surface_layout_plan(
                     "normal": f"normal_gl.{preferred_format}",
                     "ao": f"ao.{preferred_format}",
                     "displacement": f"displacement.{preferred_format}",
-                    "preview_image": "preview.jpg",
+                    "preview_image": "preview.png",
                     "source_metadata": "source_metadata.json",
                     "bundle_manifest": "bundle_manifest.json",
                 },
@@ -398,6 +413,136 @@ def register_poly_haven_room_surface_material(
     manifest_path = destination_dir / "source_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
+
+
+def fetch_poly_haven_room_surface_material(
+    spec_path: Path,
+    selection_path: Path,
+    selection_id: str,
+    raw_data_root: Path | None = None,
+    acquired_at: str | None = None,
+    acquired_by: str | None = None,
+    notes: str | None = None,
+    user_agent: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    entry = find_selection_entry(selection_path, selection_id)
+    api = spec.get("api")
+    if not isinstance(api, dict):
+        raise TypeError("Poly Haven source spec must define api")
+
+    source_asset_id = _require_entry(entry, "source_asset_id")
+    api_base_url = _require_entry(api, "base_url").rstrip("/")
+    ua = user_agent or "vgm-assets/0.1 (research prototype; contact=local)"
+
+    with tempfile.TemporaryDirectory(prefix="vgm-assets-polyhaven-") as temp_dir_str:
+        temp_dir = Path(temp_dir_str)
+
+        files_json_path = temp_dir / "api_files.json"
+        info_json_path = temp_dir / "api_info.json"
+        _download_url(
+            f"{api_base_url}/files/{source_asset_id}",
+            files_json_path,
+            ua,
+        )
+        _download_url(
+            f"{api_base_url}/info/{source_asset_id}",
+            info_json_path,
+            ua,
+        )
+
+        files_payload = load_json(files_json_path)
+        info_payload = load_json(info_json_path)
+        if not isinstance(files_payload, dict):
+            raise TypeError("Poly Haven files response must be an object")
+        if not isinstance(info_payload, dict):
+            raise TypeError("Poly Haven info response must be an object")
+
+        resolution = _require_entry(entry, "preferred_resolution")
+        fmt = _require_entry(entry, "preferred_format")
+
+        for file_spec in _poly_haven_expected_files(entry):
+            logical_name = file_spec["logical_name"]
+            filename = file_spec["filename"]
+            required = file_spec["required"]
+
+            if logical_name == "preview_image":
+                preview_url = info_payload.get("thumbnail_url")
+                if not isinstance(preview_url, str) or not preview_url:
+                    if required:
+                        raise ValueError(
+                            f"Poly Haven info response for {source_asset_id} is missing thumbnail_url"
+                        )
+                    continue
+                preview_suffix = Path(urlparse(preview_url).path).suffix or ".png"
+                destination_name = f"preview{preview_suffix}"
+                _download_url(preview_url, temp_dir / destination_name, ua)
+                continue
+
+            source_map = file_spec.get("source_map")
+            source_record = files_payload.get(source_map)
+            if not isinstance(source_record, dict):
+                if required:
+                    raise ValueError(
+                        f"Poly Haven files response for {source_asset_id} is missing map '{source_map}'"
+                    )
+                continue
+            resolution_record = source_record.get(resolution)
+            if not isinstance(resolution_record, dict):
+                if required:
+                    raise ValueError(
+                        f"Poly Haven files response for {source_asset_id} is missing resolution '{resolution}' for map '{source_map}'"
+                    )
+                continue
+            format_record = resolution_record.get(fmt)
+            if not isinstance(format_record, dict):
+                if required:
+                    raise ValueError(
+                        f"Poly Haven files response for {source_asset_id} is missing format '{fmt}' for map '{source_map}' at resolution '{resolution}'"
+                    )
+                continue
+
+            download_url = format_record.get("url")
+            if not isinstance(download_url, str) or not download_url:
+                if required:
+                    raise ValueError(
+                        f"Poly Haven files response for {source_asset_id} is missing download url for map '{source_map}'"
+                    )
+                continue
+
+            _download_url(download_url, temp_dir / filename, ua)
+
+        manifest = register_poly_haven_room_surface_material(
+            spec_path=spec_path,
+            selection_path=selection_path,
+            selection_id=selection_id,
+            raw_material_dir=temp_dir,
+            raw_data_root=raw_data_root,
+            acquired_at=acquired_at,
+            acquired_by=acquired_by,
+            notes=notes,
+        )
+
+        raw_root = raw_data_root or default_raw_data_root()
+        raw_rel_dir = _poly_haven_raw_rel_dir(spec, entry)
+        raw_dir = resolve_under(raw_root, raw_rel_dir)
+        shutil.copy2(files_json_path, raw_dir / "api_files.json")
+        shutil.copy2(info_json_path, raw_dir / "api_info.json")
+
+        source_manifest_path = raw_dir / "source_manifest.json"
+        manifest["api_metadata"] = {
+            "files_endpoint": f"{api_base_url}/files/{source_asset_id}",
+            "info_endpoint": f"{api_base_url}/info/{source_asset_id}",
+            "api_files_relpath": (raw_rel_dir / "api_files.json").as_posix(),
+            "api_info_relpath": (raw_rel_dir / "api_info.json").as_posix(),
+            "thumbnail_url": info_payload.get("thumbnail_url", ""),
+            "files_hash": info_payload.get("files_hash", ""),
+        }
+        source_manifest_path.write_text(
+            json.dumps(manifest, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        return manifest
 
 
 def normalize_poly_haven_room_surface_material(

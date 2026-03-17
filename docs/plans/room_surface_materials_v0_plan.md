@@ -134,12 +134,15 @@ The single-material vertical slice now exists:
 It has been exercised locally with a dummy `white_plaster_02` material tree in
 `/tmp`.
 
+It has also been exercised against the live Poly Haven API for:
+
+- `polyhaven_wall_white_plaster_02_v0`
+
 ## Immediate Next Step
 
 After this, the next practical step should be:
 
-- implement one real Poly Haven API fetch path for one selected material
-- connect that fetch step to the existing raw-source registration flow
+- add the first room-surface material catalog artifact for the fetched slice
+- repeat the live fetch flow for one `floor` material and one `ceiling` material
 
-Only after one real fetch works should we generalize to the full 8-material
-room-surface slice.
+Only after that should we generalize to the full 8-material room-surface slice.

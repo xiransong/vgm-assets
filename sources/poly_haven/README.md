@@ -59,6 +59,13 @@ Prepare one manually downloaded Poly Haven material end to end:
   /path/to/downloaded/material_dir
 ```
 
+Fetch one selected Poly Haven material from the live API and normalize it:
+
+```bash
+./scripts/sources/fetch_poly_haven_room_surface_material_v0.sh \
+  polyhaven_wall_white_plaster_02_v0
+```
+
 ## Planned Data Layout
 
 Raw source files:
@@ -87,5 +94,15 @@ DATA_ROOT/
 
 ## Current Status
 
-As of `2026-03-17`, this directory contains planning artifacts only. No raw
-downloads or processed material bundles have been created yet.
+As of `2026-03-17`, the first real room-surface material has been fetched and
+normalized:
+
+- `polyhaven_wall_white_plaster_02_v0`
+
+Raw source payloads now live under:
+
+- `RAW_DATA_ROOT/sources/poly_haven/materials/white_plaster_02/2k_jpg/`
+
+The first normalized bundle now lives under:
+
+- `DATA_ROOT/materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/`

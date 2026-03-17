@@ -2,7 +2,7 @@
   "plan_id": "poly_haven_room_surface_download_plan_v0",
   "source_id": "poly_haven_materials",
   "selection_path": "sources/poly_haven/room_surface_selection_v0.json",
-  "planned_at": "2026-03-17T18:01:32+00:00",
+  "planned_at": "2026-03-17T18:13:52+00:00",
   "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
   "raw_storage_root_relpath": "sources/poly_haven/materials",
   "api": {
@@ -51,7 +51,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -69,8 +69,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -114,7 +114,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -132,8 +132,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -177,7 +177,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -195,8 +195,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -240,7 +240,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -258,8 +258,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -303,7 +303,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -321,8 +321,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -366,7 +366,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -384,8 +384,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -429,7 +429,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -447,8 +447,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]
@@ -492,7 +492,7 @@
         },
         {
           "logical_name": "normal",
-          "source_map": "NormalGL",
+          "source_map": "nor_gl",
           "filename": "normal_gl.jpg",
           "required": true
         },
@@ -510,8 +510,8 @@
         },
         {
           "logical_name": "preview_image",
-          "source_map": "Thumbnail",
-          "filename": "preview.jpg",
+          "source_map": "thumbnail_url",
+          "filename": "preview.png",
           "required": true
         }
       ]

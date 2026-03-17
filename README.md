@@ -193,6 +193,13 @@ Prepare one manually downloaded Poly Haven material end to end:
   /path/to/downloaded/material_dir
 ```
 
+Fetch one selected Poly Haven material from the live API and normalize it:
+
+```bash
+./scripts/sources/fetch_poly_haven_room_surface_material_v0.sh \
+  polyhaven_wall_white_plaster_02_v0
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -384,3 +391,5 @@ Verify the env:
   - processed `bundle_manifest.json` support
   - one-material registration and normalization commands
   - one-material helper script
+- [x] added the first live Poly Haven API fetch path and fetched
+  `polyhaven_wall_white_plaster_02_v0` into the real raw and processed roots

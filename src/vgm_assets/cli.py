@@ -14,6 +14,7 @@ from .exports import export_scene_engine_snapshot
 from .paths import default_data_root, default_raw_data_root
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .sources import (
+    fetch_poly_haven_room_surface_material,
     organize_kenney_selection,
     normalize_poly_haven_room_surface_material,
     rebuild_kenney_selection,
@@ -133,6 +134,19 @@ def build_parser() -> argparse.ArgumentParser:
     normalize_polyhaven_material_parser.add_argument("--raw-data-root", type=Path)
     normalize_polyhaven_material_parser.add_argument("--data-root", type=Path)
     normalize_polyhaven_material_parser.add_argument("--created-at")
+
+    fetch_polyhaven_material_parser = subparsers.add_parser(
+        "fetch-poly-haven-room-surface-material",
+        help="Fetch one Poly Haven room-surface material from the live API into RAW_DATA_ROOT",
+    )
+    fetch_polyhaven_material_parser.add_argument("selection_id")
+    fetch_polyhaven_material_parser.add_argument("--selection", type=Path, required=True)
+    fetch_polyhaven_material_parser.add_argument("--source-spec", type=Path, required=True)
+    fetch_polyhaven_material_parser.add_argument("--raw-data-root", type=Path)
+    fetch_polyhaven_material_parser.add_argument("--acquired-at")
+    fetch_polyhaven_material_parser.add_argument("--acquired-by")
+    fetch_polyhaven_material_parser.add_argument("--notes")
+    fetch_polyhaven_material_parser.add_argument("--user-agent")
 
     polyhaven_download_plan_parser = subparsers.add_parser(
         "write-poly-haven-room-surface-download-plan",
@@ -323,6 +337,20 @@ def main() -> int:
             raw_data_root=args.raw_data_root,
             data_root=args.data_root,
             created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "fetch-poly-haven-room-surface-material":
+        summary = fetch_poly_haven_room_surface_material(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            selection_id=args.selection_id,
+            raw_data_root=args.raw_data_root,
+            acquired_at=args.acquired_at,
+            acquired_by=args.acquired_by,
+            notes=args.notes,
+            user_agent=args.user_agent,
         )
         print(json.dumps(summary, indent=2))
         return 0

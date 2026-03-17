@@ -5,8 +5,8 @@
     {
       "path": "asset_catalog.json",
       "format": "json",
-      "sha256": "557027ed68928cd82a06eff0b3c6cac5d2d11250daac05a51c1695e69f6e2ec3",
-      "size_bytes": 21752
+      "sha256": "19fe4a05865ef0935ff1db7f69b24946cb317e221a42af92d1d7e608d6e7fa88",
+      "size_bytes": 23136
     }
   ],
   "protocol_version": "v0",
@@ -15,5 +15,5 @@
     "version": "0.1.0-dev",
     "commit": "working_tree"
   },
-  "created_at": "2026-03-17T15:26:36+00:00"
+  "created_at": "2026-03-17T15:51:59+00:00"
 }

@@ -24,7 +24,12 @@ It should not depend directly on the mutable working catalog under `catalogs/`.
 
 ## File Ref Resolution
 
-Payload refs in the exported catalog remain relative to `DATA_ROOT`.
+Payload refs in the exported catalog point to the export-owned processed payload
+snapshot under:
+
+- `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r1/assets/...`
+
+They remain relative to `DATA_ROOT` in the JSON itself.
 
 `vgm-scene-engine` should resolve them against:
 

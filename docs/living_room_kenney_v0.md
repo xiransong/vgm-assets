@@ -70,12 +70,13 @@ The current working axis interpretation for these Kenney GLBs is:
 
 ## Measured Geometry Revision
 
-The current measured-geometry revision now updates all seven categories:
+The current measured-geometry revision now updates all eight categories:
 
 - `sofa`
 - `coffee_table`
 - `tv_stand`
 - `bookcase`
+- `bookshelf`
 - `armchair`
 - `side_table`
 - `floor_lamp`

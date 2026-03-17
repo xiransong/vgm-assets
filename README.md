@@ -171,6 +171,9 @@ Export the first frozen scene-engine snapshot:
 ./scripts/exports/export_living_room_kenney_v0_r1.sh
 ```
 
+This writes repo-side snapshot metadata under `exports/scene_engine/` and an
+export-owned processed payload snapshot under `DATA_ROOT/exports/scene_engine/`.
+
 Validate the first toy catalog:
 
 ```bash

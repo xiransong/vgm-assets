@@ -10,6 +10,10 @@ Downstream repos should not depend directly on mutable working catalogs under
 
 Instead, `vgm-assets` should publish frozen export snapshots under `exports/`.
 
+Each snapshot should also own an immutable processed-payload snapshot under
+`DATA_ROOT`, so downstream repos do not need to dereference the mutable working
+processed tree.
+
 ## Scene-Engine Snapshot Layout
 
 ```text
@@ -20,6 +24,15 @@ exports/
       category_index.json
       asset_catalog_manifest.json
       export_metadata.json
+
+DATA_ROOT/
+  exports/
+    scene_engine/
+      <export_id>/
+        assets/
+          <category>/
+            <asset_id>/
+              ...
 ```
 
 ## Required Snapshot Files
@@ -39,6 +52,8 @@ exports/
 - creation timestamp
 - producer metadata
 - checksummed file refs for the exported snapshot contents
+- the `DATA_ROOT`-relative processed payload snapshot root
+- checksummed payload refs for the exported asset files
 
 ## Current Snapshot
 

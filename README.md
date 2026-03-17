@@ -307,6 +307,8 @@ Verify the env:
 - [ ] document backend-agnostic versus backend-specific payload fields
 - [x] define the first room-surface material planning artifacts for Poly Haven
 - [~] build the first room-surface material catalog artifact from normalized bundles
+- [x] build the first usable room-surface material catalog with at least two
+  materials each for `floor`, `wall`, and `ceiling`
 
 ## Development Log
 
@@ -405,3 +407,7 @@ Verify the env:
   - `catalogs/room_surface_materials_v0/materials.json`
   - `catalogs/room_surface_materials_v0/surface_type_index.json`
   - `catalogs/room_surface_materials_v0/material_catalog_manifest.json`
+- [x] expanded the real Poly Haven slice to six normalized bundles:
+  - `floor`: 2
+  - `wall`: 2
+  - `ceiling`: 2

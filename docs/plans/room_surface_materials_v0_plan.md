@@ -142,7 +142,8 @@ It has also been exercised against the live Poly Haven API for:
 
 After this, the next practical step should be:
 
-- repeat the live fetch flow for one `floor` material and one `ceiling` material
-- refresh the room-surface material catalog with those new normalized bundles
+- export a frozen scene-engine snapshot for the room-surface material catalog
+- keep the current six-material slice stable while scene-engine starts consuming
+  it
 
-Only after that should we generalize to the full 8-material room-surface slice.
+Only after that should we generalize beyond the current six-material room-surface slice.

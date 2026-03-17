@@ -94,15 +94,20 @@ DATA_ROOT/
 
 ## Current Status
 
-As of `2026-03-17`, the first real room-surface material has been fetched and
+As of `2026-03-17`, six real room-surface materials have been fetched and
 normalized:
 
+- `polyhaven_floor_wood_floor_v0`
+- `polyhaven_floor_laminate_floor_02_v0`
 - `polyhaven_wall_white_plaster_02_v0`
+- `polyhaven_wall_plaster_grey_04_v0`
+- `polyhaven_ceiling_white_plaster_02_v0`
+- `polyhaven_ceiling_plaster_grey_04_v0`
 
-Raw source payloads now live under:
+Raw source payloads now live under `RAW_DATA_ROOT/sources/poly_haven/materials/`.
 
-- `RAW_DATA_ROOT/sources/poly_haven/materials/white_plaster_02/2k_jpg/`
+Normalized bundles now live under:
 
-The first normalized bundle now lives under:
-
-- `DATA_ROOT/materials/room_surfaces/poly_haven/wall/polyhaven_white_plaster_wall_02/`
+- `DATA_ROOT/materials/room_surfaces/poly_haven/floor/`
+- `DATA_ROOT/materials/room_surfaces/poly_haven/wall/`
+- `DATA_ROOT/materials/room_surfaces/poly_haven/ceiling/`

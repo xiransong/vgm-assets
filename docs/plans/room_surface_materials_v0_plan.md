@@ -109,12 +109,22 @@ coverage.
 5. build the first working catalog and `surface_type_index.json`
 6. export `room_surface_materials_v0_r1` as a frozen scene-engine snapshot
 
+## Current Planning Baseline
+
+The repo now has the first planning artifacts for this track:
+
+- `sources/poly_haven/source_spec_v0.json`
+- `sources/poly_haven/room_surface_selection_v0.json`
+- `docs/architecture/room_surface_material_catalog_v0.md`
+
 ## Immediate Next Step
 
-Before downloading any Poly Haven data, we should first add:
+The next move should still avoid bulk implementation.
 
-- a Poly Haven source-spec note
-- a small curated room-surface selection file
-- a room-surface material catalog shape note
+Add the first repo-side source helpers for:
 
-That will keep the first ingestion step reproducible and small.
+- source registration expectations
+- download-manifest planning
+- normalized room-surface bundle layout
+
+Only after that should we add actual Poly Haven download logic.

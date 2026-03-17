@@ -1,0 +1,21 @@
+{
+  "source_id": "poly_haven_materials",
+  "source_url": "https://polyhaven.com/",
+  "license": "CC0",
+  "acquisition_method": "api_download",
+  "api": {
+    "base_url": "https://api.polyhaven.com",
+    "overview_url": "https://polyhaven.com/af/our-api",
+    "requires_unique_user_agent": true,
+    "website_html_scraping_allowed": false
+  },
+  "raw_storage": {
+    "root_relpath": "sources/poly_haven/materials",
+    "source_manifest_relpath": "sources/poly_haven/materials/source_manifest.json"
+  },
+  "processing": {
+    "normalized_root_relpath": "materials/room_surfaces/poly_haven",
+    "export_root_relpath": "exports/scene_engine"
+  },
+  "notes": "This v0 source spec only covers a small curated room-surface material slice. No bulk download plan is approved."
+}

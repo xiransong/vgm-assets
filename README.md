@@ -44,7 +44,9 @@ See:
 - `docs/architecture/export_snapshots_v0.md`
 - `docs/architecture/scene_engine_consumer_v0.md`
 - `docs/architecture/storage_layout_v0.md`
+- `docs/architecture/room_surface_material_catalog_v0.md`
 - `sources/kenney/README.md`
+- `sources/poly_haven/README.md`
 - `docs/architecture/material_packaging_v0.md`
 - `docs/catalogs/living_room_kenney_v0.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
@@ -274,6 +276,7 @@ Verify the env:
 - [ ] define canonical `FileRef` coverage for mesh, collision, preview, and
   material payloads
 - [ ] document backend-agnostic versus backend-specific payload fields
+- [~] define the first room-surface material planning artifacts for Poly Haven
 
 ## Development Log
 
@@ -343,3 +346,17 @@ Verify the env:
   `DATA_ROOT`-relative refs for better portability
 - [x] added a frozen scene-engine snapshot export path for
   `living_room_kenney_v0_r1`
+
+## 2026-03-17
+
+- [x] extended the scene-engine export so `living_room_kenney_v0_r1` now owns
+  an immutable processed payload snapshot under `DATA_ROOT/exports/`
+- [x] reorganized `docs/` into `architecture/`, `catalogs/`, and `plans/`
+  sections with a docs index
+- [x] added an active room-surface-materials plan note aligned with the
+  current `vgm-scene-engine` bridge design
+- [x] added the first Poly Haven source-planning artifacts:
+  - `sources/poly_haven/source_spec_v0.json`
+  - `sources/poly_haven/room_surface_selection_v0.json`
+  - `sources/poly_haven/README.md`
+- [x] added the first room-surface material catalog-shape note for `vgm-assets`

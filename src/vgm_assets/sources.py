@@ -838,6 +838,8 @@ def organize_kenney_selection(
         selection_records.append(entry)
 
     slice_root_rel = Path(os.path.commonpath([path.as_posix() for path in rel_dirs]))
+    if len(rel_dirs) == 1:
+        slice_root_rel = rel_dirs[0].parent
     slice_root = resolve_under(processed_root, slice_root_rel)
 
     manifest_assets = []
@@ -1004,6 +1006,8 @@ def organize_kenney_opening_selection(
         )
 
     slice_root_rel = Path(os.path.commonpath([path.as_posix() for path in rel_dirs]))
+    if len(rel_dirs) == 1:
+        slice_root_rel = rel_dirs[0].parent
     slice_root = resolve_under(processed_root, slice_root_rel)
     root_level_assemblies = []
     for entry in manifest_assemblies:
@@ -1028,9 +1032,184 @@ def organize_kenney_opening_selection(
         json.dump(selection_manifest, handle, indent=2)
         handle.write("\n")
 
+    stale_manifest = resolve_under(processed_root, rel_dirs[0]) / "selection_manifest.json"
+    current_manifest = slice_root / "selection_manifest.json"
+    if stale_manifest != current_manifest and stale_manifest.exists():
+        stale_manifest.unlink()
+
     return {
         "selection_id": selection_manifest["selection_id"],
         "assembly_count": len(root_level_assemblies),
+        "slice_root": str(slice_root),
+        "selected_ids": [entry["selection_id"] for entry in selected_payload],
+    }
+
+
+def organize_kenney_ceiling_fixture_selection(
+    spec_path: Path,
+    selection_path: Path,
+    selection_ids: list[str] | None = None,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_source_spec(spec_path)
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+    processing = spec["processing"]
+    archive_path = resolve_under(raw_root, spec["raw_archive"]["canonical_relpath"])
+    if not archive_path.exists():
+        raise FileNotFoundError(
+            f"Missing registered raw archive at {archive_path}; run register-raw-source first"
+        )
+
+    unpack_dir = resolve_under(processed_root, processing["unpack_relpath"])
+    if not unpack_dir.exists():
+        raise FileNotFoundError(
+            f"Missing unpacked source tree at {unpack_dir}; run unpack-registered-zip first"
+        )
+
+    payload = load_selection_list(selection_path)
+    selected_payload = []
+    selected_ids = set(selection_ids or [])
+    for entry in payload:
+        if not isinstance(entry, dict):
+            raise TypeError("Selection entries must be objects")
+        entry_id = entry.get("selection_id")
+        if selected_ids and entry_id not in selected_ids:
+            continue
+        selected_payload.append(entry)
+
+    if selected_ids:
+        found_ids = {entry.get("selection_id") for entry in selected_payload}
+        missing_ids = sorted(selected_ids - found_ids)
+        if missing_ids:
+            raise ValueError(
+                f"Ceiling fixture selection ids not found in {selection_path.as_posix()}: {missing_ids}"
+            )
+
+    if not selected_payload:
+        raise ValueError(f"No ceiling fixture selections chosen from {selection_path.as_posix()}")
+
+    manifest_fixtures: list[dict] = []
+    rel_dirs: list[Path] = []
+    for entry in selected_payload:
+        normalized_rel_dir = entry.get("normalized_rel_dir")
+        if not isinstance(normalized_rel_dir, str):
+            raise ValueError(
+                f"Selection entry {entry.get('selection_id')} is missing normalized_rel_dir"
+            )
+        rel_dir = Path(normalized_rel_dir)
+        rel_dirs.append(rel_dir)
+        destination = resolve_under(processed_root, rel_dir)
+        destination.mkdir(parents=True, exist_ok=True)
+
+        model_src = unpack_dir / _require_entry(entry, "raw_model_rel")
+        preview_src = unpack_dir / _require_entry(entry, "raw_preview_rel")
+        if not model_src.exists():
+            raise FileNotFoundError(f"Missing raw model file: {model_src}")
+        if not preview_src.exists():
+            raise FileNotFoundError(f"Missing raw preview file: {preview_src}")
+
+        mesh_dst = destination / "model.glb"
+        preview_dst = destination / "preview.png"
+        shutil.copy2(model_src, mesh_dst)
+        shutil.copy2(preview_src, preview_dst)
+
+        source_metadata = {
+            "fixture_id": _require_entry(entry, "fixture_id"),
+            "mount_type": _require_entry(entry, "mount_type"),
+            "source": _require_entry(entry, "source_pack"),
+            "license": _require_entry(entry, "license"),
+            "source_name": _require_entry(entry, "source_name"),
+            "source_url": _require_entry(entry, "source_url"),
+            "source_model_path": _require_entry(entry, "raw_model_rel"),
+            "source_preview_path": _require_entry(entry, "raw_preview_rel"),
+            "normalized_files": {
+                "mesh": "model.glb",
+                "preview_image": "preview.png",
+            },
+        }
+        with (destination / "source_metadata.json").open("w", encoding="utf-8") as handle:
+            json.dump(source_metadata, handle, indent=2)
+            handle.write("\n")
+
+        bundle_manifest = {
+            "manifest_version": "v0",
+            "bundle_id": _require_entry(entry, "fixture_id"),
+            "selection_id": _require_entry(entry, "selection_id"),
+            "mount_type": _require_entry(entry, "mount_type"),
+            "fixture_id": _require_entry(entry, "fixture_id"),
+            "display_name": _require_entry(entry, "display_name"),
+            "source": _require_entry(entry, "source_pack"),
+            "normalized_rel_dir": normalized_rel_dir,
+            "created_at": _timestamp(created_at),
+            "dimensions": entry["dimensions"],
+            "footprint": entry["footprint"],
+            "files": {
+                "mesh": _file_ref(mesh_dst, processed_root),
+                "preview_image": _file_ref(preview_dst, processed_root),
+            },
+        }
+        optional_pairs = {
+            "style_tags": entry.get("style_tags"),
+            "nominal_drop_height_m": entry.get("nominal_drop_height_m"),
+            "emission_hints": entry.get("emission_hints"),
+            "license": entry.get("license"),
+            "source_url": entry.get("source_url"),
+        }
+        for key, value in optional_pairs.items():
+            if value is not None:
+                bundle_manifest[key] = value
+
+        with (destination / "bundle_manifest.json").open("w", encoding="utf-8") as handle:
+            json.dump(bundle_manifest, handle, indent=2)
+            handle.write("\n")
+
+        manifest_fixtures.append(
+            {
+                "mount_type": entry["mount_type"],
+                "fixture_id": entry["fixture_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": rel_dir.as_posix(),
+            }
+        )
+
+    slice_root_rel = Path(os.path.commonpath([path.as_posix() for path in rel_dirs]))
+    if len(rel_dirs) == 1:
+        slice_root_rel = rel_dirs[0].parent
+    slice_root = resolve_under(processed_root, slice_root_rel)
+    root_level_fixtures = []
+    for entry in manifest_fixtures:
+        normalized_dir = Path(entry["normalized_dir"]).relative_to(slice_root_rel)
+        root_level_fixtures.append(
+            {
+                "mount_type": entry["mount_type"],
+                "fixture_id": entry["fixture_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": normalized_dir.as_posix(),
+            }
+        )
+
+    selection_manifest = {
+        "selection_id": f"{spec['source_id']}_{slice_root_rel.name}",
+        "source_pack": spec["source_id"],
+        "license": spec["license"],
+        "fixture_count": len(root_level_fixtures),
+        "fixtures": root_level_fixtures,
+    }
+    with (slice_root / "selection_manifest.json").open("w", encoding="utf-8") as handle:
+        json.dump(selection_manifest, handle, indent=2)
+        handle.write("\n")
+
+    stale_manifest = resolve_under(processed_root, rel_dirs[0]) / "selection_manifest.json"
+    current_manifest = slice_root / "selection_manifest.json"
+    if stale_manifest != current_manifest and stale_manifest.exists():
+        stale_manifest.unlink()
+
+    return {
+        "selection_id": selection_manifest["selection_id"],
+        "fixture_count": len(root_level_fixtures),
         "slice_root": str(slice_root),
         "selected_ids": [entry["selection_id"] for entry in selected_payload],
     }

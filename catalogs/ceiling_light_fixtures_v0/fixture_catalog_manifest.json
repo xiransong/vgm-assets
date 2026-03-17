@@ -1,0 +1,18 @@
+{
+  "catalog_id": "ceiling_light_fixtures_v0",
+  "fixture_count": 1,
+  "catalog_files": [
+    {
+      "path": "catalogs/ceiling_light_fixtures_v0/fixtures.json",
+      "format": "json",
+      "sha256": "8800de044244ab34ea7c884f0b495c5c1c5603d220176919d060ed1ab9e10029",
+      "size_bytes": 1801
+    }
+  ],
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-17T22:23:45+00:00"
+}

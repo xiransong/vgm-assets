@@ -71,6 +71,25 @@ You can rebuild the first `door` + `window` bundle pair with:
 ./scripts/sources/organize_kenney_openings_v0.sh
 ```
 
+The next planned lighting-side Kenney intake track is ceiling fixtures:
+
+- `sources/kenney/ceiling_fixture_selection_v0.json`
+- `fixtures/kenney/ceiling_fixture_bundle_layout_v0.json`
+
+The current starter candidate is:
+
+- `lampSquareCeiling`
+
+The first ceiling-fixture bundle is organized under:
+
+- `DATA_ROOT/fixtures/ceiling/kenney/ceiling_light_fixtures_v0`
+
+You can rebuild the first ceiling-fixture bundle with:
+
+```bash
+./scripts/sources/organize_kenney_ceiling_fixtures_v0.sh
+```
+
 ## Intake Workflow
 
 1. place the manually downloaded source zip into `RAW_DATA_ROOT` via

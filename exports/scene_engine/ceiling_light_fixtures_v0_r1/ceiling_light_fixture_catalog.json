@@ -1,0 +1,59 @@
+[
+  {
+    "fixture_id": "kenney_lamp_square_ceiling_01",
+    "mount_type": "ceiling",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.35,
+      "depth": 0.35,
+      "height": 0.12
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.35,
+      "depth": 0.35
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/ceiling_light_fixtures_v0_r1/fixtures/ceiling/kenney_lamp_square_ceiling_01/model.glb",
+        "format": "glb",
+        "sha256": "57066be51583d83ae60071e8179af275189cb2911ecb9fc24953bb930c8bf118",
+        "size_bytes": 5628
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/ceiling_light_fixtures_v0_r1/fixtures/ceiling/kenney_lamp_square_ceiling_01/preview.png",
+        "format": "png",
+        "sha256": "f3ebd14da7017be4258c107395c85effa7f6a0302092d6f595ff3780159f0f96",
+        "size_bytes": 1464
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "ceiling_light_fixtures_v0_bundle_import_v1",
+      "upstream_ids": [
+        "kenney_ceiling_fixture_lamp_square_ceiling_v0"
+      ],
+      "upstream_bundle_relpath": "fixtures/ceiling/kenney/ceiling_light_fixtures_v0/kenney_lamp_square_ceiling_01/bundle_manifest.json"
+    },
+    "display_name": "Kenney Square Ceiling Light 01",
+    "style_tags": [
+      "ceiling",
+      "flush_mount",
+      "simple",
+      "square"
+    ],
+    "nominal_drop_height_m": 0.12,
+    "emission_hints": {
+      "default_intensity_lm": 900,
+      "default_color_temperature_k": 3000
+    },
+    "source": "kenney_furniture_kit",
+    "selection_id": "kenney_ceiling_fixture_lamp_square_ceiling_v0",
+    "license": "CC0",
+    "source_url": "https://kenney.nl/assets/furniture-kit"
+  }
+]

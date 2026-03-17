@@ -1,0 +1,34 @@
+[
+  {
+    "selection_id": "kenney_ceiling_fixture_lamp_square_ceiling_v0",
+    "mount_type": "ceiling",
+    "source_pack": "kenney_furniture_kit",
+    "source_url": "https://kenney.nl/assets/furniture-kit",
+    "license": "CC0",
+    "status": "planned",
+    "priority": 1,
+    "source_name": "lampSquareCeiling",
+    "raw_model_rel": "Models/GLTF format/lampSquareCeiling.glb",
+    "raw_preview_rel": "Isometric/lampSquareCeiling_NE.png",
+    "fixture_id": "kenney_lamp_square_ceiling_01",
+    "display_name": "Kenney Square Ceiling Light 01",
+    "style_tags": ["ceiling", "flush_mount", "simple", "square"],
+    "dimensions": {
+      "width": 0.35,
+      "depth": 0.35,
+      "height": 0.12
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.35,
+      "depth": 0.35
+    },
+    "nominal_drop_height_m": 0.12,
+    "emission_hints": {
+      "default_intensity_lm": 900,
+      "default_color_temperature_k": 3000
+    },
+    "normalized_rel_dir": "fixtures/ceiling/kenney/ceiling_light_fixtures_v0/kenney_lamp_square_ceiling_01",
+    "notes": "Primary v0 ceiling-mounted light fixture candidate. Raw Kenney bounds appear undersized, so the working bundle carries a scene-scale normalization target."
+  }
+]

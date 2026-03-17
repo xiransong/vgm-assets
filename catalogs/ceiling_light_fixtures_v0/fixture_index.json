@@ -1,0 +1,8 @@
+{
+  "catalog_path": "catalogs/ceiling_light_fixtures_v0/fixtures.json",
+  "sampling_policy": "uniform",
+  "fixture_count": 1,
+  "fixture_ids": [
+    "kenney_lamp_square_ceiling_01"
+  ]
+}

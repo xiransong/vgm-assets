@@ -10,7 +10,12 @@ from .catalog import (
     validate_asset_catalog,
     write_catalog_manifest,
 )
+from .ceiling_fixtures import (
+    refresh_ceiling_light_fixture_catalog,
+    validate_ceiling_light_fixture_catalog,
+)
 from .exports import (
+    export_ceiling_light_fixture_snapshot,
     export_opening_assembly_snapshot,
     export_room_surface_material_snapshot,
     export_scene_engine_snapshot,
@@ -28,6 +33,7 @@ from .sampling import category_summary, sample_uniform_asset, write_category_ind
 from .size_normalization import apply_size_normalization
 from .sources import (
     fetch_poly_haven_room_surface_material,
+    organize_kenney_ceiling_fixture_selection,
     organize_kenney_selection,
     organize_kenney_opening_selection,
     normalize_poly_haven_room_surface_material,
@@ -127,6 +133,22 @@ def build_parser() -> argparse.ArgumentParser:
     organize_opening_parser.add_argument("--raw-data-root", type=Path)
     organize_opening_parser.add_argument("--data-root", type=Path)
     organize_opening_parser.add_argument("--created-at")
+
+    organize_ceiling_fixture_parser = subparsers.add_parser(
+        "organize-kenney-ceiling-fixture-selection",
+        help="Build the normalized Kenney ceiling-fixture selection tree in DATA_ROOT from the unpacked source",
+    )
+    organize_ceiling_fixture_parser.add_argument("selection", type=Path)
+    organize_ceiling_fixture_parser.add_argument("--source-spec", type=Path, required=True)
+    organize_ceiling_fixture_parser.add_argument(
+        "--selection-id",
+        action="append",
+        dest="selection_ids",
+        help="Specific ceiling-fixture selection id to organize; may be passed multiple times",
+    )
+    organize_ceiling_fixture_parser.add_argument("--raw-data-root", type=Path)
+    organize_ceiling_fixture_parser.add_argument("--data-root", type=Path)
+    organize_ceiling_fixture_parser.add_argument("--created-at")
 
     rebuild_parser = subparsers.add_parser(
         "rebuild-kenney-selection",
@@ -256,6 +278,35 @@ def build_parser() -> argparse.ArgumentParser:
     )
     validate_opening_assembly_catalog_parser.add_argument("catalog", type=Path)
 
+    refresh_ceiling_light_fixture_catalog_parser = subparsers.add_parser(
+        "refresh-ceiling-light-fixture-catalog",
+        help="Build a ceiling-light fixture catalog from normalized bundle manifests and write its index and manifest",
+    )
+    refresh_ceiling_light_fixture_catalog_parser.add_argument("--catalog-id", required=True)
+    refresh_ceiling_light_fixture_catalog_parser.add_argument(
+        "--bundle-manifest",
+        type=Path,
+        action="append",
+        required=True,
+        dest="bundle_manifests",
+    )
+    refresh_ceiling_light_fixture_catalog_parser.add_argument(
+        "--catalog-output", type=Path, required=True
+    )
+    refresh_ceiling_light_fixture_catalog_parser.add_argument(
+        "--fixture-index-output", type=Path, required=True
+    )
+    refresh_ceiling_light_fixture_catalog_parser.add_argument(
+        "--manifest-output", type=Path, required=True
+    )
+    refresh_ceiling_light_fixture_catalog_parser.add_argument("--created-at")
+
+    validate_ceiling_light_fixture_catalog_parser = subparsers.add_parser(
+        "validate-ceiling-light-fixture-catalog",
+        help="Validate a ceiling-light fixture catalog against the local vgm-assets v0 schema",
+    )
+    validate_ceiling_light_fixture_catalog_parser.add_argument("catalog", type=Path)
+
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
         help="Validate a catalog, refresh its measurement report, and write its manifest",
@@ -335,6 +386,18 @@ def build_parser() -> argparse.ArgumentParser:
     opening_export_parser.add_argument("--manifest", type=Path, required=True)
     opening_export_parser.add_argument("--output-dir", type=Path, required=True)
     opening_export_parser.add_argument("--notes")
+
+    ceiling_fixture_export_parser = subparsers.add_parser(
+        "export-ceiling-light-fixture-snapshot",
+        help="Export a frozen scene-engine snapshot from ceiling-light fixture catalog artifacts",
+    )
+    ceiling_fixture_export_parser.add_argument("--export-id", required=True)
+    ceiling_fixture_export_parser.add_argument("--source-catalog-id", required=True)
+    ceiling_fixture_export_parser.add_argument("--catalog", type=Path, required=True)
+    ceiling_fixture_export_parser.add_argument("--fixture-index", type=Path, required=True)
+    ceiling_fixture_export_parser.add_argument("--manifest", type=Path, required=True)
+    ceiling_fixture_export_parser.add_argument("--output-dir", type=Path, required=True)
+    ceiling_fixture_export_parser.add_argument("--notes")
 
     return parser
 
@@ -425,6 +488,18 @@ def main() -> int:
 
     if args.command == "organize-kenney-opening-selection":
         summary = organize_kenney_opening_selection(
+            spec_path=args.source_spec,
+            selection_path=args.selection,
+            selection_ids=args.selection_ids,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "organize-kenney-ceiling-fixture-selection":
+        summary = organize_kenney_ceiling_fixture_selection(
             spec_path=args.source_spec,
             selection_path=args.selection,
             selection_ids=args.selection_ids,
@@ -543,6 +618,23 @@ def main() -> int:
         print(f"Validated {len(records)} opening assemblies in {args.catalog}")
         return 0
 
+    if args.command == "refresh-ceiling-light-fixture-catalog":
+        summary = refresh_ceiling_light_fixture_catalog(
+            catalog_id=args.catalog_id,
+            bundle_manifest_paths=args.bundle_manifests,
+            catalog_output=args.catalog_output,
+            fixture_index_output=args.fixture_index_output,
+            manifest_output=args.manifest_output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "validate-ceiling-light-fixture-catalog":
+        records = validate_ceiling_light_fixture_catalog(args.catalog)
+        print(f"Validated {len(records)} ceiling-light fixtures in {args.catalog}")
+        return 0
+
     if args.command == "refresh-catalog-artifacts":
         summary = refresh_catalog_artifacts(
             catalog_path=args.catalog,
@@ -627,6 +719,19 @@ def main() -> int:
             source_catalog_id=args.source_catalog_id,
             catalog_path=args.catalog,
             opening_type_index_path=args.opening_type_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-ceiling-light-fixture-snapshot":
+        summary = export_ceiling_light_fixture_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            fixture_index_path=args.fixture_index,
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             notes=args.notes,

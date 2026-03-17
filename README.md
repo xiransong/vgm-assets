@@ -49,6 +49,8 @@ See:
 - `docs/architecture/room_surface_material_catalog_v0.md`
 - `docs/architecture/opening_assembly_catalog_v0.md`
 - `docs/architecture/opening_assemblies_scene_engine_consumer_v0.md`
+- `docs/architecture/ceiling_fixture_catalog_v0.md`
+- `docs/architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/poly_haven/README.md`
@@ -56,8 +58,10 @@ See:
 - `docs/catalogs/living_room_kenney_v0.md`
 - `docs/catalogs/room_surface_materials_v0.md`
 - `docs/catalogs/opening_assemblies_v0.md`
+- `docs/catalogs/ceiling_light_fixtures_v0.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
 - `docs/plans/opening_assemblies_v0_plan.md`
+- `docs/plans/ceiling_light_fixtures_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
@@ -215,6 +219,24 @@ Export the first frozen opening-assembly scene-engine snapshot:
 
 ```bash
 ./scripts/exports/export_opening_assemblies_v0_r1.sh
+```
+
+Organize the first Kenney ceiling-fixture bundle:
+
+```bash
+./scripts/sources/organize_kenney_ceiling_fixtures_v0.sh
+```
+
+Refresh the first ceiling-light fixture catalog artifact:
+
+```bash
+./scripts/catalogs/refresh_ceiling_light_fixtures_v0.sh
+```
+
+Export the first frozen ceiling-light fixture scene-engine snapshot:
+
+```bash
+./scripts/exports/export_ceiling_light_fixtures_v0_r1.sh
 ```
 
 Generate the current Poly Haven room-surface planning artifacts:

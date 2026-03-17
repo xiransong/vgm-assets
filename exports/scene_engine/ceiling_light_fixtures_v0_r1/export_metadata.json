@@ -1,0 +1,65 @@
+{
+  "export_id": "ceiling_light_fixtures_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "ceiling_light_fixtures_v0",
+  "created_at": "2026-03-17T22:24:06+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "ceiling_light_fixture_catalog": {
+      "path": "catalogs/ceiling_light_fixtures_v0/fixtures.json",
+      "sha256": "8800de044244ab34ea7c884f0b495c5c1c5603d220176919d060ed1ab9e10029"
+    },
+    "fixture_index": {
+      "path": "catalogs/ceiling_light_fixtures_v0/fixture_index.json",
+      "sha256": "8ba67d4884fc8268f414d18e0bd7d7825181349d9ad7d6594801961f5760f8ce"
+    },
+    "fixture_catalog_manifest": {
+      "path": "catalogs/ceiling_light_fixtures_v0/fixture_catalog_manifest.json",
+      "sha256": "cac5521a65fbde044440757fd0c4fbbf139732c73ff0444eb30232a09ede28dd"
+    }
+  },
+  "files": {
+    "ceiling_light_fixture_catalog": {
+      "path": "ceiling_light_fixture_catalog.json",
+      "sha256": "28d5891f475e9b405e13cf2d107c3c050ac9fbfb7ae7c5244e5287a7297f690c"
+    },
+    "fixture_index": {
+      "path": "fixture_index.json",
+      "sha256": "6235f3a5da14574d08380b024744bdfb7b42dff795700a584cdcaa1d5aec2c87"
+    },
+    "fixture_catalog_manifest": {
+      "path": "fixture_catalog_manifest.json",
+      "sha256": "35afa351ba1c8bc8fdca6a6e26603033b4bdcee98ee9036c64243fd42736b17d"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/ceiling_light_fixtures_v0_r1",
+    "fixture_payload_count": 1,
+    "payload_file_count": 2,
+    "payload_files": [
+      {
+        "fixture_id": "kenney_lamp_square_ceiling_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/ceiling_light_fixtures_v0_r1/fixtures/ceiling/kenney_lamp_square_ceiling_01/model.glb",
+        "sha256": "57066be51583d83ae60071e8179af275189cb2911ecb9fc24953bb930c8bf118",
+        "size_bytes": 5628
+      },
+      {
+        "fixture_id": "kenney_lamp_square_ceiling_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/ceiling_light_fixtures_v0_r1/fixtures/ceiling/kenney_lamp_square_ceiling_01/preview.png",
+        "sha256": "f3ebd14da7017be4258c107395c85effa7f6a0302092d6f595ff3780159f0f96",
+        "size_bytes": 1464
+      }
+    ]
+  },
+  "contract": {
+    "schema_path": "schemas/local/ceiling_light_fixture_catalog_v0.schema.json",
+    "consumer_note": "docs/architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md"
+  },
+  "notes": "Frozen v0 ceiling-light fixture snapshot for vgm-scene-engine. Single Kenney flush-mount ceiling fixture."
+}

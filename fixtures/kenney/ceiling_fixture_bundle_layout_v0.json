@@ -1,0 +1,23 @@
+{
+  "layout_id": "kenney_ceiling_fixture_bundle_layout_v0",
+  "source_id": "kenney_furniture_kit",
+  "selection_path": "sources/kenney/ceiling_fixture_selection_v0.json",
+  "planned_at": "2026-03-17T21:10:00+00:00",
+  "data_root_env_var": "VGM_ASSETS_DATA_ROOT",
+  "normalized_root_relpath": "fixtures/ceiling/kenney/ceiling_light_fixtures_v0",
+  "bundle_count": 1,
+  "bundles": [
+    {
+      "selection_id": "kenney_ceiling_fixture_lamp_square_ceiling_v0",
+      "mount_type": "ceiling",
+      "fixture_id": "kenney_lamp_square_ceiling_01",
+      "normalized_rel_dir": "fixtures/ceiling/kenney/ceiling_light_fixtures_v0/kenney_lamp_square_ceiling_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    }
+  ]
+}

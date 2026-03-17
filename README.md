@@ -47,6 +47,7 @@ See:
 - `docs/architecture/room_surface_material_consumer_guarantees_v0.md`
 - `docs/architecture/storage_layout_v0.md`
 - `docs/architecture/room_surface_material_catalog_v0.md`
+- `docs/architecture/opening_assembly_catalog_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/poly_haven/README.md`
@@ -54,6 +55,7 @@ See:
 - `docs/catalogs/living_room_kenney_v0.md`
 - `docs/catalogs/room_surface_materials_v0.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
+- `docs/plans/opening_assemblies_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
@@ -442,3 +444,5 @@ Verify the env:
   scene-scale contract while keeping category-level variation
 - [x] added the current size-normalized scene-engine snapshot:
   - `exports/scene_engine/living_room_kenney_v0_r2`
+- [x] added the initial opening-assemblies design and planning notes, using
+  Kenney door/window candidates as the first likely `v0` source

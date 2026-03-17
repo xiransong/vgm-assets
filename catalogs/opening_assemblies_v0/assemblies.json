@@ -1,0 +1,105 @@
+[
+  {
+    "assembly_id": "kenney_wall_doorway_01",
+    "opening_type": "door",
+    "sample_weight": 1.0,
+    "source": "kenney_furniture_kit",
+    "display_name": "Kenney Wall Doorway 01",
+    "compatibility": {
+      "nominal_width_m": 0.9,
+      "nominal_height_m": 2.1,
+      "max_width_delta_m": 0.1,
+      "max_height_delta_m": 0.1
+    },
+    "files": {
+      "mesh": {
+        "path": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_01/model.glb",
+        "format": "glb",
+        "sha256": "a55be1da05aa80c74749d0c38bd093fa5e2b1eaf21cbc9a7c3a0e6fbcfbe38e2",
+        "size_bytes": 6444
+      },
+      "preview_image": {
+        "path": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_01/preview.png",
+        "format": "png",
+        "sha256": "e52945f54b7a5c117e9cf1bbc670b3e5341f5faee11c7b8878a87d140bb6a70c",
+        "size_bytes": 3238
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "opening_assemblies_v0_bundle_import_v1",
+      "upstream_ids": [
+        "kenney_opening_door_wall_doorway_v0"
+      ],
+      "upstream_bundle_relpath": "assemblies/openings/kenney/opening_assemblies_v0/door/kenney_wall_doorway_01/bundle_manifest.json"
+    },
+    "style_tags": [
+      "interior",
+      "simple",
+      "frame",
+      "doorway"
+    ],
+    "frame_depth_m": 0.12,
+    "door_swing": "fixed",
+    "selection_id": "kenney_opening_door_wall_doorway_v0",
+    "license": "CC0",
+    "source_url": "https://kenney.nl/assets/furniture-kit"
+  },
+  {
+    "assembly_id": "kenney_wall_window_01",
+    "opening_type": "window",
+    "sample_weight": 1.0,
+    "source": "kenney_furniture_kit",
+    "display_name": "Kenney Wall Window 01",
+    "compatibility": {
+      "nominal_width_m": 1.2,
+      "nominal_height_m": 1.2,
+      "max_width_delta_m": 0.2,
+      "max_height_delta_m": 0.2
+    },
+    "files": {
+      "mesh": {
+        "path": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_01/model.glb",
+        "format": "glb",
+        "sha256": "166a10fddb8a78d942bc2791186913f7015dfee8501d20efd7a7b8f196fc5c3e",
+        "size_bytes": 10744
+      },
+      "preview_image": {
+        "path": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_01/preview.png",
+        "format": "png",
+        "sha256": "fa444fc642ca4f84a2b49b6eca14d5eaaf46f810360be97dd72f42ee01ae8bc7",
+        "size_bytes": 4112
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "opening_assemblies_v0_bundle_import_v1",
+      "upstream_ids": [
+        "kenney_opening_window_wall_window_v0"
+      ],
+      "upstream_bundle_relpath": "assemblies/openings/kenney/opening_assemblies_v0/window/kenney_wall_window_01/bundle_manifest.json"
+    },
+    "style_tags": [
+      "interior",
+      "simple",
+      "frame",
+      "window"
+    ],
+    "frame_depth_m": 0.12,
+    "glazing": {
+      "is_glazed": true,
+      "transparency": 0.7
+    },
+    "selection_id": "kenney_opening_window_wall_window_v0",
+    "license": "CC0",
+    "source_url": "https://kenney.nl/assets/furniture-kit"
+  }
+]

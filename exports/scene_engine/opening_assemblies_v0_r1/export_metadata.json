@@ -1,0 +1,79 @@
+{
+  "export_id": "opening_assemblies_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "opening_assemblies_v0",
+  "created_at": "2026-03-17T20:57:39+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "opening_assembly_catalog": {
+      "path": "catalogs/opening_assemblies_v0/assemblies.json",
+      "sha256": "4a1d6676399b9f96c32536e51cc2cc7e26abd5ba25d2e977a62f195966a8469a"
+    },
+    "opening_type_index": {
+      "path": "catalogs/opening_assemblies_v0/opening_type_index.json",
+      "sha256": "59206f0163a6230d24b60cfbc593ed206e92cbc165b5edad1ffbe3fd30e895fa"
+    },
+    "assembly_catalog_manifest": {
+      "path": "catalogs/opening_assemblies_v0/assembly_catalog_manifest.json",
+      "sha256": "67f4c3659bc639a5c98c158d80bb6e40a35c6c7432f454eaa6f324ab01232336"
+    }
+  },
+  "files": {
+    "opening_assembly_catalog": {
+      "path": "opening_assembly_catalog.json",
+      "sha256": "b3076c83fb10b5a2b63e747fdb13378d5369c673edaca6345ac7ca078f7ac692"
+    },
+    "opening_type_index": {
+      "path": "opening_type_index.json",
+      "sha256": "e46d685f615ae2d2d4ddaa131665799e62f9203e7a448c52733eb7368d41022b"
+    },
+    "assembly_catalog_manifest": {
+      "path": "assembly_catalog_manifest.json",
+      "sha256": "ee71ec5f2b434bfab2e9eae71d95344ba821384c9d630cb779e70bbf97a9be01"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/opening_assemblies_v0_r1",
+    "assembly_payload_count": 2,
+    "payload_file_count": 4,
+    "payload_files": [
+      {
+        "assembly_id": "kenney_wall_doorway_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/opening_assemblies_v0_r1/assemblies/door/kenney_wall_doorway_01/model.glb",
+        "sha256": "a55be1da05aa80c74749d0c38bd093fa5e2b1eaf21cbc9a7c3a0e6fbcfbe38e2",
+        "size_bytes": 6444
+      },
+      {
+        "assembly_id": "kenney_wall_doorway_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/opening_assemblies_v0_r1/assemblies/door/kenney_wall_doorway_01/preview.png",
+        "sha256": "e52945f54b7a5c117e9cf1bbc670b3e5341f5faee11c7b8878a87d140bb6a70c",
+        "size_bytes": 3238
+      },
+      {
+        "assembly_id": "kenney_wall_window_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/opening_assemblies_v0_r1/assemblies/window/kenney_wall_window_01/model.glb",
+        "sha256": "166a10fddb8a78d942bc2791186913f7015dfee8501d20efd7a7b8f196fc5c3e",
+        "size_bytes": 10744
+      },
+      {
+        "assembly_id": "kenney_wall_window_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/opening_assemblies_v0_r1/assemblies/window/kenney_wall_window_01/preview.png",
+        "sha256": "fa444fc642ca4f84a2b49b6eca14d5eaaf46f810360be97dd72f42ee01ae8bc7",
+        "size_bytes": 4112
+      }
+    ]
+  },
+  "contract": {
+    "schema_path": "schemas/local/opening_assembly_catalog_v0.schema.json",
+    "consumer_note": "docs/architecture/opening_assemblies_scene_engine_consumer_v0.md"
+  },
+  "notes": "Frozen opening-assembly snapshot for vgm-scene-engine consumption."
+}

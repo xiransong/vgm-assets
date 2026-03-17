@@ -1,0 +1,20 @@
+{
+  "catalog_path": "opening_assembly_catalog.json",
+  "opening_type_count": 2,
+  "opening_types": {
+    "door": {
+      "sampling_policy": "uniform",
+      "assembly_count": 1,
+      "assembly_ids": [
+        "kenney_wall_doorway_01"
+      ]
+    },
+    "window": {
+      "sampling_policy": "uniform",
+      "assembly_count": 1,
+      "assembly_ids": [
+        "kenney_wall_window_01"
+      ]
+    }
+  }
+}

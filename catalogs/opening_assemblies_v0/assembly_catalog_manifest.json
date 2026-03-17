@@ -1,0 +1,18 @@
+{
+  "catalog_id": "opening_assemblies_v0",
+  "assembly_count": 2,
+  "catalog_files": [
+    {
+      "path": "catalogs/opening_assemblies_v0/assemblies.json",
+      "format": "json",
+      "sha256": "4a1d6676399b9f96c32536e51cc2cc7e26abd5ba25d2e977a62f195966a8469a",
+      "size_bytes": 3310
+    }
+  ],
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-17T20:57:17+00:00"
+}

@@ -48,12 +48,14 @@ See:
 - `docs/architecture/storage_layout_v0.md`
 - `docs/architecture/room_surface_material_catalog_v0.md`
 - `docs/architecture/opening_assembly_catalog_v0.md`
+- `docs/architecture/opening_assemblies_scene_engine_consumer_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/poly_haven/README.md`
 - `docs/architecture/material_packaging_v0.md`
 - `docs/catalogs/living_room_kenney_v0.md`
 - `docs/catalogs/room_surface_materials_v0.md`
+- `docs/catalogs/opening_assemblies_v0.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
 - `docs/plans/opening_assemblies_v0_plan.md`
 
@@ -201,6 +203,18 @@ Organize the first Kenney opening-assembly bundles:
 
 ```bash
 ./scripts/sources/organize_kenney_openings_v0.sh
+```
+
+Refresh the first opening-assembly catalog artifact:
+
+```bash
+./scripts/catalogs/refresh_opening_assemblies_v0.sh
+```
+
+Export the first frozen opening-assembly scene-engine snapshot:
+
+```bash
+./scripts/exports/export_opening_assemblies_v0_r1.sh
 ```
 
 Generate the current Poly Haven room-surface planning artifacts:
@@ -456,3 +470,7 @@ Verify the env:
   metadata for one door path and one window path
 - [x] organized the first normalized Kenney opening bundles in `DATA_ROOT` for
   one `door` and one `window`
+- [x] built the first repo-side opening-assembly catalog and frozen
+  scene-engine snapshot:
+  - `catalogs/opening_assemblies_v0`
+  - `exports/scene_engine/opening_assemblies_v0_r1`

@@ -11,8 +11,13 @@ from .catalog import (
     write_catalog_manifest,
 )
 from .exports import (
+    export_opening_assembly_snapshot,
     export_room_surface_material_snapshot,
     export_scene_engine_snapshot,
+)
+from .opening_assemblies import (
+    refresh_opening_assembly_catalog,
+    validate_opening_assembly_catalog,
 )
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
@@ -222,6 +227,35 @@ def build_parser() -> argparse.ArgumentParser:
     )
     validate_room_surface_material_catalog_parser.add_argument("catalog", type=Path)
 
+    refresh_opening_assembly_catalog_parser = subparsers.add_parser(
+        "refresh-opening-assembly-catalog",
+        help="Build an opening-assembly catalog from normalized bundle manifests and write its index and manifest",
+    )
+    refresh_opening_assembly_catalog_parser.add_argument("--catalog-id", required=True)
+    refresh_opening_assembly_catalog_parser.add_argument(
+        "--bundle-manifest",
+        type=Path,
+        action="append",
+        required=True,
+        dest="bundle_manifests",
+    )
+    refresh_opening_assembly_catalog_parser.add_argument(
+        "--catalog-output", type=Path, required=True
+    )
+    refresh_opening_assembly_catalog_parser.add_argument(
+        "--opening-type-index-output", type=Path, required=True
+    )
+    refresh_opening_assembly_catalog_parser.add_argument(
+        "--manifest-output", type=Path, required=True
+    )
+    refresh_opening_assembly_catalog_parser.add_argument("--created-at")
+
+    validate_opening_assembly_catalog_parser = subparsers.add_parser(
+        "validate-opening-assembly-catalog",
+        help="Validate an opening-assembly catalog against the local vgm-assets v0 schema",
+    )
+    validate_opening_assembly_catalog_parser.add_argument("catalog", type=Path)
+
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
         help="Validate a catalog, refresh its measurement report, and write its manifest",
@@ -289,6 +323,18 @@ def build_parser() -> argparse.ArgumentParser:
     material_export_parser.add_argument("--manifest", type=Path, required=True)
     material_export_parser.add_argument("--output-dir", type=Path, required=True)
     material_export_parser.add_argument("--notes")
+
+    opening_export_parser = subparsers.add_parser(
+        "export-opening-assembly-snapshot",
+        help="Export a frozen scene-engine snapshot from opening-assembly catalog artifacts",
+    )
+    opening_export_parser.add_argument("--export-id", required=True)
+    opening_export_parser.add_argument("--source-catalog-id", required=True)
+    opening_export_parser.add_argument("--catalog", type=Path, required=True)
+    opening_export_parser.add_argument("--opening-type-index", type=Path, required=True)
+    opening_export_parser.add_argument("--manifest", type=Path, required=True)
+    opening_export_parser.add_argument("--output-dir", type=Path, required=True)
+    opening_export_parser.add_argument("--notes")
 
     return parser
 
@@ -480,6 +526,23 @@ def main() -> int:
         print(f"Validated {len(records)} room-surface materials in {args.catalog}")
         return 0
 
+    if args.command == "refresh-opening-assembly-catalog":
+        summary = refresh_opening_assembly_catalog(
+            catalog_id=args.catalog_id,
+            bundle_manifest_paths=args.bundle_manifests,
+            catalog_output=args.catalog_output,
+            opening_type_index_output=args.opening_type_index_output,
+            manifest_output=args.manifest_output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "validate-opening-assembly-catalog":
+        records = validate_opening_assembly_catalog(args.catalog)
+        print(f"Validated {len(records)} opening assemblies in {args.catalog}")
+        return 0
+
     if args.command == "refresh-catalog-artifacts":
         summary = refresh_catalog_artifacts(
             catalog_path=args.catalog,
@@ -551,6 +614,19 @@ def main() -> int:
             source_catalog_id=args.source_catalog_id,
             catalog_path=args.catalog,
             surface_type_index_path=args.surface_type_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-opening-assembly-snapshot":
+        summary = export_opening_assembly_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            opening_type_index_path=args.opening_type_index,
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             notes=args.notes,

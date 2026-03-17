@@ -1,0 +1,299 @@
+{
+  "export_id": "room_surface_materials_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "room_surface_materials_v0",
+  "created_at": "2026-03-17T18:33:29+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "room_surface_material_catalog": {
+      "path": "catalogs/room_surface_materials_v0/materials.json",
+      "sha256": "fb8996f6058cfaf3f4b55d1399a5f2f6213a594d4bae81e48623e334a6471021"
+    },
+    "surface_type_index": {
+      "path": "catalogs/room_surface_materials_v0/surface_type_index.json",
+      "sha256": "4edae1d1e9061771efb82e52ebd26eaffbd1a3a08e34acc280385f651f404c21"
+    },
+    "material_catalog_manifest": {
+      "path": "catalogs/room_surface_materials_v0/material_catalog_manifest.json",
+      "sha256": "082ecf028c3b897c864f3d25f258b1609aea7edaa5ba30e68cd9b7db80aba3b5"
+    }
+  },
+  "files": {
+    "room_surface_material_catalog": {
+      "path": "room_surface_material_catalog.json",
+      "sha256": "d861e9c9ea5f705228e70fc25077303338defcc46bb3d04eee913cbaaad5cd6e"
+    },
+    "surface_type_index": {
+      "path": "surface_type_index.json",
+      "sha256": "3a1f4758340329eef08b129e199c3a227433fff8664bc00f802fa3540e6356d8"
+    },
+    "material_catalog_manifest": {
+      "path": "material_catalog_manifest.json",
+      "sha256": "f72c9c7d5ebdcd1d3f9d24fe5c10e7fc6ac5f28ff32cc28a042ba46fc8bb2169"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/room_surface_materials_v0_r1",
+    "material_payload_count": 6,
+    "payload_file_count": 36,
+    "payload_files": [
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/base_color.jpg",
+        "sha256": "7c3ff1164c8dd0758ef2c048e9a266d28174120de01052ec40e6ca486177345c",
+        "size_bytes": 2983667
+      },
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/roughness.jpg",
+        "sha256": "297eda0d75f2020cc541dbf242e1f5fd058053249567f49a4506fc2c5b1a172b",
+        "size_bytes": 2267559
+      },
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/normal_gl.jpg",
+        "sha256": "eff2e4db46bab930dc05997faf5085157eec4fd652cdfc6cd01fa11edd56ef10",
+        "size_bytes": 1863576
+      },
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/ao.jpg",
+        "sha256": "9f9aa2da94211afcd08c56d6d74d9bb80b7792666b000297e3b3470739dd18e5",
+        "size_bytes": 2826020
+      },
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/displacement.jpg",
+        "sha256": "69ca2cc0a923fa6722a272b6939cc8455a0c2c5f10663e55284997b85a5cf878",
+        "size_bytes": 2426717
+      },
+      {
+        "material_id": "polyhaven_wood_floor_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_wood_floor_01/preview.png",
+        "sha256": "9be82036141c53f845d74d359f035b97eb020b310477f6d768eb506b50de61ed",
+        "size_bytes": 93116
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/base_color.jpg",
+        "sha256": "2a1e6519309b369f749f06aaf241ac67ea762c686b6a848c1a79331b18a30521",
+        "size_bytes": 3225117
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/roughness.jpg",
+        "sha256": "f547988692d1b53274b3023e9ed89d8280087a5ff1018cd64f83e77440ab54c4",
+        "size_bytes": 2545321
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/normal_gl.jpg",
+        "sha256": "49aa58c34c6770d209e63f9bdb4d16326f5dab24474cfeb18433e63fc54456de",
+        "size_bytes": 2420220
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/ao.jpg",
+        "sha256": "2c99e8f63e2307d52f93355b6fe93af9b1b74e276848777095aae1adac9660f3",
+        "size_bytes": 1845680
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/displacement.jpg",
+        "sha256": "9e0abd8ebb3b536bcfaab65c71ebbe62cef0616088210858ccc62875ad9afc1e",
+        "size_bytes": 2051856
+      },
+      {
+        "material_id": "polyhaven_laminate_floor_02",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/floor/polyhaven_laminate_floor_02/preview.png",
+        "sha256": "6f55494171e0a248672da97210032c0970abf2e91c03f9975c7824c07a1a5f5f",
+        "size_bytes": 88016
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/base_color.jpg",
+        "sha256": "0ca5245ba70777d3e41ff4566c9f8d363855461891802c55cb7dc0f6f85f084e",
+        "size_bytes": 2568315
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/roughness.jpg",
+        "sha256": "a3dc1911f6e25d88fdb0031fe0cfb602eec5496084c508774c60691bed087417",
+        "size_bytes": 1604444
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/normal_gl.jpg",
+        "sha256": "083579b03a8f31ec1886512e5972f3b893610bf26a2098f97910e0f46745cdc9",
+        "size_bytes": 3379814
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/ao.jpg",
+        "sha256": "4dd72e594056fae1653118bdc86638381c65605edcbdf37e6a27c762782d55fe",
+        "size_bytes": 2141148
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/displacement.jpg",
+        "sha256": "7a477010377e267bbf3c650037f0659c9b5b0c7860f8056e0145600145ef66fc",
+        "size_bytes": 1007108
+      },
+      {
+        "material_id": "polyhaven_white_plaster_wall_02",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_white_plaster_wall_02/preview.png",
+        "sha256": "2dc5ad4bb9f5a9d5e3e3360888d7494be681d422fbb1e32c50b93f393173469d",
+        "size_bytes": 100382
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/base_color.jpg",
+        "sha256": "f8fd4a4263dc257060f34021bd537d968cc04b38b332f29ddd516f1fdd5ec201",
+        "size_bytes": 1987693
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/roughness.jpg",
+        "sha256": "8c7ecda523877e06f3f0e67cd7cefe4cf999972d9ef46d1ddc28cf3a16a8c35d",
+        "size_bytes": 1616488
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/normal_gl.jpg",
+        "sha256": "25a501bd78e1b55d62bebe2f9fd5ff77ed796a66e092b2efbd5339e4bee15f0a",
+        "size_bytes": 3886433
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/ao.jpg",
+        "sha256": "9fabc7288b5b62580828f79e4c6e73a1754b7fd45ff3a992c8d8214031bcd093",
+        "size_bytes": 1750625
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/displacement.jpg",
+        "sha256": "52b39d855eb9d3323ba99ec43b466746c5f015f48ab22526663b6aca03e174ee",
+        "size_bytes": 674691
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_wall_04",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/wall/polyhaven_plaster_grey_wall_04/preview.png",
+        "sha256": "3118912c12e83f3458ddfc57515281e6313bedf72da90b1690ae94a3fd4c12bb",
+        "size_bytes": 103725
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/base_color.jpg",
+        "sha256": "0ca5245ba70777d3e41ff4566c9f8d363855461891802c55cb7dc0f6f85f084e",
+        "size_bytes": 2568315
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/roughness.jpg",
+        "sha256": "a3dc1911f6e25d88fdb0031fe0cfb602eec5496084c508774c60691bed087417",
+        "size_bytes": 1604444
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/normal_gl.jpg",
+        "sha256": "083579b03a8f31ec1886512e5972f3b893610bf26a2098f97910e0f46745cdc9",
+        "size_bytes": 3379814
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/ao.jpg",
+        "sha256": "4dd72e594056fae1653118bdc86638381c65605edcbdf37e6a27c762782d55fe",
+        "size_bytes": 2141148
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/displacement.jpg",
+        "sha256": "7a477010377e267bbf3c650037f0659c9b5b0c7860f8056e0145600145ef66fc",
+        "size_bytes": 1007108
+      },
+      {
+        "material_id": "polyhaven_white_plaster_ceiling_02",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_white_plaster_ceiling_02/preview.png",
+        "sha256": "2dc5ad4bb9f5a9d5e3e3360888d7494be681d422fbb1e32c50b93f393173469d",
+        "size_bytes": 100382
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "base_color",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/base_color.jpg",
+        "sha256": "f8fd4a4263dc257060f34021bd537d968cc04b38b332f29ddd516f1fdd5ec201",
+        "size_bytes": 1987693
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "roughness",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/roughness.jpg",
+        "sha256": "8c7ecda523877e06f3f0e67cd7cefe4cf999972d9ef46d1ddc28cf3a16a8c35d",
+        "size_bytes": 1616488
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "normal",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/normal_gl.jpg",
+        "sha256": "25a501bd78e1b55d62bebe2f9fd5ff77ed796a66e092b2efbd5339e4bee15f0a",
+        "size_bytes": 3886433
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "ao",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/ao.jpg",
+        "sha256": "9fabc7288b5b62580828f79e4c6e73a1754b7fd45ff3a992c8d8214031bcd093",
+        "size_bytes": 1750625
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "displacement",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/displacement.jpg",
+        "sha256": "52b39d855eb9d3323ba99ec43b466746c5f015f48ab22526663b6aca03e174ee",
+        "size_bytes": 674691
+      },
+      {
+        "material_id": "polyhaven_plaster_grey_ceiling_04",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/room_surface_materials_v0_r1/materials/ceiling/polyhaven_plaster_grey_ceiling_04/preview.png",
+        "sha256": "3118912c12e83f3458ddfc57515281e6313bedf72da90b1690ae94a3fd4c12bb",
+        "size_bytes": 103725
+      }
+    ]
+  },
+  "notes": "Frozen room-surface material snapshot for vgm-scene-engine consumption."
+}

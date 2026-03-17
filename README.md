@@ -43,6 +43,7 @@ See:
 - `docs/architecture/category_sampling_v0.md`
 - `docs/architecture/export_snapshots_v0.md`
 - `docs/architecture/scene_engine_consumer_v0.md`
+- `docs/architecture/room_surface_scene_engine_consumer_v0.md`
 - `docs/architecture/storage_layout_v0.md`
 - `docs/architecture/room_surface_material_catalog_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
@@ -207,6 +208,12 @@ Refresh the first room-surface material catalog artifact:
 ./scripts/catalogs/refresh_room_surface_materials_v0.sh
 ```
 
+Export the first frozen room-surface material snapshot:
+
+```bash
+./scripts/exports/export_room_surface_materials_v0_r1.sh
+```
+
 Validate the first toy catalog:
 
 ```bash
@@ -309,6 +316,7 @@ Verify the env:
 - [~] build the first room-surface material catalog artifact from normalized bundles
 - [x] build the first usable room-surface material catalog with at least two
   materials each for `floor`, `wall`, and `ceiling`
+- [x] export the first frozen scene-engine room-surface material snapshot
 
 ## Development Log
 
@@ -411,3 +419,6 @@ Verify the env:
   - `floor`: 2
   - `wall`: 2
   - `ceiling`: 2
+- [x] added the frozen room-surface scene-engine snapshot:
+  - `exports/scene_engine/room_surface_materials_v0_r1`
+  - export-owned payload snapshot under `DATA_ROOT/exports/scene_engine/room_surface_materials_v0_r1/`

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "room_surface_materials_v0_r1",
+  "material_count": 6,
+  "catalog_files": [
+    {
+      "path": "room_surface_material_catalog.json",
+      "format": "json",
+      "sha256": "d861e9c9ea5f705228e70fc25077303338defcc46bb3d04eee913cbaaad5cd6e",
+      "size_bytes": 16385
+    }
+  ],
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-17T18:33:29+00:00"
+}

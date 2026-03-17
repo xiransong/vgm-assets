@@ -23,6 +23,7 @@ notes for `vgm-assets`.
 - `architecture/category_sampling_v0.md`
 - `architecture/export_snapshots_v0.md`
 - `architecture/scene_engine_consumer_v0.md`
+- `architecture/room_surface_scene_engine_consumer_v0.md`
 - `architecture/material_packaging_v0.md`
 - `architecture/room_surface_material_catalog_v0.md`
 - `architecture/poly_haven_room_surface_manifests_v0.md`

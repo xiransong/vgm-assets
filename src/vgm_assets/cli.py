@@ -10,7 +10,10 @@ from .catalog import (
     validate_asset_catalog,
     write_catalog_manifest,
 )
-from .exports import export_scene_engine_snapshot
+from .exports import (
+    export_room_surface_material_snapshot,
+    export_scene_engine_snapshot,
+)
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import refresh_room_surface_material_catalog
 from .sampling import category_summary, sample_uniform_asset, write_category_index
@@ -240,6 +243,18 @@ def build_parser() -> argparse.ArgumentParser:
     export_parser.add_argument("--output-dir", type=Path, required=True)
     export_parser.add_argument("--notes")
 
+    material_export_parser = subparsers.add_parser(
+        "export-room-surface-material-snapshot",
+        help="Export a frozen scene-engine snapshot from room-surface material catalog artifacts",
+    )
+    material_export_parser.add_argument("--export-id", required=True)
+    material_export_parser.add_argument("--source-catalog-id", required=True)
+    material_export_parser.add_argument("--catalog", type=Path, required=True)
+    material_export_parser.add_argument("--surface-type-index", type=Path, required=True)
+    material_export_parser.add_argument("--manifest", type=Path, required=True)
+    material_export_parser.add_argument("--output-dir", type=Path, required=True)
+    material_export_parser.add_argument("--notes")
+
     return parser
 
 
@@ -462,6 +477,19 @@ def main() -> int:
             source_catalog_id=args.source_catalog_id,
             catalog_path=args.catalog,
             category_index_path=args.category_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-room-surface-material-snapshot":
+        summary = export_room_surface_material_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            surface_type_index_path=args.surface_type_index,
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             notes=args.notes,

@@ -1,0 +1,30 @@
+{
+  "catalog_path": "room_surface_material_catalog.json",
+  "surface_type_count": 3,
+  "surface_types": {
+    "ceiling": {
+      "sampling_policy": "uniform",
+      "material_count": 2,
+      "material_ids": [
+        "polyhaven_white_plaster_ceiling_02",
+        "polyhaven_plaster_grey_ceiling_04"
+      ]
+    },
+    "floor": {
+      "sampling_policy": "uniform",
+      "material_count": 2,
+      "material_ids": [
+        "polyhaven_wood_floor_01",
+        "polyhaven_laminate_floor_02"
+      ]
+    },
+    "wall": {
+      "sampling_policy": "uniform",
+      "material_count": 2,
+      "material_ids": [
+        "polyhaven_white_plaster_wall_02",
+        "polyhaven_plaster_grey_wall_04"
+      ]
+    }
+  }
+}

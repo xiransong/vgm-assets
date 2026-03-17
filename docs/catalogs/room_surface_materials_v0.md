@@ -15,6 +15,8 @@ material.
 - `catalogs/room_surface_materials_v0/surface_type_index.json`
 - `catalogs/room_surface_materials_v0/material_catalog_manifest.json`
 - `scripts/catalogs/refresh_room_surface_materials_v0.sh`
+- `exports/scene_engine/room_surface_materials_v0_r1`
+- `scripts/exports/export_room_surface_materials_v0_r1.sh`
 
 ## Current Scope
 
@@ -57,4 +59,4 @@ The next target additions should be:
 
 - a third `floor` material
 - a third `wall` material
-- a scene-engine-facing frozen export snapshot for this catalog
+- a third `ceiling` material

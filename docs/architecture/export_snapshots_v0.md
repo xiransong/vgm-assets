@@ -61,6 +61,11 @@ The first frozen scene-engine snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r1`
 
+The first frozen room-surface material snapshot is:
+
+- `exports/scene_engine/room_surface_materials_v0_r1`
+
 The current downstream-consumer note is:
 
 - `docs/architecture/scene_engine_consumer_v0.md`
+- `docs/architecture/room_surface_scene_engine_consumer_v0.md`

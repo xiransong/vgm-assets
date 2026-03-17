@@ -142,8 +142,8 @@ It has also been exercised against the live Poly Haven API for:
 
 After this, the next practical step should be:
 
-- export a frozen scene-engine snapshot for the room-surface material catalog
 - keep the current six-material slice stable while scene-engine starts consuming
-  it
+  the frozen snapshot
+- only add more materials after the downstream appearance flow is exercised once
 
 Only after that should we generalize beyond the current six-material room-surface slice.

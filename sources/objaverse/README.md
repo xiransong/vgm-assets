@@ -29,7 +29,19 @@ The current Objaverse direction is intentionally strict:
 
 - `source_spec_v0.json`
 - `furniture_ingestion_policy_v0.json`
+- `metadata_harvest_template_v0.json`
 - `review_queue_template_v0.json`
+
+## Current Metadata Contract
+
+The first metadata-harvest contract is now defined by:
+
+- `docs/architecture/objaverse_furniture_metadata_harvest_v0.md`
+- `schemas/local/objaverse_furniture_metadata_harvest_v0.schema.json`
+
+The repo-side starter template is:
+
+- `sources/objaverse/metadata_harvest_template_v0.json`
 
 ## Current Review Contract
 

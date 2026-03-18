@@ -116,6 +116,11 @@ Collect only source metadata and lightweight annotations first:
 
 No object becomes a candidate until it passes metadata filtering.
 
+The first local metadata-harvest contract is defined in:
+
+- `docs/architecture/objaverse_furniture_metadata_harvest_v0.md`
+- `schemas/local/objaverse_furniture_metadata_harvest_v0.schema.json`
+
 ### Stage 2. License Filter
 
 Apply the strict license policy before any geometry processing.

@@ -77,12 +77,13 @@ The initial planning layer is now in place:
 
 - the repo-side Objaverse source spec is frozen
 - the repo-side furniture ingestion policy is frozen
+- the metadata-harvest contract is documented
 - the first review-queue contract is documented
 
 ## Immediate Next Step
 
 Do only this next:
 
-- add a small validation/helper path for the review queue
-- define the metadata table fields we expect to harvest before narrowing
+- add a small validation/helper path for the metadata harvest and review queue
+- define how a narrowed review queue is derived from the harvested metadata table
 - keep live Objaverse ingestion out of scope until those contracts are stable

@@ -81,11 +81,14 @@ The initial planning layer is now in place:
 - the first review-queue contract is documented
 - lightweight validation commands now exist for both artifacts
 - the narrowing contract from harvest to review queue is documented
+- a stub harvest-to-review-queue helper seam now exists
 
 ## Immediate Next Step
 
 Do only this next:
 
-- add one small helper that can read a harvest artifact and validate the
-  narrowing inputs and outputs, even if the actual narrowing logic stays a stub
-- keep live Objaverse ingestion out of scope until that helper boundary is stable
+- decide the exact first narrowing logic we want in `v0`, probably starting with:
+  - license gate
+  - keyword category matching
+  - preferred-format trace
+- keep live Objaverse ingestion out of scope until that logic is written and tested

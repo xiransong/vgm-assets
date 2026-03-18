@@ -261,6 +261,16 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   sources/objaverse/review_queue_template_v0.json
 ```
 
+Write a schema-valid stub Objaverse review queue from a validated harvest:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  write-stub-objaverse-furniture-review-queue \
+  --harvest sources/objaverse/metadata_harvest_template_v0.json \
+  --policy sources/objaverse/furniture_ingestion_policy_v0.json \
+  --output /tmp/objaverse_review_queue_stub.json
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash

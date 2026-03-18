@@ -25,8 +25,10 @@ from .opening_assemblies import (
     validate_opening_assembly_catalog,
 )
 from .objaverse import (
+    load_objaverse_furniture_narrowing_contract,
     validate_objaverse_furniture_metadata_harvest,
     validate_objaverse_furniture_review_queue,
+    write_stub_objaverse_furniture_review_queue,
 )
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
@@ -293,6 +295,24 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an Objaverse furniture review-queue artifact against the local vgm-assets schema",
     )
     validate_objaverse_review_queue_parser.add_argument("queue", type=Path)
+
+    write_stub_objaverse_review_queue_parser = subparsers.add_parser(
+        "write-stub-objaverse-furniture-review-queue",
+        help="Validate Objaverse planning inputs and write a schema-valid stub review queue",
+    )
+    write_stub_objaverse_review_queue_parser.add_argument(
+        "--harvest", type=Path, required=True
+    )
+    write_stub_objaverse_review_queue_parser.add_argument(
+        "--policy", type=Path, required=True
+    )
+    write_stub_objaverse_review_queue_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_stub_objaverse_review_queue_parser.add_argument(
+        "--contract", type=Path
+    )
+    write_stub_objaverse_review_queue_parser.add_argument("--created-at")
 
     refresh_ceiling_light_fixture_catalog_parser = subparsers.add_parser(
         "refresh-ceiling-light-fixture-catalog",
@@ -646,6 +666,19 @@ def main() -> int:
         print(
             f"Validated {payload['candidate_count']} Objaverse review candidates in {args.queue}"
         )
+        return 0
+
+    if args.command == "write-stub-objaverse-furniture-review-queue":
+        if args.contract is not None:
+            load_objaverse_furniture_narrowing_contract(args.contract)
+        summary = write_stub_objaverse_furniture_review_queue(
+            harvest_path=args.harvest,
+            policy_path=args.policy,
+            output_path=args.output,
+            contract_path=args.contract,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "refresh-ceiling-light-fixture-catalog":

@@ -78,6 +78,16 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   sources/objaverse/review_queue_template_v0.json
 ```
 
+You can also exercise the current stub narrowing seam:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  write-stub-objaverse-furniture-review-queue \
+  --harvest sources/objaverse/metadata_harvest_template_v0.json \
+  --policy sources/objaverse/furniture_ingestion_policy_v0.json \
+  --output /tmp/objaverse_review_queue_stub.json
+```
+
 ## Expected Future Output
 
 If this source path works, it should eventually feed:

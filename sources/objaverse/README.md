@@ -43,6 +43,14 @@ The repo-side starter template is:
 
 - `sources/objaverse/metadata_harvest_template_v0.json`
 
+You can validate a harvest artifact with:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-objaverse-furniture-metadata-harvest \
+  sources/objaverse/metadata_harvest_template_v0.json
+```
+
 ## Current Review Contract
 
 The first review-queue contract is now defined by:
@@ -53,6 +61,14 @@ The first review-queue contract is now defined by:
 The repo-side starter template is:
 
 - `sources/objaverse/review_queue_template_v0.json`
+
+You can validate a review queue with:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-objaverse-furniture-review-queue \
+  sources/objaverse/review_queue_template_v0.json
+```
 
 ## Expected Future Output
 

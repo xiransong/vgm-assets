@@ -244,6 +244,22 @@ Export the first frozen ceiling-light fixture scene-engine snapshot:
 ./scripts/exports/export_ceiling_light_fixtures_v0_r1.sh
 ```
 
+Validate the Objaverse metadata-harvest template:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-objaverse-furniture-metadata-harvest \
+  sources/objaverse/metadata_harvest_template_v0.json
+```
+
+Validate the Objaverse review-queue template:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-objaverse-furniture-review-queue \
+  sources/objaverse/review_queue_template_v0.json
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash

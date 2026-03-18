@@ -24,6 +24,10 @@ from .opening_assemblies import (
     refresh_opening_assembly_catalog,
     validate_opening_assembly_catalog,
 )
+from .objaverse import (
+    validate_objaverse_furniture_metadata_harvest,
+    validate_objaverse_furniture_review_queue,
+)
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
     refresh_room_surface_material_catalog,
@@ -277,6 +281,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an opening-assembly catalog against the local vgm-assets v0 schema",
     )
     validate_opening_assembly_catalog_parser.add_argument("catalog", type=Path)
+
+    validate_objaverse_metadata_harvest_parser = subparsers.add_parser(
+        "validate-objaverse-furniture-metadata-harvest",
+        help="Validate an Objaverse furniture metadata-harvest artifact against the local vgm-assets schema",
+    )
+    validate_objaverse_metadata_harvest_parser.add_argument("harvest", type=Path)
+
+    validate_objaverse_review_queue_parser = subparsers.add_parser(
+        "validate-objaverse-furniture-review-queue",
+        help="Validate an Objaverse furniture review-queue artifact against the local vgm-assets schema",
+    )
+    validate_objaverse_review_queue_parser.add_argument("queue", type=Path)
 
     refresh_ceiling_light_fixture_catalog_parser = subparsers.add_parser(
         "refresh-ceiling-light-fixture-catalog",
@@ -616,6 +632,20 @@ def main() -> int:
     if args.command == "validate-opening-assembly-catalog":
         records = validate_opening_assembly_catalog(args.catalog)
         print(f"Validated {len(records)} opening assemblies in {args.catalog}")
+        return 0
+
+    if args.command == "validate-objaverse-furniture-metadata-harvest":
+        payload = validate_objaverse_furniture_metadata_harvest(args.harvest)
+        print(
+            f"Validated {payload['record_count']} Objaverse harvested records in {args.harvest}"
+        )
+        return 0
+
+    if args.command == "validate-objaverse-furniture-review-queue":
+        payload = validate_objaverse_furniture_review_queue(args.queue)
+        print(
+            f"Validated {payload['candidate_count']} Objaverse review candidates in {args.queue}"
+        )
         return 0
 
     if args.command == "refresh-ceiling-light-fixture-catalog":

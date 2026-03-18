@@ -1,0 +1,26 @@
+{
+  "contract_id": "objaverse_furniture_narrowing_v0",
+  "status": "planned",
+  "input_artifacts": {
+    "metadata_harvest_schema": "schemas/local/objaverse_furniture_metadata_harvest_v0.schema.json",
+    "policy_path": "sources/objaverse/furniture_ingestion_policy_v0.json"
+  },
+  "output_artifacts": {
+    "review_queue_schema": "schemas/local/objaverse_furniture_review_queue_v0.schema.json"
+  },
+  "default_rules": {
+    "license_mode": "allow_default_only",
+    "require_minimal_metadata": true,
+    "require_category_match": true,
+    "format_mode": "prefer_supported_mesh_formats",
+    "preview_mode": "prefer_previewable_assets",
+    "default_review_status": "pending"
+  },
+  "trace_fields": [
+    "license_rule",
+    "category_rule",
+    "format_rule",
+    "notes"
+  ],
+  "notes": "Planning-only narrowing contract for the first Objaverse furniture ingestion wave."
+}

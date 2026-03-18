@@ -177,6 +177,12 @@ The first local review-queue contract is defined in:
 - `docs/architecture/objaverse_furniture_review_queue_v0.md`
 - `schemas/local/objaverse_furniture_review_queue_v0.schema.json`
 
+The first narrowing bridge between metadata harvest and review queue is defined
+in:
+
+- `docs/architecture/objaverse_furniture_narrowing_v0.md`
+- `sources/objaverse/narrowing_contract_v0.json`
+
 ### Stage 6. Normalized Bundle Build
 
 Only accepted candidates get normalized into `DATA_ROOT`.

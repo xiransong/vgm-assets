@@ -80,10 +80,12 @@ The initial planning layer is now in place:
 - the metadata-harvest contract is documented
 - the first review-queue contract is documented
 - lightweight validation commands now exist for both artifacts
+- the narrowing contract from harvest to review queue is documented
 
 ## Immediate Next Step
 
 Do only this next:
 
-- define how a narrowed review queue is derived from the harvested metadata table
-- keep live Objaverse ingestion out of scope until those contracts are stable
+- add one small helper that can read a harvest artifact and validate the
+  narrowing inputs and outputs, even if the actual narrowing logic stays a stub
+- keep live Objaverse ingestion out of scope until that helper boundary is stable

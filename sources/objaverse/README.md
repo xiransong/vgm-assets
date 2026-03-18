@@ -62,6 +62,14 @@ The repo-side starter template is:
 
 - `sources/objaverse/review_queue_template_v0.json`
 
+## Current Narrowing Contract
+
+The first narrowing bridge from metadata harvest to review queue is now defined
+by:
+
+- `docs/architecture/objaverse_furniture_narrowing_v0.md`
+- `sources/objaverse/narrowing_contract_v0.json`
+
 You can validate a review queue with:
 
 ```bash

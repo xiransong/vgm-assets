@@ -52,6 +52,7 @@ See:
 - `docs/architecture/ceiling_fixture_catalog_v0.md`
 - `docs/architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
 - `docs/architecture/objaverse_furniture_ingestion_v0.md`
+- `docs/architecture/objaverse_furniture_review_queue_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/objaverse/README.md`

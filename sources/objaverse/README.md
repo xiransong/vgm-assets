@@ -29,6 +29,18 @@ The current Objaverse direction is intentionally strict:
 
 - `source_spec_v0.json`
 - `furniture_ingestion_policy_v0.json`
+- `review_queue_template_v0.json`
+
+## Current Review Contract
+
+The first review-queue contract is now defined by:
+
+- `docs/architecture/objaverse_furniture_review_queue_v0.md`
+- `schemas/local/objaverse_furniture_review_queue_v0.schema.json`
+
+The repo-side starter template is:
+
+- `sources/objaverse/review_queue_template_v0.json`
 
 ## Expected Future Output
 

@@ -71,10 +71,18 @@ For the first Objaverse wave:
 - keep Kenney as the stable fallback
 - prefer assets with usable mesh payload and a practical preview path
 
+## Current State
+
+The initial planning layer is now in place:
+
+- the repo-side Objaverse source spec is frozen
+- the repo-side furniture ingestion policy is frozen
+- the first review-queue contract is documented
+
 ## Immediate Next Step
 
-Do only this first:
+Do only this next:
 
-- freeze the repo-side Objaverse source spec
-- freeze the repo-side furniture ingestion policy
-- document the review-queue shape before any live ingestion work
+- add a small validation/helper path for the review queue
+- define the metadata table fields we expect to harvest before narrowing
+- keep live Objaverse ingestion out of scope until those contracts are stable

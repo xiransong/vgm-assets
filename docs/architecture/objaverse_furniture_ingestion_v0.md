@@ -167,6 +167,11 @@ Manual review should decide:
 - reject
 - keep-later
 
+The first local review-queue contract is defined in:
+
+- `docs/architecture/objaverse_furniture_review_queue_v0.md`
+- `schemas/local/objaverse_furniture_review_queue_v0.schema.json`
+
 ### Stage 6. Normalized Bundle Build
 
 Only accepted candidates get normalized into `DATA_ROOT`.

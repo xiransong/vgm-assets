@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/objaverse_furniture_review_queue_v0.schema.json",
+  "title": "Objaverse Furniture Review Queue v0",
+  "description": "Local vgm-assets schema for the first Objaverse furniture review queue.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "queue_id",
+    "source_id",
+    "policy_id",
+    "created_at",
+    "candidate_count",
+    "candidates"
+  ],
+  "properties": {
+    "queue_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "notes": {
+      "type": "string"
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/candidate"
+      }
+    }
+  },
+  "$defs": {
+    "filterTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "license_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "depth",
+        "height"
+      ],
+      "properties": {
+        "width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "depth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "previewRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "kind"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "remote_url",
+            "raw_local",
+            "processed_local"
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "object_uid",
+        "source_url",
+        "title",
+        "license",
+        "category_guess",
+        "review_status"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_uid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category_guess": {
+          "type": "string",
+          "enum": [
+            "sofa",
+            "coffee_table",
+            "tv_stand",
+            "bookcase",
+            "bookshelf",
+            "armchair",
+            "side_table",
+            "floor_lamp"
+          ]
+        },
+        "mesh_format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "has_preview": {
+          "type": "boolean"
+        },
+        "preview_ref": {
+          "$ref": "#/$defs/previewRef"
+        },
+        "has_textures": {
+          "type": "boolean"
+        },
+        "triangle_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bounds": {
+          "$ref": "#/$defs/bounds"
+        },
+        "source_tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "filter_trace": {
+          "$ref": "#/$defs/filterTrace"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "accepted",
+            "rejected",
+            "hold"
+          ]
+        },
+        "review_notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

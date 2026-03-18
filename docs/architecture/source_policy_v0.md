@@ -93,16 +93,21 @@ Current reference:
 ### Objaverse / Objaverse-XL
 
 Recommended use:
-- later-stage mining, retrieval, and scale experiments
+- the first large-scale furniture-diversity source after the Kenney bootstrap
 
-Why not for `v0`:
+Why not as a naive bulk ingest:
 - very large and heterogeneous
 - object-level license handling is more complex
 - geometry cleanup and metadata normalization cost is high
 
+Current direction:
+- proceed with a metadata-first ingestion plan
+- use strict per-object license filtering
+- keep the first wave inside the current living-room taxonomy
+
 Current references:
-- <https://objaverse.allenai.org/>
-- <https://huggingface.co/datasets/allenai/objaverse-xl>
+- <https://huggingface.co/datasets/allenai/objaverse>
+- <https://github.com/allenai/objaverse-xl>
 
 ### Infinigen
 
@@ -121,7 +126,8 @@ For the next real asset milestone:
 1. keep the existing toy living-room catalog as the stable fallback
 2. add one small Kenney-backed furniture slice
 3. add a Poly Haven material policy note
-4. defer Infinigen ingestion until the open-source path is working end to end
+4. begin Objaverse planning before large-scale realistic furniture intake
+5. defer Infinigen ingestion until the open-source path is working end to end
 
 ## Decision Rule
 

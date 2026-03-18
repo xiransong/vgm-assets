@@ -1,0 +1,19 @@
+{
+  "source_id": "objaverse_furniture_v0",
+  "source_family": "objaverse",
+  "display_name": "Objaverse Furniture Intake v0",
+  "status": "planned",
+  "references": {
+    "dataset": "https://huggingface.co/datasets/allenai/objaverse",
+    "scale_reference": "https://github.com/allenai/objaverse-xl"
+  },
+  "raw_layout": {
+    "metadata_root_rel": "sources/objaverse/metadata",
+    "payload_root_rel": "sources/objaverse/payloads"
+  },
+  "processed_layout": {
+    "candidate_root_rel": "sources/objaverse/furniture_candidates_v0",
+    "normalized_root_rel": "assets/furniture/objaverse/living_room_v0"
+  },
+  "notes": "Planning-only source spec for the first Objaverse furniture-ingestion wave. License handling is per-object and enforced by the ingestion policy."
+}

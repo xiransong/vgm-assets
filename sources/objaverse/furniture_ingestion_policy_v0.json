@@ -1,0 +1,146 @@
+{
+  "policy_id": "objaverse_furniture_ingestion_v0",
+  "status": "planned",
+  "scope": {
+    "categories": [
+      "sofa",
+      "coffee_table",
+      "tv_stand",
+      "bookcase",
+      "bookshelf",
+      "armchair",
+      "side_table",
+      "floor_lamp"
+    ]
+  },
+  "license_policy": {
+    "allow": [
+      "CC0",
+      "CC-BY 4.0"
+    ],
+    "manual_review": [
+      "CC-BY-SA",
+      "CC-BY 3.0",
+      "CC-BY 2.x"
+    ],
+    "reject": [
+      "CC-BY-NC",
+      "CC-BY-NC-SA",
+      "unknown"
+    ]
+  },
+  "metadata_filters": {
+    "preferred_mesh_formats": [
+      "glb",
+      "gltf",
+      "obj"
+    ],
+    "require_mesh_payload": true,
+    "prefer_previewable_assets": true
+  },
+  "category_mapping": {
+    "sofa": {
+      "positive_keywords": [
+        "sofa",
+        "couch",
+        "loveseat",
+        "settee",
+        "sectional"
+      ],
+      "negative_keywords": [
+        "bed",
+        "outdoor",
+        "bench"
+      ]
+    },
+    "coffee_table": {
+      "positive_keywords": [
+        "coffee table",
+        "cocktail table",
+        "center table"
+      ],
+      "negative_keywords": [
+        "desk",
+        "dining",
+        "console"
+      ]
+    },
+    "tv_stand": {
+      "positive_keywords": [
+        "tv stand",
+        "television stand",
+        "media console",
+        "media stand"
+      ],
+      "negative_keywords": [
+        "desk",
+        "bookcase"
+      ]
+    },
+    "bookcase": {
+      "positive_keywords": [
+        "bookcase",
+        "storage shelf",
+        "small shelf"
+      ],
+      "negative_keywords": [
+        "wall shelf"
+      ]
+    },
+    "bookshelf": {
+      "positive_keywords": [
+        "bookshelf",
+        "book shelf",
+        "library shelf",
+        "tall shelf"
+      ],
+      "negative_keywords": [
+        "wall shelf",
+        "small shelf"
+      ]
+    },
+    "armchair": {
+      "positive_keywords": [
+        "armchair",
+        "lounge chair",
+        "club chair",
+        "accent chair"
+      ],
+      "negative_keywords": [
+        "dining chair",
+        "office chair",
+        "stool"
+      ]
+    },
+    "side_table": {
+      "positive_keywords": [
+        "side table",
+        "end table",
+        "nightstand",
+        "bedside table"
+      ],
+      "negative_keywords": [
+        "coffee table",
+        "dining",
+        "desk"
+      ]
+    },
+    "floor_lamp": {
+      "positive_keywords": [
+        "floor lamp",
+        "standing lamp"
+      ],
+      "negative_keywords": [
+        "ceiling",
+        "desk lamp",
+        "table lamp",
+        "wall lamp"
+      ]
+    }
+  },
+  "review_targets": {
+    "narrowed_candidates_per_category": 10,
+    "accepted_assets_per_category_initial": 3
+  },
+  "notes": "Planning-only policy for the first Objaverse furniture wave. Use rule-based narrowing and strict license gating before building any normalized bundle set."
+}

@@ -31,6 +31,7 @@ notes for `vgm-assets`.
 - `architecture/opening_assemblies_scene_engine_consumer_v0.md`
 - `architecture/ceiling_fixture_catalog_v0.md`
 - `architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
+- `architecture/objaverse_furniture_ingestion_v0.md`
 - `architecture/poly_haven_room_surface_manifests_v0.md`
 
 ### Catalogs
@@ -45,3 +46,4 @@ notes for `vgm-assets`.
 - `plans/room_surface_materials_v0_plan.md`
 - `plans/opening_assemblies_v0_plan.md`
 - `plans/ceiling_light_fixtures_v0_plan.md`
+- `plans/objaverse_furniture_ingestion_v0_plan.md`

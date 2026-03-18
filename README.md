@@ -51,8 +51,10 @@ See:
 - `docs/architecture/opening_assemblies_scene_engine_consumer_v0.md`
 - `docs/architecture/ceiling_fixture_catalog_v0.md`
 - `docs/architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
+- `docs/architecture/objaverse_furniture_ingestion_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
+- `sources/objaverse/README.md`
 - `sources/poly_haven/README.md`
 - `docs/architecture/material_packaging_v0.md`
 - `docs/catalogs/living_room_kenney_v0.md`
@@ -62,6 +64,7 @@ See:
 - `docs/plans/room_surface_materials_v0_plan.md`
 - `docs/plans/opening_assemblies_v0_plan.md`
 - `docs/plans/ceiling_light_fixtures_v0_plan.md`
+- `docs/plans/objaverse_furniture_ingestion_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`

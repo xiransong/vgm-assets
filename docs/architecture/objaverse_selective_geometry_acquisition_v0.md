@@ -72,6 +72,25 @@ Each selected candidate should record:
 - `priority`
 - `notes`
 
+## Resolved Acquisition Manifest
+
+Before any real mesh download, the accepted shortlist should be resolved into a
+manifest that joins:
+
+- the selective-geometry shortlist
+- the imported metadata-harvest artifact
+
+This manifest should record, per candidate:
+
+- `source_url`
+- `thumbnail_url` when available
+- `available_formats`
+- `preferred_download_order`
+- canonical raw acquisition directory under `RAW_DATA_ROOT`
+
+Important: this is still a planning and acquisition-boundary artifact. It does
+not imply that direct download URLs are already known or stable.
+
 ## v0 Acquisition Rule
 
 For `v0`, geometry acquisition should:

@@ -1,0 +1,129 @@
+{
+  "manifest_id": "objaverse_000_014_selective_geometry_v0_manifest",
+  "selection_id": "objaverse_000_014_selective_geometry_v0",
+  "source_id": "objaverse_furniture_metadata_v0",
+  "review_id": "objaverse_000_014_manual_review_v0",
+  "harvest_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/metadata_harvest/objaverse_000-014_harvest.json",
+  "queue_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/review_queue/objaverse_000-014_review_queue.json",
+  "created_at": "2026-03-19T16:18:02+00:00",
+  "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
+  "raw_acquisition_root_rel": "sources/objaverse/furniture_v0/geometry",
+  "candidate_count": 5,
+  "candidates": [
+    {
+      "object_uid": "ac9ef69e1bbf4258aa489635b6cec609",
+      "title": "Earmes Lounge Chair",
+      "category_guess": "armchair",
+      "priority": 1,
+      "source_url": "https://sketchfab.com/3d-models/ac9ef69e1bbf4258aa489635b6cec609",
+      "available_formats": [
+        "glb",
+        "gltf",
+        "source",
+        "usdz"
+      ],
+      "preferred_download_order": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "raw_candidate_rel_dir": "sources/objaverse/furniture_v0/geometry/ac9ef69e1bbf4258aa489635b6cec609/raw",
+      "notes": "Highest-priority first armchair candidate for the geometry-backed prototype.",
+      "thumbnail_url": "https://media.sketchfab.com/models/ac9ef69e1bbf4258aa489635b6cec609/thumbnails/a95fe6f8b32d49019179e5679cbcea25/abb963b1c234472bb1312c1d6152533b.jpeg",
+      "triangle_count": 61892,
+      "vertex_count": 31933
+    },
+    {
+      "object_uid": "c715fad78e6c4fc79b3b54d40ab50d07",
+      "title": "Leather and Fabric Sofa",
+      "category_guess": "sofa",
+      "priority": 2,
+      "source_url": "https://sketchfab.com/3d-models/c715fad78e6c4fc79b3b54d40ab50d07",
+      "available_formats": [
+        "glb",
+        "gltf",
+        "source",
+        "usdz"
+      ],
+      "preferred_download_order": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "raw_candidate_rel_dir": "sources/objaverse/furniture_v0/geometry/c715fad78e6c4fc79b3b54d40ab50d07/raw",
+      "notes": "Primary sofa candidate from the first real shard.",
+      "thumbnail_url": "https://media.sketchfab.com/models/c715fad78e6c4fc79b3b54d40ab50d07/thumbnails/f6851c6f37e440d6a7b4c45c0c3d77c1/79834f5074a54edd957758802c2002b5.jpeg",
+      "triangle_count": 3944,
+      "vertex_count": 2074
+    },
+    {
+      "object_uid": "08d58a4f9c8e4a90b52cec383e05b662",
+      "title": "table 70s",
+      "category_guess": "coffee_table",
+      "priority": 3,
+      "source_url": "https://sketchfab.com/3d-models/08d58a4f9c8e4a90b52cec383e05b662",
+      "available_formats": [
+        "glb",
+        "gltf",
+        "source",
+        "usdz"
+      ],
+      "preferred_download_order": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "raw_candidate_rel_dir": "sources/objaverse/furniture_v0/geometry/08d58a4f9c8e4a90b52cec383e05b662/raw",
+      "notes": "Coffee-table candidate with clear metadata fit.",
+      "thumbnail_url": "https://media.sketchfab.com/models/08d58a4f9c8e4a90b52cec383e05b662/thumbnails/04bb45385fb44f66b156c0339d462867/93cb6e4420f84d43a40b74e5549d8f0f.jpeg",
+      "triangle_count": 7900,
+      "vertex_count": 3952
+    },
+    {
+      "object_uid": "2daabc422a2e46f489f31c4a3b2b4d54",
+      "title": "Bookshelf",
+      "category_guess": "bookshelf",
+      "priority": 4,
+      "source_url": "https://sketchfab.com/3d-models/2daabc422a2e46f489f31c4a3b2b4d54",
+      "available_formats": [
+        "glb",
+        "gltf",
+        "source",
+        "usdz"
+      ],
+      "preferred_download_order": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "raw_candidate_rel_dir": "sources/objaverse/furniture_v0/geometry/2daabc422a2e46f489f31c4a3b2b4d54/raw",
+      "notes": "Storage candidate to test non-seating normalization.",
+      "thumbnail_url": "https://media.sketchfab.com/models/2daabc422a2e46f489f31c4a3b2b4d54/thumbnails/86136fcb650940c3802316a8ea7458f4/869ef2a1ddb4412cb98b5faf86fe827b.jpeg",
+      "triangle_count": 4372,
+      "vertex_count": 2230
+    },
+    {
+      "object_uid": "415990b9b8d7434099682efbc9993132",
+      "title": "nightstand",
+      "category_guess": "side_table",
+      "priority": 5,
+      "source_url": "https://sketchfab.com/3d-models/415990b9b8d7434099682efbc9993132",
+      "available_formats": [
+        "glb",
+        "gltf",
+        "source",
+        "usdz"
+      ],
+      "preferred_download_order": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "raw_candidate_rel_dir": "sources/objaverse/furniture_v0/geometry/415990b9b8d7434099682efbc9993132/raw",
+      "notes": "Side-table proxy for a first small auxiliary furniture candidate.",
+      "thumbnail_url": "https://media.sketchfab.com/models/415990b9b8d7434099682efbc9993132/thumbnails/59ff6d779bbe47c1b08699ccf7aa1ee0/130e84b4e5984a448497d4374e7ec5f6.jpeg",
+      "triangle_count": 602,
+      "vertex_count": 357
+    }
+  ]
+}

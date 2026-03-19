@@ -2,6 +2,7 @@
   "selection_id": "objaverse_000_014_selective_geometry_v0",
   "source_id": "objaverse_furniture_metadata_v0",
   "review_id": "objaverse_000_014_manual_review_v0",
+  "harvest_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/metadata_harvest/objaverse_000-014_harvest.json",
   "queue_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/review_queue/objaverse_000-014_review_queue.json",
   "selected_count": 5,
   "selected_candidates": [

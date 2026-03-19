@@ -20,6 +20,9 @@ OBJAVERSE_FURNITURE_NARROWING_CONTRACT = (
 OBJAVERSE_SELECTIVE_GEOMETRY_SCHEMA = (
     Path("schemas") / "local" / "objaverse_selective_geometry_v0.schema.json"
 )
+OBJAVERSE_SELECTIVE_GEOMETRY_MANIFEST_SCHEMA = (
+    Path("schemas") / "local" / "objaverse_selective_geometry_manifest_v0.schema.json"
+)
 
 
 def objaverse_furniture_metadata_harvest_schema_path() -> Path:
@@ -36,6 +39,10 @@ def objaverse_furniture_narrowing_contract_path() -> Path:
 
 def objaverse_selective_geometry_schema_path() -> Path:
     return repo_root() / OBJAVERSE_SELECTIVE_GEOMETRY_SCHEMA
+
+
+def objaverse_selective_geometry_manifest_schema_path() -> Path:
+    return repo_root() / OBJAVERSE_SELECTIVE_GEOMETRY_MANIFEST_SCHEMA
 
 
 def _load_object_payload(path: Path, *, name: str) -> dict:
@@ -199,9 +206,134 @@ def validate_objaverse_selective_geometry(path: Path) -> dict:
     )
 
 
+def validate_objaverse_selective_geometry_manifest_data(payload: object) -> dict:
+    schema = load_json(objaverse_selective_geometry_manifest_schema_path())
+    validator_cls = validator_for(schema)
+    validator_cls.check_schema(schema)
+    validator = validator_cls(schema)
+    validator.validate(payload)
+    if not isinstance(payload, dict):
+        raise TypeError(
+            "Objaverse selective-geometry manifest payload must be a JSON object after validation"
+        )
+    return payload
+
+
+def validate_objaverse_selective_geometry_manifest(path: Path) -> dict:
+    return validate_objaverse_selective_geometry_manifest_data(
+        _load_object_payload(path, name="Objaverse selective geometry manifest")
+    )
+
+
 def load_objaverse_furniture_narrowing_contract(path: Path | None = None) -> dict:
     contract_path = path or objaverse_furniture_narrowing_contract_path()
     return _load_object_payload(contract_path, name="Objaverse narrowing contract")
+
+
+def write_objaverse_selective_geometry_manifest(
+    *,
+    selection_path: Path,
+    harvest_path: Path,
+    output_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    selection = validate_objaverse_selective_geometry(selection_path)
+    harvest = validate_objaverse_furniture_metadata_harvest(harvest_path)
+
+    records_by_uid = {}
+    for record in harvest.get("records", []):
+        if isinstance(record, dict):
+            object_uid = record.get("object_uid")
+            if isinstance(object_uid, str) and object_uid:
+                records_by_uid[object_uid] = record
+
+    manifest_candidates: list[dict] = []
+    for selected in selection.get("selected_candidates", []):
+        object_uid = selected["object_uid"]
+        record = records_by_uid.get(object_uid)
+        if record is None:
+            raise ValueError(
+                f"Selected Objaverse candidate '{object_uid}' was not found in harvest {harvest_path}"
+            )
+
+        preferred_order = selected.get("expected_formats", [])
+        if not isinstance(preferred_order, list) or not preferred_order:
+            raise ValueError(
+                f"Selected Objaverse candidate '{object_uid}' must define non-empty expected_formats"
+            )
+        available_formats = record.get("available_formats", [])
+        if not isinstance(available_formats, list):
+            available_formats = []
+
+        candidate = {
+            "object_uid": object_uid,
+            "title": record["title"],
+            "category_guess": selected["category_guess"],
+            "priority": selected["priority"],
+            "source_url": record["source_url"],
+            "available_formats": available_formats,
+            "preferred_download_order": preferred_order,
+            "raw_candidate_rel_dir": (
+                Path("sources")
+                / "objaverse"
+                / "furniture_v0"
+                / "geometry"
+                / object_uid
+                / "raw"
+            ).as_posix(),
+            "notes": selected.get("notes", ""),
+        }
+        thumbnail_url = record.get("thumbnail_url")
+        if isinstance(thumbnail_url, str) and thumbnail_url:
+            candidate["thumbnail_url"] = thumbnail_url
+        triangle_count = record.get("triangle_count")
+        if isinstance(triangle_count, int):
+            candidate["triangle_count"] = triangle_count
+        vertex_count = record.get("vertex_count")
+        if isinstance(vertex_count, int):
+            candidate["vertex_count"] = vertex_count
+
+        validate_objaverse_selective_geometry_manifest_data(
+            {
+                "manifest_id": "validation_only",
+                "selection_id": selection["selection_id"],
+                "source_id": selection["source_id"],
+                "review_id": selection["review_id"],
+                "harvest_artifact": selection["harvest_artifact"],
+                "queue_artifact": selection["queue_artifact"],
+                "created_at": _timestamp(created_at),
+                "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
+                "raw_acquisition_root_rel": "sources/objaverse/furniture_v0/geometry",
+                "candidate_count": 1,
+                "candidates": [candidate],
+            }
+        )
+        manifest_candidates.append(candidate)
+
+    manifest = {
+        "manifest_id": f"{selection['selection_id']}_manifest",
+        "selection_id": selection["selection_id"],
+        "source_id": selection["source_id"],
+        "review_id": selection["review_id"],
+        "harvest_artifact": selection["harvest_artifact"],
+        "queue_artifact": selection["queue_artifact"],
+        "created_at": _timestamp(created_at),
+        "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
+        "raw_acquisition_root_rel": "sources/objaverse/furniture_v0/geometry",
+        "candidate_count": len(manifest_candidates),
+        "candidates": manifest_candidates,
+    }
+    validate_objaverse_selective_geometry_manifest_data(manifest)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    return {
+        "selection_id": selection["selection_id"],
+        "harvest_path": str(harvest_path.resolve()),
+        "output_path": str(output_path.resolve()),
+        "candidate_count": manifest["candidate_count"],
+    }
 
 
 def write_stub_objaverse_furniture_review_queue(

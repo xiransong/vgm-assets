@@ -8,6 +8,7 @@
     "selection_id",
     "source_id",
     "review_id",
+    "harvest_artifact",
     "queue_artifact",
     "selected_count",
     "selected_candidates"
@@ -22,6 +23,10 @@
       "minLength": 1
     },
     "review_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "harvest_artifact": {
       "type": "string",
       "minLength": 1
     },

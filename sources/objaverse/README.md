@@ -151,6 +151,17 @@ Repo-side review artifacts:
 - `sources/objaverse/manual_review_objaverse_000_014_v0.json`
 - `sources/objaverse/selective_geometry_objaverse_000_014_v0.json`
 
+You can resolve that accepted shortlist against an imported harvest artifact and
+write a selective-geometry manifest with:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  write-objaverse-selective-geometry-manifest \
+  --selection sources/objaverse/selective_geometry_objaverse_000_014_v0.json \
+  --harvest /path/to/imported_harvest.json \
+  --output sources/objaverse/selective_geometry_manifest_objaverse_000_014_v0.json
+```
+
 The next acquisition step should remain selective:
 
 - fetch geometry only for the accepted shortlist

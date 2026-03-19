@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/objaverse_selective_geometry_manifest_v0.schema.json",
+  "title": "ObjaverseSelectiveGeometryManifestV0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_id",
+    "selection_id",
+    "source_id",
+    "review_id",
+    "harvest_artifact",
+    "queue_artifact",
+    "created_at",
+    "raw_data_root_env_var",
+    "raw_acquisition_root_rel",
+    "candidate_count",
+    "candidates"
+  ],
+  "properties": {
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "harvest_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "queue_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "raw_data_root_env_var": {
+      "type": "string",
+      "const": "VGM_ASSETS_RAW_DATA_ROOT"
+    },
+    "raw_acquisition_root_rel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "object_uid",
+          "title",
+          "category_guess",
+          "priority",
+          "source_url",
+          "available_formats",
+          "preferred_download_order",
+          "raw_candidate_rel_dir",
+          "notes"
+        ],
+        "properties": {
+          "object_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category_guess": {
+            "type": "string",
+            "minLength": 1
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "source_url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "available_formats": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "preferred_download_order": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "triangle_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "vertex_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "raw_candidate_rel_dir": {
+            "type": "string",
+            "minLength": 1
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

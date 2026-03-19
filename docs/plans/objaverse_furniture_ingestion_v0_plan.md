@@ -100,6 +100,7 @@ The pipeline is now beyond mocks:
 Do only this next:
 
 - keep geometry acquisition selective, not bulk
+- resolve the accepted shortlist into a geometry-acquisition manifest first
 - fetch geometry only for the accepted shortlist from `000-014`
 - record per-candidate acquisition outcome and payload availability
 - inspect the first downloaded meshes before promoting any candidate into a

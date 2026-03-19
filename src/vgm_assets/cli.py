@@ -29,6 +29,8 @@ from .objaverse import (
     validate_objaverse_furniture_metadata_harvest,
     validate_objaverse_furniture_review_queue,
     validate_objaverse_selective_geometry,
+    validate_objaverse_selective_geometry_manifest,
+    write_objaverse_selective_geometry_manifest,
     write_objaverse_furniture_review_queue,
     write_stub_objaverse_furniture_review_queue,
 )
@@ -339,6 +341,27 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an Objaverse selective-geometry artifact against the local vgm-assets schema",
     )
     validate_objaverse_selective_geometry_parser.add_argument("selection", type=Path)
+
+    validate_objaverse_selective_geometry_manifest_parser = subparsers.add_parser(
+        "validate-objaverse-selective-geometry-manifest",
+        help="Validate an Objaverse selective-geometry manifest against the local vgm-assets schema",
+    )
+    validate_objaverse_selective_geometry_manifest_parser.add_argument("manifest", type=Path)
+
+    write_objaverse_selective_geometry_manifest_parser = subparsers.add_parser(
+        "write-objaverse-selective-geometry-manifest",
+        help="Resolve an accepted Objaverse shortlist against a harvested metadata artifact and write a selective-geometry manifest",
+    )
+    write_objaverse_selective_geometry_manifest_parser.add_argument(
+        "--selection", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_manifest_parser.add_argument(
+        "--harvest", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_manifest_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_manifest_parser.add_argument("--created-at")
 
     write_stub_objaverse_review_queue_parser = subparsers.add_parser(
         "write-stub-objaverse-furniture-review-queue",
@@ -765,6 +788,23 @@ def main() -> int:
         print(
             f"Validated {payload['selected_count']} Objaverse selective geometry candidates in {args.selection}"
         )
+        return 0
+
+    if args.command == "validate-objaverse-selective-geometry-manifest":
+        payload = validate_objaverse_selective_geometry_manifest(args.manifest)
+        print(
+            f"Validated {payload['candidate_count']} Objaverse selective geometry manifest candidates in {args.manifest}"
+        )
+        return 0
+
+    if args.command == "write-objaverse-selective-geometry-manifest":
+        summary = write_objaverse_selective_geometry_manifest(
+            selection_path=args.selection,
+            harvest_path=args.harvest,
+            output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "write-stub-objaverse-furniture-review-queue":

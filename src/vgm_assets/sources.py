@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
+from .objaverse import validate_objaverse_furniture_metadata_harvest_data
 from .paths import default_data_root, default_raw_data_root, resolve_under
 from .protocol import load_json
 
@@ -64,6 +65,135 @@ def load_objaverse_metadata_source_spec(spec_path: Path) -> dict:
     if "root_rel" not in raw_layout:
         raise ValueError("Objaverse metadata source spec raw_layout is missing 'root_rel'")
     return payload
+
+
+def _coerce_string_list(value: object) -> list[str] | None:
+    if not isinstance(value, list):
+        return None
+    items = [str(item).strip() for item in value if str(item).strip()]
+    return items or None
+
+
+def _coerce_nonnegative_int(value: object) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if value >= 0 else None
+    return None
+
+
+def _coerce_bounds(value: object) -> dict | None:
+    if not isinstance(value, dict):
+        return None
+    try:
+        width = float(value["width"])
+        depth = float(value["depth"])
+        height = float(value["height"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if width < 0 or depth < 0 or height < 0:
+        return None
+    return {
+        "width": width,
+        "depth": depth,
+        "height": height,
+    }
+
+
+def _first_value(entry: dict, keys: list[str]) -> object:
+    for key in keys:
+        if key in entry:
+            return entry[key]
+    return None
+
+
+def _normalize_objaverse_metadata_record(entry: dict) -> dict | None:
+    object_uid = _first_value(entry, ["object_uid", "uid", "id"])
+    source_url = _first_value(entry, ["source_url", "url"])
+    title = _first_value(entry, ["title", "name"])
+    license_value = _first_value(entry, ["license", "license_name", "license_label"])
+
+    if not all(isinstance(value, str) and value.strip() for value in [object_uid, source_url, title, license_value]):
+        return None
+
+    normalized = {
+        "object_uid": str(object_uid).strip(),
+        "source_url": str(source_url).strip(),
+        "title": str(title).strip(),
+        "license": str(license_value).strip(),
+    }
+
+    optional_string_lists = {
+        "source_tags": ["source_tags", "tags"],
+        "source_categories": ["source_categories", "categories"],
+        "available_formats": ["available_formats", "formats"],
+    }
+    for out_key, in_keys in optional_string_lists.items():
+        value = _coerce_string_list(_first_value(entry, in_keys))
+        if value is not None:
+            normalized[out_key] = value
+
+    optional_strings = {
+        "description": ["description", "caption", "text"],
+        "thumbnail_url": ["thumbnail_url", "preview_url", "thumbnail"],
+        "metadata_path": ["metadata_path"],
+        "payload_ref": ["payload_ref", "mesh_path", "glb_path"],
+    }
+    for out_key, in_keys in optional_strings.items():
+        value = _first_value(entry, in_keys)
+        if isinstance(value, str) and value.strip():
+            normalized[out_key] = value.strip()
+
+    triangle_count = _coerce_nonnegative_int(_first_value(entry, ["triangle_count", "triangles"]))
+    if triangle_count is not None:
+        normalized["triangle_count"] = triangle_count
+
+    vertex_count = _coerce_nonnegative_int(_first_value(entry, ["vertex_count", "vertices"]))
+    if vertex_count is not None:
+        normalized["vertex_count"] = vertex_count
+
+    bounds = _coerce_bounds(_first_value(entry, ["bounds"]))
+    if bounds is not None:
+        normalized["bounds"] = bounds
+
+    return normalized
+
+
+def _load_objaverse_metadata_records(raw_path: Path) -> list[dict]:
+    suffix = raw_path.suffix.lower()
+    if suffix == ".jsonl":
+        records: list[dict] = []
+        with raw_path.open("r", encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, start=1):
+                line = line.strip()
+                if not line:
+                    continue
+                payload = json.loads(line)
+                if not isinstance(payload, dict):
+                    raise TypeError(
+                        f"Objaverse metadata line {line_number} in {raw_path} must be a JSON object"
+                    )
+                records.append(payload)
+        return records
+
+    payload = load_json(raw_path)
+    if isinstance(payload, dict) and "records" in payload:
+        records = payload["records"]
+        if not isinstance(records, list):
+            raise TypeError(f"'records' in {raw_path} must be a JSON array")
+        if any(not isinstance(record, dict) for record in records):
+            raise TypeError(f"All records in {raw_path} must be JSON objects")
+        return records
+
+    if isinstance(payload, list):
+        if any(not isinstance(record, dict) for record in payload):
+            raise TypeError(f"All records in {raw_path} must be JSON objects")
+        return payload
+
+    if isinstance(payload, dict):
+        return [payload]
+
+    raise TypeError(f"Unsupported Objaverse metadata payload shape in {raw_path}")
 
 
 def load_selection_list(selection_path: Path) -> list[dict]:
@@ -790,6 +920,83 @@ def register_objaverse_raw_metadata_source(
         handle.write("\n")
 
     return manifest
+
+
+def import_objaverse_furniture_metadata_harvest(
+    spec_path: Path,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    output_path: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_objaverse_metadata_source_spec(spec_path)
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+
+    raw_root_rel = Path(spec["raw_layout"]["root_rel"])
+    manifest_path = resolve_under(raw_root, raw_root_rel / "source_manifest.json")
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"Missing registered Objaverse raw metadata manifest: {manifest_path}")
+
+    manifest = load_json(manifest_path)
+    if not isinstance(manifest, dict):
+        raise TypeError(f"Objaverse source manifest at {manifest_path} must be a JSON object")
+
+    canonical_relpath = manifest.get("canonical_relpath")
+    if not isinstance(canonical_relpath, str) or not canonical_relpath:
+        raise ValueError(f"Objaverse source manifest at {manifest_path} is missing canonical_relpath")
+
+    raw_metadata_path = resolve_under(raw_root, canonical_relpath)
+    if not raw_metadata_path.exists():
+        raise FileNotFoundError(f"Missing registered Objaverse raw metadata file: {raw_metadata_path}")
+
+    raw_records = _load_objaverse_metadata_records(raw_metadata_path)
+    normalized_records: list[dict] = []
+    skipped_records = 0
+    for entry in raw_records:
+        normalized = _normalize_objaverse_metadata_record(entry)
+        if normalized is None:
+            skipped_records += 1
+            continue
+        normalized_records.append(normalized)
+
+    harvest = {
+        "harvest_id": f"{spec['source_id']}__{raw_metadata_path.stem}",
+        "source_id": spec["source_id"],
+        "created_at": _timestamp(created_at),
+        "record_count": len(normalized_records),
+        "notes": (
+            f"Imported from registered raw metadata artifact {raw_metadata_path.name}. "
+            f"Skipped {skipped_records} invalid records during normalization."
+        ),
+        "records": normalized_records,
+    }
+    validate_objaverse_furniture_metadata_harvest_data(harvest)
+
+    if output_path is None:
+        processed_layout = spec.get("processed_layout")
+        if not isinstance(processed_layout, dict):
+            raise TypeError("Objaverse metadata source spec must define processed_layout")
+        harvest_root_rel = processed_layout.get("metadata_harvest_root_rel")
+        if not isinstance(harvest_root_rel, str) or not harvest_root_rel:
+            raise ValueError("Objaverse metadata source spec processed_layout is missing metadata_harvest_root_rel")
+        output_path = resolve_under(
+            processed_root,
+            Path(harvest_root_rel) / f"{raw_metadata_path.stem}_harvest.json",
+        )
+    else:
+        output_path = output_path.expanduser().resolve()
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(harvest, indent=2) + "\n", encoding="utf-8")
+
+    return {
+        "source_manifest_path": str(manifest_path.resolve()),
+        "raw_metadata_path": str(raw_metadata_path.resolve()),
+        "output_path": str(output_path.resolve()),
+        "record_count": harvest["record_count"],
+        "skipped_records": skipped_records,
+    }
 
 
 def unpack_registered_zip(

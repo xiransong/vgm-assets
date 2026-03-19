@@ -40,6 +40,7 @@ from .sampling import category_summary, sample_uniform_asset, write_category_ind
 from .size_normalization import apply_size_normalization
 from .sources import (
     fetch_poly_haven_room_surface_material,
+    import_objaverse_furniture_metadata_harvest,
     organize_kenney_ceiling_fixture_selection,
     organize_kenney_selection,
     organize_kenney_opening_selection,
@@ -119,6 +120,16 @@ def build_parser() -> argparse.ArgumentParser:
     register_objaverse_metadata_parser.add_argument("--acquired-by")
     register_objaverse_metadata_parser.add_argument("--acquired-at")
     register_objaverse_metadata_parser.add_argument("--notes")
+
+    import_objaverse_metadata_parser = subparsers.add_parser(
+        "import-objaverse-furniture-metadata-harvest",
+        help="Import a registered Objaverse raw metadata artifact into a schema-valid metadata-harvest file in DATA_ROOT",
+    )
+    import_objaverse_metadata_parser.add_argument("spec", type=Path)
+    import_objaverse_metadata_parser.add_argument("--raw-data-root", type=Path)
+    import_objaverse_metadata_parser.add_argument("--data-root", type=Path)
+    import_objaverse_metadata_parser.add_argument("--output", type=Path)
+    import_objaverse_metadata_parser.add_argument("--created-at")
 
     unpack_parser = subparsers.add_parser(
         "unpack-registered-zip",
@@ -536,6 +547,17 @@ def main() -> int:
             notes=args.notes,
         )
         print(json.dumps(manifest, indent=2))
+        return 0
+
+    if args.command == "import-objaverse-furniture-metadata-harvest":
+        summary = import_objaverse_furniture_metadata_harvest(
+            spec_path=args.spec,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "unpack-registered-zip":

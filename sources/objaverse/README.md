@@ -49,6 +49,15 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   --raw-file /path/to/objaverse_furniture_metadata.jsonl
 ```
 
+You can then import the registered raw artifact into a schema-valid
+metadata-harvest file under `DATA_ROOT`:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  import-objaverse-furniture-metadata-harvest \
+  sources/objaverse/raw_metadata_source_spec_v0.json
+```
+
 ## Current Metadata Contract
 
 The first metadata-harvest contract is now defined by:

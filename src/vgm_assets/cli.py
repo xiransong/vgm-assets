@@ -14,6 +14,7 @@ from .ceiling_fixtures import (
     refresh_ceiling_light_fixture_catalog,
     validate_ceiling_light_fixture_catalog,
 )
+from .furniture_assets import refresh_furniture_asset_catalog
 from .exports import (
     export_ceiling_light_fixture_snapshot,
     export_opening_assembly_snapshot,
@@ -47,6 +48,7 @@ from .sources import (
     fetch_poly_haven_room_surface_material,
     generate_objaverse_furniture_review_queue_from_harvest,
     import_objaverse_furniture_metadata_harvest,
+    normalize_objaverse_furniture_selection,
     organize_kenney_ceiling_fixture_selection,
     organize_kenney_selection,
     organize_kenney_opening_selection,
@@ -380,6 +382,34 @@ def build_parser() -> argparse.ArgumentParser:
     )
     write_objaverse_selective_geometry_inspection_parser.add_argument("--raw-data-root", type=Path)
     write_objaverse_selective_geometry_inspection_parser.add_argument("--created-at")
+
+    normalize_objaverse_furniture_selection_parser = subparsers.add_parser(
+        "normalize-objaverse-furniture-selection",
+        help="Normalize a small Objaverse furniture slice into DATA_ROOT from a reviewed normalization plan",
+    )
+    normalize_objaverse_furniture_selection_parser.add_argument("--plan", type=Path, required=True)
+    normalize_objaverse_furniture_selection_parser.add_argument("--raw-data-root", type=Path)
+    normalize_objaverse_furniture_selection_parser.add_argument("--data-root", type=Path)
+    normalize_objaverse_furniture_selection_parser.add_argument("--created-at")
+
+    refresh_furniture_asset_catalog_parser = subparsers.add_parser(
+        "refresh-furniture-asset-catalog",
+        help="Build a furniture asset catalog from normalized bundle manifests and write its index and manifest",
+    )
+    refresh_furniture_asset_catalog_parser.add_argument("--catalog-id", required=True)
+    refresh_furniture_asset_catalog_parser.add_argument(
+        "--bundle-manifest",
+        type=Path,
+        action="append",
+        required=True,
+        dest="bundle_manifests",
+    )
+    refresh_furniture_asset_catalog_parser.add_argument("--catalog-output", type=Path, required=True)
+    refresh_furniture_asset_catalog_parser.add_argument(
+        "--category-index-output", type=Path, required=True
+    )
+    refresh_furniture_asset_catalog_parser.add_argument("--manifest-output", type=Path, required=True)
+    refresh_furniture_asset_catalog_parser.add_argument("--created-at")
 
     download_objaverse_selective_geometry_parser = subparsers.add_parser(
         "download-objaverse-selective-geometry",
@@ -854,6 +884,16 @@ def main() -> int:
         print(json.dumps(summary, indent=2))
         return 0
 
+    if args.command == "normalize-objaverse-furniture-selection":
+        summary = normalize_objaverse_furniture_selection(
+            plan_path=args.plan,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
     if args.command == "download-objaverse-selective-geometry":
         summary = download_objaverse_selective_geometry(
             manifest_path=args.manifest,
@@ -899,6 +939,18 @@ def main() -> int:
             bundle_manifest_paths=args.bundle_manifests,
             catalog_output=args.catalog_output,
             fixture_index_output=args.fixture_index_output,
+            manifest_output=args.manifest_output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "refresh-furniture-asset-catalog":
+        summary = refresh_furniture_asset_catalog(
+            catalog_id=args.catalog_id,
+            bundle_manifest_paths=args.bundle_manifests,
+            catalog_output=args.catalog_output,
+            category_index_output=args.category_index_output,
             manifest_output=args.manifest_output,
             created_at=args.created_at,
         )

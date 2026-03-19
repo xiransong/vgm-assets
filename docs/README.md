@@ -38,6 +38,7 @@ notes for `vgm-assets`.
 - `architecture/objaverse_furniture_review_queue_v0.md`
 - `architecture/objaverse_selective_geometry_acquisition_v0.md`
 - `architecture/objaverse_geometry_download_runbook_v0.md`
+- `architecture/objaverse_furniture_normalization_v0.md`
 - `architecture/poly_haven_room_surface_manifests_v0.md`
 
 ### Catalogs
@@ -48,6 +49,7 @@ notes for `vgm-assets`.
 - `catalogs/ceiling_light_fixtures_v0.md`
 - `catalogs/objaverse_000_014_review_v0.md`
 - `catalogs/objaverse_000_014_geometry_inspection_v0.md`
+- `catalogs/living_room_objaverse_v0.md`
 
 ### Active Plans
 
@@ -55,3 +57,4 @@ notes for `vgm-assets`.
 - `plans/opening_assemblies_v0_plan.md`
 - `plans/ceiling_light_fixtures_v0_plan.md`
 - `plans/objaverse_furniture_ingestion_v0_plan.md`
+- `plans/objaverse_furniture_normalization_v0_plan.md`

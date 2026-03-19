@@ -13,6 +13,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
+from .catalog import load_asset_specs, validate_asset_catalog
 from .objaverse import (
     review_queue_output_path_for_harvest,
     validate_objaverse_furniture_metadata_harvest,
@@ -1356,6 +1357,280 @@ def download_objaverse_selective_geometry(
         "requested_count": len(candidates),
         "downloaded_count": downloaded_count,
         "missing_count": missing_count,
+    }
+
+
+def _load_objaverse_normalization_plan(plan_path: Path) -> dict:
+    payload = load_json(plan_path)
+    if not isinstance(payload, dict):
+        raise TypeError(f"Objaverse normalization plan at {plan_path} must be a JSON object")
+    required = [
+        "plan_id",
+        "selection_id",
+        "source_id",
+        "config_id",
+        "normalized_root_rel",
+        "reference_catalog_path",
+        "candidate_count",
+        "candidates",
+    ]
+    for key in required:
+        if key not in payload:
+            raise ValueError(f"Objaverse normalization plan at {plan_path} is missing '{key}'")
+    candidates = payload.get("candidates")
+    if not isinstance(candidates, list) or not candidates:
+        raise ValueError(f"Objaverse normalization plan at {plan_path} must define non-empty 'candidates'")
+    return payload
+
+
+def _scaled_support_surface(surface: dict, sx: float, sy: float, sz: float) -> dict:
+    updated = dict(surface)
+    if "height" in updated:
+        updated["height"] = round(float(updated["height"]) * sy, 3)
+    if "width" in updated:
+        updated["width"] = round(float(updated["width"]) * sx, 3)
+    if "depth" in updated:
+        updated["depth"] = round(float(updated["depth"]) * sz, 3)
+    return updated
+
+
+def _scaled_template_asset(template_asset: dict, *, width: float, depth: float, height: float) -> dict:
+    scaled = json.loads(json.dumps(template_asset))
+    old_dims = template_asset["dimensions"]
+    sx = width / float(old_dims["width"])
+    sy = height / float(old_dims["height"])
+    sz = depth / float(old_dims["depth"])
+
+    scaled["dimensions"] = {
+        "width": round(width, 3),
+        "depth": round(depth, 3),
+        "height": round(height, 3),
+    }
+
+    footprint = scaled.get("footprint")
+    if isinstance(footprint, dict):
+        shape = footprint.get("shape", "rectangle")
+        if shape == "circle":
+            diameter = round(max(width, depth), 3)
+            scaled["footprint"] = {
+                "shape": "circle",
+                "width": diameter,
+                "depth": diameter,
+            }
+        else:
+            scaled["footprint"] = {
+                "shape": shape,
+                "width": round(width, 3),
+                "depth": round(depth, 3),
+            }
+
+    support = scaled.get("support")
+    if isinstance(support, dict):
+        surfaces = support.get("support_surfaces")
+        if isinstance(surfaces, list):
+            support["support_surfaces"] = [
+                _scaled_support_surface(surface, sx, sy, sz) for surface in surfaces
+            ]
+
+    return scaled
+
+
+def normalize_objaverse_furniture_selection(
+    plan_path: Path,
+    *,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    plan = _load_objaverse_normalization_plan(plan_path)
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+
+    reference_catalog_path = repo_root() / plan["reference_catalog_path"]
+    reference_assets = load_asset_specs(reference_catalog_path)
+    template_by_id = {}
+    for record in reference_assets:
+        asset_id = record.get("asset_id")
+        if isinstance(asset_id, str):
+            template_by_id[asset_id] = record
+
+    import trimesh  # type: ignore
+
+    normalized_root_rel = Path(plan["normalized_root_rel"])
+    slice_root = resolve_under(processed_root, normalized_root_rel)
+    slice_root.mkdir(parents=True, exist_ok=True)
+
+    manifest_assets: list[dict] = []
+    bundle_manifest_paths: list[str] = []
+    for candidate in plan["candidates"]:
+        if not isinstance(candidate, dict):
+            raise TypeError("Objaverse normalization plan candidates must be objects")
+        object_uid = _require_entry(candidate, "object_uid")
+        asset_id = _require_entry(candidate, "asset_id")
+        category = _require_entry(candidate, "category")
+        title = _require_entry(candidate, "title")
+        template_asset_id = _require_entry(candidate, "template_asset_id")
+        scale = float(candidate["uniform_scale"])
+        sample_weight = float(candidate.get("sample_weight", 1.0))
+
+        template_asset = template_by_id.get(template_asset_id)
+        if template_asset is None:
+            raise ValueError(
+                f"Template asset '{template_asset_id}' not found in {reference_catalog_path}"
+            )
+
+        raw_candidate_dir = resolve_under(
+            raw_root, Path("sources") / "objaverse" / "furniture_v0" / "geometry" / object_uid / "raw"
+        )
+        source_manifest_path = raw_candidate_dir / "source_manifest.json"
+        if not source_manifest_path.exists():
+            raise FileNotFoundError(f"Missing Objaverse raw source manifest: {source_manifest_path}")
+        source_manifest = load_json(source_manifest_path)
+        if not isinstance(source_manifest, dict):
+            raise TypeError(f"Objaverse source manifest at {source_manifest_path} must be an object")
+
+        mesh_files = [
+            entry
+            for entry in source_manifest.get("files", [])
+            if isinstance(entry, dict) and entry.get("logical_name") == "mesh"
+        ]
+        if not mesh_files:
+            raise FileNotFoundError(
+                f"Objaverse source manifest at {source_manifest_path} has no mesh file"
+            )
+        mesh_filename = mesh_files[0]["filename"]
+        raw_mesh_path = raw_candidate_dir / mesh_filename
+        if not raw_mesh_path.exists():
+            raise FileNotFoundError(f"Missing Objaverse raw mesh: {raw_mesh_path}")
+
+        destination_rel_dir = normalized_root_rel / category / asset_id
+        destination_dir = resolve_under(processed_root, destination_rel_dir)
+        destination_dir.mkdir(parents=True, exist_ok=True)
+
+        scene = trimesh.load(raw_mesh_path, force="scene")
+        scene.apply_scale(scale)
+        mesh_dst = destination_dir / "model.glb"
+        scene.export(mesh_dst)
+
+        preview_dst = None
+        preview_files = [
+            entry
+            for entry in source_manifest.get("files", [])
+            if isinstance(entry, dict) and entry.get("logical_name") == "preview_image"
+        ]
+        if preview_files:
+            preview_filename = preview_files[0]["filename"]
+            raw_preview_path = raw_candidate_dir / preview_filename
+            if raw_preview_path.exists():
+                preview_dst = destination_dir / f"preview{raw_preview_path.suffix or '.png'}"
+                shutil.copy2(raw_preview_path, preview_dst)
+
+        bounds = scene.bounds
+        if bounds is None:
+            raise ValueError(f"Could not compute bounds for scaled Objaverse mesh {raw_mesh_path}")
+        extents = bounds[1] - bounds[0]
+        width = round(float(extents[0]), 3)
+        height = round(float(extents[1]), 3)
+        depth = round(float(extents[2]), 3)
+
+        normalized_asset = _scaled_template_asset(
+            template_asset,
+            width=width,
+            depth=depth,
+            height=height,
+        )
+
+        source_metadata = {
+            "asset_id": asset_id,
+            "object_uid": object_uid,
+            "title": title,
+            "category": category,
+            "source": "objaverse",
+            "license": source_manifest.get("license", ""),
+            "source_url": source_manifest.get("source_url", ""),
+            "template_asset_id": template_asset_id,
+            "uniform_scale": scale,
+            "normalized_files": {
+                "mesh": "model.glb",
+            },
+            "upstream": {
+                "raw_source_manifest_relpath": source_manifest_path.relative_to(raw_root).as_posix()
+            },
+        }
+        if preview_dst is not None:
+            source_metadata["normalized_files"]["preview_image"] = preview_dst.name
+
+        (destination_dir / "source_metadata.json").write_text(
+            json.dumps(source_metadata, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        bundle_manifest = {
+            "manifest_version": "v0",
+            "bundle_id": asset_id,
+            "selection_id": plan["selection_id"],
+            "asset_id": asset_id,
+            "category": category,
+            "source": "objaverse",
+            "sample_weight": sample_weight,
+            "dimensions": normalized_asset["dimensions"],
+            "footprint": normalized_asset.get("footprint"),
+            "placement": normalized_asset["placement"],
+            "walkability": normalized_asset["walkability"],
+            "semantics": normalized_asset["semantics"],
+            "support": normalized_asset["support"],
+            "normalized_rel_dir": destination_rel_dir.as_posix(),
+            "created_at": _timestamp(created_at),
+            "config_id": plan["config_id"],
+            "files": {
+                "mesh": _file_ref(mesh_dst, processed_root),
+            },
+            "source_url": source_manifest.get("source_url", ""),
+            "license": source_manifest.get("license", ""),
+            "object_uid": object_uid,
+            "template_asset_id": template_asset_id,
+            "title": title,
+            "notes": candidate.get("notes", ""),
+        }
+        if preview_dst is not None:
+            bundle_manifest["files"]["preview_image"] = _file_ref(preview_dst, processed_root)
+
+        bundle_manifest_path = destination_dir / "bundle_manifest.json"
+        bundle_manifest_path.write_text(
+            json.dumps(bundle_manifest, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        manifest_assets.append(
+            {
+                "asset_id": asset_id,
+                "category": category,
+                "title": title,
+                "normalized_dir": (Path(category) / asset_id).as_posix(),
+            }
+        )
+        bundle_manifest_paths.append((destination_rel_dir / "bundle_manifest.json").as_posix())
+
+    selection_manifest = {
+        "selection_id": plan["selection_id"],
+        "source_id": plan["source_id"],
+        "config_id": plan["config_id"],
+        "asset_count": len(manifest_assets),
+        "assets": manifest_assets,
+        "bundle_manifest_paths": bundle_manifest_paths,
+    }
+    (slice_root / "selection_manifest.json").write_text(
+        json.dumps(selection_manifest, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    return {
+        "selection_id": plan["selection_id"],
+        "slice_root": str(slice_root.resolve()),
+        "asset_count": len(manifest_assets),
+        "bundle_manifest_paths": [
+            str(resolve_under(processed_root, path).resolve()) for path in bundle_manifest_paths
+        ],
     }
 
 

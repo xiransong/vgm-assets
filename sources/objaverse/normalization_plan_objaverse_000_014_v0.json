@@ -1,0 +1,41 @@
+{
+  "plan_id": "objaverse_000_014_normalization_v0",
+  "selection_id": "objaverse_000_014_selective_geometry_v0",
+  "source_id": "objaverse_furniture_metadata_v0",
+  "config_id": "living_room_objaverse_v0_normalization_v1",
+  "normalized_root_rel": "assets/furniture/objaverse/living_room_objaverse_v0",
+  "reference_catalog_path": "catalogs/living_room_kenney_v0/assets.json",
+  "candidate_count": 3,
+  "candidates": [
+    {
+      "object_uid": "c715fad78e6c4fc79b3b54d40ab50d07",
+      "asset_id": "objaverse_leather_fabric_sofa_01",
+      "title": "Leather and Fabric Sofa",
+      "category": "sofa",
+      "template_asset_id": "kenney_lounge_sofa_01",
+      "uniform_scale": 0.004805,
+      "sample_weight": 1.0,
+      "notes": "First sofa candidate from the real shard. Promising geometry and plausible living-room proportions after downscale."
+    },
+    {
+      "object_uid": "08d58a4f9c8e4a90b52cec383e05b662",
+      "asset_id": "objaverse_table_70s_01",
+      "title": "table 70s",
+      "category": "coffee_table",
+      "template_asset_id": "kenney_table_coffee_square_01",
+      "uniform_scale": 0.000725,
+      "sample_weight": 1.0,
+      "notes": "Likely millimeter-scale coffee table. Strong first normalization candidate."
+    },
+    {
+      "object_uid": "415990b9b8d7434099682efbc9993132",
+      "asset_id": "objaverse_nightstand_01",
+      "title": "nightstand",
+      "category": "side_table",
+      "template_asset_id": "kenney_side_table_drawers_01",
+      "uniform_scale": 0.730141,
+      "sample_weight": 1.0,
+      "notes": "Best geometric fit in the first shard; use as the first side-table prototype."
+    }
+  ]
+}

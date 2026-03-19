@@ -178,6 +178,16 @@ The current one-command wrapper is:
 ./scripts/sources/download_objaverse_selective_geometry_000_014_v0.sh
 ```
 
+The current first normalization plan is:
+
+- `sources/objaverse/normalization_plan_objaverse_000_014_v0.json`
+
+And the first normalization wrapper is:
+
+```bash
+./scripts/sources/normalize_objaverse_000_014_v0.sh
+```
+
 ## Expected Future Output
 
 If this source path works, it should eventually feed:

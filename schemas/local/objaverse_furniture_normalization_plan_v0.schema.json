@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/objaverse_furniture_normalization_plan_v0.schema.json",
+  "title": "ObjaverseFurnitureNormalizationPlanV0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "plan_id",
+    "selection_id",
+    "source_id",
+    "config_id",
+    "normalized_root_rel",
+    "reference_catalog_path",
+    "candidate_count",
+    "candidates"
+  ],
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "config_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalized_root_rel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reference_catalog_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "object_uid",
+          "asset_id",
+          "title",
+          "category",
+          "template_asset_id",
+          "uniform_scale",
+          "sample_weight",
+          "notes"
+        ],
+        "properties": {
+          "object_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "template_asset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniform_scale": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "sample_weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -38,6 +38,21 @@
     "require_mesh_payload": true,
     "prefer_previewable_assets": true
   },
+  "quality_filters": {
+    "min_triangle_count": 500,
+    "negative_keywords": [
+      "ruined",
+      "post-apocalyptic",
+      "haunted",
+      "suspended",
+      "untextured",
+      "lips",
+      "cereal",
+      "cup",
+      "drink",
+      "set and coffee"
+    ]
+  },
   "category_mapping": {
     "sofa": {
       "positive_keywords": [

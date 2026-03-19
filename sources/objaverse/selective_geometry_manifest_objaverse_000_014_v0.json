@@ -5,7 +5,7 @@
   "review_id": "objaverse_000_014_manual_review_v0",
   "harvest_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/metadata_harvest/objaverse_000-014_harvest.json",
   "queue_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/review_queue/objaverse_000-014_review_queue.json",
-  "created_at": "2026-03-19T16:18:02+00:00",
+  "created_at": "2026-03-19T16:29:18+00:00",
   "raw_data_root_env_var": "VGM_ASSETS_RAW_DATA_ROOT",
   "raw_acquisition_root_rel": "sources/objaverse/furniture_v0/geometry",
   "candidate_count": 5,
@@ -16,6 +16,7 @@
       "category_guess": "armchair",
       "priority": 1,
       "source_url": "https://sketchfab.com/3d-models/ac9ef69e1bbf4258aa489635b6cec609",
+      "license": "CC-BY 4.0",
       "available_formats": [
         "glb",
         "gltf",
@@ -39,6 +40,7 @@
       "category_guess": "sofa",
       "priority": 2,
       "source_url": "https://sketchfab.com/3d-models/c715fad78e6c4fc79b3b54d40ab50d07",
+      "license": "CC-BY 4.0",
       "available_formats": [
         "glb",
         "gltf",
@@ -62,6 +64,7 @@
       "category_guess": "coffee_table",
       "priority": 3,
       "source_url": "https://sketchfab.com/3d-models/08d58a4f9c8e4a90b52cec383e05b662",
+      "license": "CC-BY 4.0",
       "available_formats": [
         "glb",
         "gltf",
@@ -85,6 +88,7 @@
       "category_guess": "bookshelf",
       "priority": 4,
       "source_url": "https://sketchfab.com/3d-models/2daabc422a2e46f489f31c4a3b2b4d54",
+      "license": "CC-BY 4.0",
       "available_formats": [
         "glb",
         "gltf",
@@ -108,6 +112,7 @@
       "category_guess": "side_table",
       "priority": 5,
       "source_url": "https://sketchfab.com/3d-models/415990b9b8d7434099682efbc9993132",
+      "license": "CC-BY 4.0",
       "available_formats": [
         "glb",
         "gltf",

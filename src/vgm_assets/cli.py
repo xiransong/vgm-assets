@@ -42,6 +42,7 @@ from .room_surface_materials import (
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .size_normalization import apply_size_normalization
 from .sources import (
+    download_objaverse_selective_geometry,
     fetch_poly_haven_room_surface_material,
     generate_objaverse_furniture_review_queue_from_harvest,
     import_objaverse_furniture_metadata_harvest,
@@ -362,6 +363,24 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", type=Path, required=True
     )
     write_objaverse_selective_geometry_manifest_parser.add_argument("--created-at")
+
+    download_objaverse_selective_geometry_parser = subparsers.add_parser(
+        "download-objaverse-selective-geometry",
+        help="Download only the accepted Objaverse shortlist from a selective-geometry manifest and register the raw payloads under RAW_DATA_ROOT",
+    )
+    download_objaverse_selective_geometry_parser.add_argument(
+        "--manifest", type=Path, required=True
+    )
+    download_objaverse_selective_geometry_parser.add_argument("--raw-data-root", type=Path)
+    download_objaverse_selective_geometry_parser.add_argument(
+        "--download-processes", type=int, default=2
+    )
+    download_objaverse_selective_geometry_parser.add_argument(
+        "--download-previews", action="store_true"
+    )
+    download_objaverse_selective_geometry_parser.add_argument("--acquired-by")
+    download_objaverse_selective_geometry_parser.add_argument("--acquired-at")
+    download_objaverse_selective_geometry_parser.add_argument("--notes")
 
     write_stub_objaverse_review_queue_parser = subparsers.add_parser(
         "write-stub-objaverse-furniture-review-queue",
@@ -803,6 +822,19 @@ def main() -> int:
             harvest_path=args.harvest,
             output_path=args.output,
             created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "download-objaverse-selective-geometry":
+        summary = download_objaverse_selective_geometry(
+            manifest_path=args.manifest,
+            raw_data_root=args.raw_data_root,
+            download_processes=args.download_processes,
+            download_previews=args.download_previews,
+            acquired_by=args.acquired_by,
+            acquired_at=args.acquired_at,
+            notes=args.notes,
         )
         print(json.dumps(summary, indent=2))
         return 0

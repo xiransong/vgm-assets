@@ -168,6 +168,16 @@ The next acquisition step should remain selective:
 - do not bulk-download held candidates yet
 - inspect real payload quality before creating normalized bundles
 
+The current geometry-download runbook is:
+
+- `docs/architecture/objaverse_geometry_download_runbook_v0.md`
+
+The current one-command wrapper is:
+
+```bash
+./scripts/sources/download_objaverse_selective_geometry_000_014_v0.sh
+```
+
 ## Expected Future Output
 
 If this source path works, it should eventually feed:

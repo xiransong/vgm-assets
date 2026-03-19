@@ -271,6 +271,7 @@ def write_objaverse_selective_geometry_manifest(
             "category_guess": selected["category_guess"],
             "priority": selected["priority"],
             "source_url": record["source_url"],
+            "license": record["license"],
             "available_formats": available_formats,
             "preferred_download_order": preferred_order,
             "raw_candidate_rel_dir": (

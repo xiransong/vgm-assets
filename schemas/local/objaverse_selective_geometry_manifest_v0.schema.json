@@ -69,6 +69,7 @@
           "category_guess",
           "priority",
           "source_url",
+          "license",
           "available_formats",
           "preferred_download_order",
           "raw_candidate_rel_dir",
@@ -92,6 +93,10 @@
             "minimum": 1
           },
           "source_url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license": {
             "type": "string",
             "minLength": 1
           },

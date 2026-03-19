@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import gzip
+from importlib.metadata import PackageNotFoundError, version
 import json
 import os
 import shutil
@@ -16,10 +17,11 @@ from .objaverse import (
     review_queue_output_path_for_harvest,
     validate_objaverse_furniture_metadata_harvest,
     validate_objaverse_furniture_metadata_harvest_data,
+    validate_objaverse_selective_geometry_manifest,
     write_objaverse_furniture_review_queue,
 )
 from .paths import default_data_root, default_raw_data_root, resolve_under
-from .protocol import load_json
+from .protocol import load_json, repo_root
 
 
 def _sha256(path: Path) -> str:
@@ -1166,6 +1168,195 @@ def generate_objaverse_furniture_review_queue_from_harvest(
     )
     summary["source_id"] = harvest["source_id"]
     return summary
+
+
+def _objaverse_package_version() -> str:
+    try:
+        return version("objaverse")
+    except PackageNotFoundError:
+        return "unknown"
+
+
+def download_objaverse_selective_geometry(
+    manifest_path: Path,
+    raw_data_root: Path | None = None,
+    *,
+    download_processes: int = 2,
+    download_previews: bool = False,
+    acquired_at: str | None = None,
+    acquired_by: str | None = None,
+    notes: str | None = None,
+    user_agent: str | None = None,
+) -> dict:
+    manifest = validate_objaverse_selective_geometry_manifest(manifest_path)
+    raw_root = raw_data_root or default_raw_data_root()
+
+    try:
+        import objaverse  # type: ignore
+    except ImportError as exc:
+        raise RuntimeError(
+            "The 'objaverse' Python package is required for geometry download. "
+            "Install it in the vgm-assets environment first."
+        ) from exc
+
+    candidates = sorted(
+        manifest.get("candidates", []),
+        key=lambda candidate: (candidate.get("priority", 10**9), candidate.get("object_uid", "")),
+    )
+    uids = [candidate["object_uid"] for candidate in candidates]
+    downloaded_paths = objaverse.load_objects(
+        uids=uids,
+        download_processes=download_processes,
+    )
+    if not isinstance(downloaded_paths, dict):
+        raise TypeError("objaverse.load_objects(...) must return a uid-to-path mapping")
+
+    acquisition_root = resolve_under(raw_root, manifest["raw_acquisition_root_rel"])
+    acquisition_root.mkdir(parents=True, exist_ok=True)
+
+    results: list[dict] = []
+    ua = user_agent or "vgm-assets/0.1 (research prototype; contact=local)"
+    acquired_timestamp = _timestamp(acquired_at)
+    acquired_user = acquired_by or os.environ.get("USER", "unknown")
+
+    for candidate in candidates:
+        object_uid = candidate["object_uid"]
+        raw_candidate_dir = resolve_under(raw_root, candidate["raw_candidate_rel_dir"])
+        raw_candidate_dir.mkdir(parents=True, exist_ok=True)
+
+        downloaded_path_value = downloaded_paths.get(object_uid)
+        if not isinstance(downloaded_path_value, str) or not downloaded_path_value:
+            results.append(
+                {
+                    "object_uid": object_uid,
+                    "status": "missing_download",
+                    "raw_candidate_rel_dir": candidate["raw_candidate_rel_dir"],
+                }
+            )
+            continue
+
+        downloaded_path = Path(downloaded_path_value).expanduser().resolve()
+        if not downloaded_path.exists():
+            results.append(
+                {
+                    "object_uid": object_uid,
+                    "status": "missing_download",
+                    "downloaded_path": str(downloaded_path),
+                    "raw_candidate_rel_dir": candidate["raw_candidate_rel_dir"],
+                }
+            )
+            continue
+
+        suffix = downloaded_path.suffix or ".glb"
+        model_filename = f"model{suffix}"
+        model_destination = raw_candidate_dir / model_filename
+        if downloaded_path != model_destination:
+            shutil.copy2(downloaded_path, model_destination)
+
+        files_manifest = [
+            {
+                "logical_name": "mesh",
+                "filename": model_filename,
+                "raw_relpath": (
+                    Path(candidate["raw_candidate_rel_dir"]) / model_filename
+                ).as_posix(),
+                "sha256": _sha256(model_destination),
+                "size_bytes": model_destination.stat().st_size,
+            }
+        ]
+
+        preview_url = candidate.get("thumbnail_url")
+        if download_previews and isinstance(preview_url, str) and preview_url:
+            preview_suffix = Path(urlparse(preview_url).path).suffix or ".jpg"
+            preview_filename = f"preview{preview_suffix}"
+            preview_destination = raw_candidate_dir / preview_filename
+            _download_url(preview_url, preview_destination, ua)
+            files_manifest.append(
+                {
+                    "logical_name": "preview_image",
+                    "filename": preview_filename,
+                    "raw_relpath": (
+                        Path(candidate["raw_candidate_rel_dir"]) / preview_filename
+                    ).as_posix(),
+                    "sha256": _sha256(preview_destination),
+                    "size_bytes": preview_destination.stat().st_size,
+                }
+            )
+
+        source_manifest = {
+            "manifest_version": "v0",
+            "source_id": manifest["source_id"],
+            "selection_id": manifest["selection_id"],
+            "review_id": manifest["review_id"],
+            "object_uid": object_uid,
+            "title": candidate["title"],
+            "category_guess": candidate["category_guess"],
+            "priority": candidate["priority"],
+            "license": candidate["license"],
+            "source_url": candidate["source_url"],
+            "available_formats": candidate.get("available_formats", []),
+            "preferred_download_order": candidate.get("preferred_download_order", []),
+            "raw_candidate_rel_dir": candidate["raw_candidate_rel_dir"],
+            "acquisition_method": "objaverse_python_api",
+            "downloaded_filename": model_filename,
+            "downloaded_format": model_destination.suffix.lstrip(".") or "bin",
+            "downloaded_at": acquired_timestamp,
+            "downloaded_by": acquired_user,
+            "objaverse_package_version": _objaverse_package_version(),
+            "upstream": {
+                "selection_manifest_relpath": manifest_path.relative_to(repo_root()).as_posix()
+                if manifest_path.is_relative_to(repo_root())
+                else str(manifest_path),
+                "harvest_artifact": manifest["harvest_artifact"],
+                "queue_artifact": manifest["queue_artifact"],
+            },
+            "files": files_manifest,
+            "notes": notes or candidate.get("notes", ""),
+        }
+        source_manifest_path = raw_candidate_dir / "source_manifest.json"
+        source_manifest_path.write_text(
+            json.dumps(source_manifest, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        results.append(
+            {
+                "object_uid": object_uid,
+                "status": "downloaded",
+                "raw_candidate_rel_dir": candidate["raw_candidate_rel_dir"],
+                "source_manifest_relpath": (
+                    Path(candidate["raw_candidate_rel_dir"]) / "source_manifest.json"
+                ).as_posix(),
+            }
+        )
+
+    batch_manifest = {
+        "manifest_version": "v0",
+        "selection_id": manifest["selection_id"],
+        "source_id": manifest["source_id"],
+        "review_id": manifest["review_id"],
+        "created_at": acquired_timestamp,
+        "raw_data_root_env_var": manifest["raw_data_root_env_var"],
+        "raw_acquisition_root_rel": manifest["raw_acquisition_root_rel"],
+        "candidate_count": manifest["candidate_count"],
+        "results": results,
+        "notes": notes or "",
+    }
+    batch_manifest_path = acquisition_root / f"{manifest['selection_id']}_download_manifest.json"
+    batch_manifest_path.write_text(json.dumps(batch_manifest, indent=2) + "\n", encoding="utf-8")
+
+    downloaded_count = sum(1 for result in results if result["status"] == "downloaded")
+    missing_count = sum(1 for result in results if result["status"] == "missing_download")
+
+    return {
+        "selection_id": manifest["selection_id"],
+        "manifest_path": str(manifest_path.resolve()),
+        "raw_root": str(raw_root.resolve()),
+        "batch_manifest_path": str(batch_manifest_path.resolve()),
+        "requested_count": len(candidates),
+        "downloaded_count": downloaded_count,
+        "missing_count": missing_count,
+    }
 
 
 def unpack_registered_zip(

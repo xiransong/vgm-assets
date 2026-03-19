@@ -18,6 +18,8 @@
     "accepted_extensions": [
       ".json",
       ".jsonl",
+      ".json.gz",
+      ".jsonl.gz",
       ".parquet"
     ]
   },

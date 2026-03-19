@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
 import json
 import os
 import shutil
@@ -75,7 +76,7 @@ def load_objaverse_metadata_source_spec(spec_path: Path) -> dict:
 def _coerce_string_list(value: object) -> list[str] | None:
     if not isinstance(value, list):
         return None
-    items = [str(item).strip() for item in value if str(item).strip()]
+    items = [item.strip() for item in value if isinstance(item, str) and item.strip()]
     return items or None
 
 
@@ -105,6 +106,67 @@ def _coerce_bounds(value: object) -> dict | None:
     }
 
 
+def _archive_stem(path: Path) -> str:
+    name = path.name
+    for suffix in (".json.gz", ".jsonl.gz", ".jsonl", ".json", ".parquet"):
+        if name.endswith(suffix):
+            return name[: -len(suffix)]
+    return path.stem
+
+
+def _normalize_objaverse_license(value: object) -> str | None:
+    if not isinstance(value, str):
+        return None
+    normalized = value.strip().lower()
+    mapping = {
+        "cc0": "CC0",
+        "by": "CC-BY 4.0",
+        "by-sa": "CC-BY-SA",
+        "by-nc": "CC-BY-NC",
+        "by-nc-sa": "CC-BY-NC-SA",
+    }
+    if normalized in mapping:
+        return mapping[normalized]
+    if normalized:
+        return value.strip()
+    return None
+
+
+def _extract_objaverse_thumbnail_url(value: object) -> str | None:
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    if not isinstance(value, dict):
+        return None
+    images = value.get("images")
+    if not isinstance(images, list):
+        return None
+    best_url = None
+    best_area = -1
+    for image in images:
+        if not isinstance(image, dict):
+            continue
+        url = image.get("url")
+        width = image.get("width")
+        height = image.get("height")
+        if not isinstance(url, str) or not url.strip():
+            continue
+        if isinstance(width, int) and isinstance(height, int):
+            area = width * height
+        else:
+            area = 0
+        if area >= best_area:
+            best_area = area
+            best_url = url.strip()
+    return best_url
+
+
+def _extract_objaverse_archives(value: object) -> list[str] | None:
+    if isinstance(value, dict):
+        formats = [str(key).strip() for key in value.keys() if str(key).strip()]
+        return formats or None
+    return None
+
+
 def _first_value(entry: dict, keys: list[str]) -> object:
     for key in keys:
         if key in entry:
@@ -114,9 +176,11 @@ def _first_value(entry: dict, keys: list[str]) -> object:
 
 def _normalize_objaverse_metadata_record(entry: dict) -> dict | None:
     object_uid = _first_value(entry, ["object_uid", "uid", "id"])
-    source_url = _first_value(entry, ["source_url", "url"])
+    source_url = _first_value(entry, ["source_url", "viewerUrl", "url", "uri"])
     title = _first_value(entry, ["title", "name"])
-    license_value = _first_value(entry, ["license", "license_name", "license_label"])
+    license_value = _normalize_objaverse_license(
+        _first_value(entry, ["license", "license_name", "license_label"])
+    )
 
     if not all(isinstance(value, str) and value.strip() for value in [object_uid, source_url, title, license_value]):
         return None
@@ -138,6 +202,37 @@ def _normalize_objaverse_metadata_record(entry: dict) -> dict | None:
         if value is not None:
             normalized[out_key] = value
 
+    if "source_tags" not in normalized:
+        tags = entry.get("tags")
+        if isinstance(tags, list):
+            tag_names = []
+            for item in tags:
+                if isinstance(item, dict):
+                    name = item.get("name")
+                    if isinstance(name, str) and name.strip():
+                        tag_names.append(name.strip())
+            if tag_names:
+                normalized["source_tags"] = tag_names
+
+    if "source_categories" not in normalized:
+        categories = entry.get("categories")
+        if isinstance(categories, list):
+            category_names = []
+            for item in categories:
+                if isinstance(item, dict):
+                    name = item.get("name")
+                    if isinstance(name, str) and name.strip():
+                        category_names.append(name.strip())
+                elif isinstance(item, str) and item.strip():
+                    category_names.append(item.strip())
+            if category_names:
+                normalized["source_categories"] = category_names
+
+    if "available_formats" not in normalized:
+        archive_formats = _extract_objaverse_archives(entry.get("archives"))
+        if archive_formats is not None:
+            normalized["available_formats"] = archive_formats
+
     optional_strings = {
         "description": ["description", "caption", "text"],
         "thumbnail_url": ["thumbnail_url", "preview_url", "thumbnail"],
@@ -149,11 +244,20 @@ def _normalize_objaverse_metadata_record(entry: dict) -> dict | None:
         if isinstance(value, str) and value.strip():
             normalized[out_key] = value.strip()
 
+    if "thumbnail_url" not in normalized:
+        thumbnail_url = _extract_objaverse_thumbnail_url(entry.get("thumbnails"))
+        if thumbnail_url is not None:
+            normalized["thumbnail_url"] = thumbnail_url
+
     triangle_count = _coerce_nonnegative_int(_first_value(entry, ["triangle_count", "triangles"]))
+    if triangle_count is None:
+        triangle_count = _coerce_nonnegative_int(_first_value(entry, ["faceCount"]))
     if triangle_count is not None:
         normalized["triangle_count"] = triangle_count
 
     vertex_count = _coerce_nonnegative_int(_first_value(entry, ["vertex_count", "vertices"]))
+    if vertex_count is None:
+        vertex_count = _coerce_nonnegative_int(_first_value(entry, ["vertexCount"]))
     if vertex_count is not None:
         normalized["vertex_count"] = vertex_count
 
@@ -166,6 +270,22 @@ def _normalize_objaverse_metadata_record(entry: dict) -> dict | None:
 
 def _load_objaverse_metadata_records(raw_path: Path) -> list[dict]:
     suffix = raw_path.suffix.lower()
+    name = raw_path.name.lower()
+    if name.endswith(".jsonl.gz"):
+        records: list[dict] = []
+        with gzip.open(raw_path, "rt", encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, start=1):
+                line = line.strip()
+                if not line:
+                    continue
+                payload = json.loads(line)
+                if not isinstance(payload, dict):
+                    raise TypeError(
+                        f"Objaverse metadata line {line_number} in {raw_path} must be a JSON object"
+                    )
+                records.append(payload)
+        return records
+
     if suffix == ".jsonl":
         records: list[dict] = []
         with raw_path.open("r", encoding="utf-8") as handle:
@@ -181,7 +301,11 @@ def _load_objaverse_metadata_records(raw_path: Path) -> list[dict]:
                 records.append(payload)
         return records
 
-    payload = load_json(raw_path)
+    if name.endswith(".json.gz"):
+        with gzip.open(raw_path, "rt", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    else:
+        payload = load_json(raw_path)
     if isinstance(payload, dict) and "records" in payload:
         records = payload["records"]
         if not isinstance(records, list):
@@ -189,6 +313,10 @@ def _load_objaverse_metadata_records(raw_path: Path) -> list[dict]:
         if any(not isinstance(record, dict) for record in records):
             raise TypeError(f"All records in {raw_path} must be JSON objects")
         return records
+
+    if isinstance(payload, dict):
+        if all(isinstance(value, dict) for value in payload.values()):
+            return list(payload.values())
 
     if isinstance(payload, list):
         if any(not isinstance(record, dict) for record in payload):
@@ -889,9 +1017,10 @@ def register_objaverse_raw_metadata_source(
     accepted_extensions = raw_layout.get("accepted_extensions", [])
     if accepted_extensions:
         allowed = {str(value).lower() for value in accepted_extensions}
-        if raw_file.suffix.lower() not in allowed:
+        filename_lower = raw_file.name.lower()
+        if not any(filename_lower.endswith(extension) for extension in allowed):
             raise ValueError(
-                f"Unsupported Objaverse metadata file extension '{raw_file.suffix}' for {raw_file}. "
+                f"Unsupported Objaverse metadata file extension for {raw_file}. "
                 f"Allowed extensions: {sorted(allowed)}"
             )
 
@@ -987,7 +1116,7 @@ def import_objaverse_furniture_metadata_harvest(
             raise ValueError("Objaverse metadata source spec processed_layout is missing metadata_harvest_root_rel")
         output_path = resolve_under(
             processed_root,
-            Path(harvest_root_rel) / f"{raw_metadata_path.stem}_harvest.json",
+            Path(harvest_root_rel) / f"{_archive_stem(raw_metadata_path)}_harvest.json",
         )
     else:
         output_path = output_path.expanduser().resolve()

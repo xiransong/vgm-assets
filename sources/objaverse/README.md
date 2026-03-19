@@ -58,6 +58,16 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   sources/objaverse/raw_metadata_source_spec_v0.json
 ```
 
+And you can generate a real review queue from that imported harvest:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  generate-objaverse-furniture-review-queue \
+  sources/objaverse/raw_metadata_source_spec_v0.json \
+  --harvest /path/to/imported_harvest.json \
+  --policy sources/objaverse/furniture_ingestion_policy_v0.json
+```
+
 ## Current Metadata Contract
 
 The first metadata-harvest contract is now defined by:

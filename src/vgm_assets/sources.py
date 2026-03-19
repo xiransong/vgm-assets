@@ -11,7 +11,12 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
-from .objaverse import validate_objaverse_furniture_metadata_harvest_data
+from .objaverse import (
+    review_queue_output_path_for_harvest,
+    validate_objaverse_furniture_metadata_harvest,
+    validate_objaverse_furniture_metadata_harvest_data,
+    write_objaverse_furniture_review_queue,
+)
 from .paths import default_data_root, default_raw_data_root, resolve_under
 from .protocol import load_json
 
@@ -997,6 +1002,41 @@ def import_objaverse_furniture_metadata_harvest(
         "record_count": harvest["record_count"],
         "skipped_records": skipped_records,
     }
+
+
+def generate_objaverse_furniture_review_queue_from_harvest(
+    spec_path: Path,
+    harvest_path: Path,
+    policy_path: Path,
+    data_root: Path | None = None,
+    output_path: Path | None = None,
+    contract_path: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    spec = load_objaverse_metadata_source_spec(spec_path)
+    processed_root = data_root or default_data_root()
+
+    harvest = validate_objaverse_furniture_metadata_harvest(harvest_path)
+    resolved_harvest_path = harvest_path.expanduser().resolve()
+
+    if output_path is None:
+        output_path = review_queue_output_path_for_harvest(
+            spec=spec,
+            harvest_path=resolved_harvest_path,
+            data_root=processed_root,
+        )
+    else:
+        output_path = output_path.expanduser().resolve()
+
+    summary = write_objaverse_furniture_review_queue(
+        harvest_path=resolved_harvest_path,
+        policy_path=policy_path,
+        output_path=output_path,
+        contract_path=contract_path,
+        created_at=created_at,
+    )
+    summary["source_id"] = harvest["source_id"]
+    return summary
 
 
 def unpack_registered_zip(

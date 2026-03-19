@@ -40,6 +40,7 @@ from .sampling import category_summary, sample_uniform_asset, write_category_ind
 from .size_normalization import apply_size_normalization
 from .sources import (
     fetch_poly_haven_room_surface_material,
+    generate_objaverse_furniture_review_queue_from_harvest,
     import_objaverse_furniture_metadata_harvest,
     organize_kenney_ceiling_fixture_selection,
     organize_kenney_selection,
@@ -130,6 +131,18 @@ def build_parser() -> argparse.ArgumentParser:
     import_objaverse_metadata_parser.add_argument("--data-root", type=Path)
     import_objaverse_metadata_parser.add_argument("--output", type=Path)
     import_objaverse_metadata_parser.add_argument("--created-at")
+
+    generate_objaverse_review_queue_parser = subparsers.add_parser(
+        "generate-objaverse-furniture-review-queue",
+        help="Generate a rule-based Objaverse review queue from a schema-valid metadata-harvest artifact",
+    )
+    generate_objaverse_review_queue_parser.add_argument("spec", type=Path)
+    generate_objaverse_review_queue_parser.add_argument("--harvest", type=Path, required=True)
+    generate_objaverse_review_queue_parser.add_argument("--policy", type=Path, required=True)
+    generate_objaverse_review_queue_parser.add_argument("--data-root", type=Path)
+    generate_objaverse_review_queue_parser.add_argument("--output", type=Path)
+    generate_objaverse_review_queue_parser.add_argument("--contract", type=Path)
+    generate_objaverse_review_queue_parser.add_argument("--created-at")
 
     unpack_parser = subparsers.add_parser(
         "unpack-registered-zip",
@@ -555,6 +568,21 @@ def main() -> int:
             raw_data_root=args.raw_data_root,
             data_root=args.data_root,
             output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "generate-objaverse-furniture-review-queue":
+        if args.contract is not None:
+            load_objaverse_furniture_narrowing_contract(args.contract)
+        summary = generate_objaverse_furniture_review_queue_from_harvest(
+            spec_path=args.spec,
+            harvest_path=args.harvest,
+            policy_path=args.policy,
+            data_root=args.data_root,
+            output_path=args.output,
+            contract_path=args.contract,
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))

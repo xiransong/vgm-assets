@@ -312,3 +312,25 @@ def write_objaverse_furniture_review_queue(
         "candidate_count": queue["candidate_count"],
         "skipped_counts": skipped_counts,
     }
+
+
+def review_queue_output_path_for_harvest(
+    *,
+    spec: dict,
+    harvest_path: Path,
+    data_root: Path,
+) -> Path:
+    processed_layout = spec.get("processed_layout")
+    if not isinstance(processed_layout, dict):
+        raise TypeError("Objaverse metadata source spec must define processed_layout")
+    review_queue_root_rel = processed_layout.get("review_queue_root_rel")
+    if not isinstance(review_queue_root_rel, str) or not review_queue_root_rel:
+        raise ValueError("Objaverse metadata source spec processed_layout is missing review_queue_root_rel")
+
+    harvest_stem = harvest_path.stem
+    suffix = "_harvest"
+    if harvest_stem.endswith(suffix):
+        base_name = harvest_stem[: -len(suffix)]
+    else:
+        base_name = harvest_stem
+    return data_root / Path(review_queue_root_rel) / f"{base_name}_review_queue.json"

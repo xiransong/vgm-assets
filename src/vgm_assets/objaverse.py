@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 
 from jsonschema.validators import validator_for
 
+from .paths import default_raw_data_root, resolve_under
 from .protocol import load_json, repo_root
 
 OBJAVERSE_FURNITURE_METADATA_HARVEST_SCHEMA = (
@@ -334,6 +336,152 @@ def write_objaverse_selective_geometry_manifest(
         "harvest_path": str(harvest_path.resolve()),
         "output_path": str(output_path.resolve()),
         "candidate_count": manifest["candidate_count"],
+    }
+
+
+def _load_asset_catalog_records(path: Path) -> list[dict]:
+    payload = load_json(path)
+    if not isinstance(payload, list):
+        raise TypeError(f"Asset catalog at {path} must be a JSON array")
+    records: list[dict] = []
+    for entry in payload:
+        if isinstance(entry, dict):
+            records.append(entry)
+    return records
+
+
+def _reference_dimensions_by_category(catalog_path: Path) -> dict[str, list[float]]:
+    grouped: dict[str, list[list[float]]] = {}
+    for record in _load_asset_catalog_records(catalog_path):
+        category = record.get("category")
+        dimensions = record.get("dimensions")
+        if not isinstance(category, str) or not isinstance(dimensions, dict):
+            continue
+        try:
+            values = [
+                float(dimensions["width"]),
+                float(dimensions["depth"]),
+                float(dimensions["height"]),
+            ]
+        except (KeyError, TypeError, ValueError):
+            continue
+        grouped.setdefault(category, []).append(sorted(values, reverse=True))
+
+    references: dict[str, list[float]] = {}
+    for category, dimension_sets in grouped.items():
+        if not dimension_sets:
+            continue
+        count = len(dimension_sets)
+        references[category] = [
+            sum(values[index] for values in dimension_sets) / count for index in range(3)
+        ]
+    return references
+
+
+def _nearest_common_scale(scale: float) -> tuple[float, str]:
+    candidates = [
+        (0.001, "millimeter_to_meter"),
+        (0.01, "centimeter_to_meter"),
+        (0.0254, "inch_to_meter"),
+        (0.1, "decimeter_to_meter"),
+        (1.0, "meter_to_meter"),
+    ]
+    best_scale, best_label = candidates[0]
+    best_error = abs(math.log(scale) - math.log(best_scale))
+    for candidate_scale, label in candidates[1:]:
+        error = abs(math.log(scale) - math.log(candidate_scale))
+        if error < best_error:
+            best_scale = candidate_scale
+            best_label = label
+            best_error = error
+    return best_scale, best_label
+
+
+def write_objaverse_selective_geometry_inspection(
+    *,
+    manifest_path: Path,
+    reference_catalog_path: Path,
+    raw_data_root: Path | None = None,
+    output_path: Path,
+    created_at: str | None = None,
+) -> dict:
+    manifest = validate_objaverse_selective_geometry_manifest(manifest_path)
+    references = _reference_dimensions_by_category(reference_catalog_path)
+    raw_root = raw_data_root or default_raw_data_root()
+
+    import trimesh  # type: ignore
+
+    candidates: list[dict] = []
+    for candidate in manifest.get("candidates", []):
+        category = candidate["category_guess"]
+        reference_sorted_dims = references.get(category)
+        if reference_sorted_dims is None:
+            raise ValueError(
+                f"No reference dimensions available for category '{category}' in {reference_catalog_path}"
+            )
+
+        raw_mesh_path = resolve_under(raw_root, Path(candidate["raw_candidate_rel_dir"]) / "model.glb")
+        if not raw_mesh_path.exists():
+            alt_paths = list(resolve_under(raw_root, candidate["raw_candidate_rel_dir"]).glob("model.*"))
+            if not alt_paths:
+                raise FileNotFoundError(f"Missing downloaded raw mesh for {candidate['object_uid']}")
+            raw_mesh_path = alt_paths[0]
+
+        scene = trimesh.load(raw_mesh_path, force="scene")
+        bounds = scene.bounds
+        if bounds is None:
+            raise ValueError(f"Could not compute bounds for raw mesh {raw_mesh_path}")
+        raw_extents = (bounds[1] - bounds[0]).tolist()
+        raw_sorted = sorted((float(value) for value in raw_extents), reverse=True)
+
+        ratios = []
+        for raw_value, ref_value in zip(raw_sorted, reference_sorted_dims):
+            if raw_value <= 0:
+                raise ValueError(f"Non-positive raw extent for {candidate['object_uid']}: {raw_sorted}")
+            ratios.append(ref_value / raw_value)
+        suggested_scale = math.exp(sum(math.log(value) for value in ratios) / len(ratios))
+        scaled_sorted = [value * suggested_scale for value in raw_sorted]
+        fit_log_rmse = math.sqrt(
+            sum((math.log(scaled) - math.log(ref)) ** 2 for scaled, ref in zip(scaled_sorted, reference_sorted_dims))
+            / len(reference_sorted_dims)
+        )
+        nearest_scale, nearest_label = _nearest_common_scale(suggested_scale)
+
+        candidates.append(
+            {
+                "object_uid": candidate["object_uid"],
+                "title": candidate["title"],
+                "category_guess": category,
+                "raw_mesh_relpath": (
+                    Path(candidate["raw_candidate_rel_dir"]) / raw_mesh_path.name
+                ).as_posix(),
+                "geometry_count": len(scene.geometry),
+                "raw_extents_xyz": raw_extents,
+                "raw_extents_sorted_desc": raw_sorted,
+                "reference_extents_sorted_desc": reference_sorted_dims,
+                "suggested_uniform_scale": suggested_scale,
+                "scaled_extents_sorted_desc": scaled_sorted,
+                "nearest_common_scale": nearest_scale,
+                "nearest_common_scale_label": nearest_label,
+                "fit_log_rmse": fit_log_rmse,
+            }
+        )
+
+    report = {
+        "report_id": f"{manifest['selection_id']}_inspection_v0",
+        "selection_id": manifest["selection_id"],
+        "reference_catalog_path": str(reference_catalog_path),
+        "created_at": _timestamp(created_at),
+        "candidate_count": len(candidates),
+        "candidates": candidates,
+    }
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    return {
+        "selection_id": manifest["selection_id"],
+        "reference_catalog_path": str(reference_catalog_path.resolve()),
+        "output_path": str(output_path.resolve()),
+        "candidate_count": len(candidates),
     }
 
 

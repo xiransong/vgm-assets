@@ -30,6 +30,7 @@ from .objaverse import (
     validate_objaverse_furniture_review_queue,
     validate_objaverse_selective_geometry,
     validate_objaverse_selective_geometry_manifest,
+    write_objaverse_selective_geometry_inspection,
     write_objaverse_selective_geometry_manifest,
     write_objaverse_furniture_review_queue,
     write_stub_objaverse_furniture_review_queue,
@@ -363,6 +364,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", type=Path, required=True
     )
     write_objaverse_selective_geometry_manifest_parser.add_argument("--created-at")
+
+    write_objaverse_selective_geometry_inspection_parser = subparsers.add_parser(
+        "write-objaverse-selective-geometry-inspection",
+        help="Inspect downloaded Objaverse selective-geometry meshes against a reference catalog and write a scale-suggestion report",
+    )
+    write_objaverse_selective_geometry_inspection_parser.add_argument(
+        "--manifest", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_inspection_parser.add_argument(
+        "--reference-catalog", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_inspection_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_objaverse_selective_geometry_inspection_parser.add_argument("--raw-data-root", type=Path)
+    write_objaverse_selective_geometry_inspection_parser.add_argument("--created-at")
 
     download_objaverse_selective_geometry_parser = subparsers.add_parser(
         "download-objaverse-selective-geometry",
@@ -820,6 +837,17 @@ def main() -> int:
         summary = write_objaverse_selective_geometry_manifest(
             selection_path=args.selection,
             harvest_path=args.harvest,
+            output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "write-objaverse-selective-geometry-inspection":
+        summary = write_objaverse_selective_geometry_inspection(
+            manifest_path=args.manifest,
+            reference_catalog_path=args.reference_catalog,
+            raw_data_root=args.raw_data_root,
             output_path=args.output,
             created_at=args.created_at,
         )

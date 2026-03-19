@@ -1,0 +1,164 @@
+{
+  "report_id": "objaverse_000_014_selective_geometry_v0_inspection_v0",
+  "selection_id": "objaverse_000_014_selective_geometry_v0",
+  "reference_catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
+  "created_at": "2026-03-19T16:39:03+00:00",
+  "candidate_count": 5,
+  "candidates": [
+    {
+      "object_uid": "ac9ef69e1bbf4258aa489635b6cec609",
+      "title": "Earmes Lounge Chair",
+      "category_guess": "armchair",
+      "raw_mesh_relpath": "sources/objaverse/furniture_v0/geometry/ac9ef69e1bbf4258aa489635b6cec609/raw/model.glb",
+      "geometry_count": 21,
+      "raw_extents_xyz": [
+        79.6278076171875,
+        85.67299008369449,
+        150.08962249755857
+      ],
+      "raw_extents_sorted_desc": [
+        150.08962249755857,
+        85.67299008369449,
+        79.6278076171875
+      ],
+      "reference_extents_sorted_desc": [
+        0.975,
+        0.95,
+        0.8999999999999999
+      ],
+      "suggested_uniform_scale": 0.009337640023305468,
+      "scaled_extents_sorted_desc": [
+        1.4014828661160117,
+        0.7999835411217582,
+        0.743535803374318
+      ],
+      "nearest_common_scale": 0.01,
+      "nearest_common_scale_label": "centimeter_to_meter",
+      "fit_log_rmse": 0.25669130582398114
+    },
+    {
+      "object_uid": "c715fad78e6c4fc79b3b54d40ab50d07",
+      "title": "Leather and Fabric Sofa",
+      "category_guess": "sofa",
+      "raw_mesh_relpath": "sources/objaverse/furniture_v0/geometry/c715fad78e6c4fc79b3b54d40ab50d07/raw/model.glb",
+      "geometry_count": 1,
+      "raw_extents_xyz": [
+        400.00001192092896,
+        210.7680850962906,
+        203.3608640185954
+      ],
+      "raw_extents_sorted_desc": [
+        400.00001192092896,
+        210.7680850962906,
+        203.3608640185954
+      ],
+      "reference_extents_sorted_desc": [
+        2.225,
+        0.95,
+        0.9
+      ],
+      "suggested_uniform_scale": 0.00480530877275656,
+      "scaled_extents_sorted_desc": [
+        1.9221235663863683,
+        1.0128057283303062,
+        0.9772117439039103
+      ],
+      "nearest_common_scale": 0.01,
+      "nearest_common_scale_label": "centimeter_to_meter",
+      "fit_log_rmse": 0.10373743198524181
+    },
+    {
+      "object_uid": "08d58a4f9c8e4a90b52cec383e05b662",
+      "title": "table 70s",
+      "category_guess": "coffee_table",
+      "raw_mesh_relpath": "sources/objaverse/furniture_v0/geometry/08d58a4f9c8e4a90b52cec383e05b662/raw/model.glb",
+      "geometry_count": 3,
+      "raw_extents_xyz": [
+        1246.51171875,
+        507.2230529785161,
+        1243.0262451171875
+      ],
+      "raw_extents_sorted_desc": [
+        1246.51171875,
+        1243.0262451171875,
+        507.2230529785161
+      ],
+      "reference_extents_sorted_desc": [
+        0.9500000000000001,
+        0.7,
+        0.45
+      ],
+      "suggested_uniform_scale": 0.0007248022014024591,
+      "scaled_extents_sorted_desc": [
+        0.903474437823963,
+        0.9009481588619703,
+        0.3676363854009046
+      ],
+      "nearest_common_scale": 0.001,
+      "nearest_common_scale_label": "millimeter_to_meter",
+      "fit_log_rmse": 0.18892386625690394
+    },
+    {
+      "object_uid": "2daabc422a2e46f489f31c4a3b2b4d54",
+      "title": "Bookshelf",
+      "category_guess": "bookshelf",
+      "raw_mesh_relpath": "sources/objaverse/furniture_v0/geometry/2daabc422a2e46f489f31c4a3b2b4d54/raw/model.glb",
+      "geometry_count": 12,
+      "raw_extents_xyz": [
+        0.8364179730415344,
+        2.000000053171626,
+        1.2996100187301622
+      ],
+      "raw_extents_sorted_desc": [
+        2.000000053171626,
+        1.2996100187301622,
+        0.8364179730415344
+      ],
+      "reference_extents_sorted_desc": [
+        2.0,
+        1.0,
+        0.35
+      ],
+      "suggested_uniform_scale": 0.6853996451357048,
+      "scaled_extents_sorted_desc": [
+        1.3707993267152234,
+        0.8907522456524599,
+        0.5732805819077932
+      ],
+      "nearest_common_scale": 1.0,
+      "nearest_common_scale_label": "meter_to_meter",
+      "fit_log_rmse": 0.3649504552467823
+    },
+    {
+      "object_uid": "415990b9b8d7434099682efbc9993132",
+      "title": "nightstand",
+      "category_guess": "side_table",
+      "raw_mesh_relpath": "sources/objaverse/furniture_v0/geometry/415990b9b8d7434099682efbc9993132/raw/model.glb",
+      "geometry_count": 1,
+      "raw_extents_xyz": [
+        0.6928687051256972,
+        0.8073057571082958,
+        0.7625706680924582
+      ],
+      "raw_extents_sorted_desc": [
+        0.8073057571082958,
+        0.7625706680924582,
+        0.6928687051256972
+      ],
+      "reference_extents_sorted_desc": [
+        0.575,
+        0.55,
+        0.525
+      ],
+      "suggested_uniform_scale": 0.7301413008536425,
+      "scaled_extents_sorted_desc": [
+        0.5894472756816858,
+        0.5567843395938586,
+        0.5058920576812553
+      ],
+      "nearest_common_scale": 1.0,
+      "nearest_common_scale_label": "meter_to_meter",
+      "fit_log_rmse": 0.026712341332246422
+    }
+  ]
+}

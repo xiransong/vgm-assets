@@ -47,6 +47,7 @@ notes for `vgm-assets`.
 - `catalogs/opening_assemblies_v0.md`
 - `catalogs/ceiling_light_fixtures_v0.md`
 - `catalogs/objaverse_000_014_review_v0.md`
+- `catalogs/objaverse_000_014_geometry_inspection_v0.md`
 
 ### Active Plans
 

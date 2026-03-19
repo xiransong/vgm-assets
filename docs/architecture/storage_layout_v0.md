@@ -52,6 +52,31 @@ DATA_ROOT/
             floor_lamp/
 ```
 
+## Objaverse Metadata Layout
+
+For the first Objaverse metadata-only path, the canonical layout should be:
+
+```text
+RAW_DATA_ROOT/
+  sources/
+    objaverse/
+      metadata/
+        furniture_v0/
+          raw/
+            <metadata artifact>
+          source_manifest.json
+
+DATA_ROOT/
+  sources/
+    objaverse/
+      furniture_v0/
+        metadata_harvest/
+        review_queue/
+```
+
+This keeps the first Objaverse step lightweight and reproducible before any
+geometry payload acquisition is introduced.
+
 ## Reproducibility Contract
 
 Given:

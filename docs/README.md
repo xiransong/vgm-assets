@@ -34,6 +34,7 @@ notes for `vgm-assets`.
 - `architecture/objaverse_furniture_ingestion_v0.md`
 - `architecture/objaverse_furniture_metadata_harvest_v0.md`
 - `architecture/objaverse_furniture_narrowing_v0.md`
+- `architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `architecture/objaverse_furniture_review_queue_v0.md`
 - `architecture/poly_haven_room_surface_manifests_v0.md`
 

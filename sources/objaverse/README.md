@@ -28,9 +28,17 @@ The current Objaverse direction is intentionally strict:
 ## Planned Repo-side Files
 
 - `source_spec_v0.json`
+- `raw_metadata_source_spec_v0.json`
 - `furniture_ingestion_policy_v0.json`
 - `metadata_harvest_template_v0.json`
 - `review_queue_template_v0.json`
+
+## Current Raw Metadata Contract
+
+The first raw-metadata acquisition contract is now defined by:
+
+- `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
+- `sources/objaverse/raw_metadata_source_spec_v0.json`
 
 ## Current Metadata Contract
 

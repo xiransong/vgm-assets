@@ -1,0 +1,22 @@
+{
+  "source_id": "objaverse_furniture_metadata_v0",
+  "source_family": "objaverse",
+  "display_name": "Objaverse Furniture Metadata Source v0",
+  "status": "planned",
+  "references": {
+    "dataset": "https://huggingface.co/datasets/allenai/objaverse",
+    "scale_reference": "https://github.com/allenai/objaverse-xl"
+  },
+  "raw_layout": {
+    "root_rel": "sources/objaverse/metadata/furniture_v0/raw",
+    "preferred_formats": [
+      "json",
+      "jsonl"
+    ]
+  },
+  "processed_layout": {
+    "metadata_harvest_root_rel": "sources/objaverse/furniture_v0/metadata_harvest",
+    "review_queue_root_rel": "sources/objaverse/furniture_v0/review_queue"
+  },
+  "notes": "Planning-only raw metadata source spec for the first real Objaverse metadata acquisition step. Geometry payload acquisition is intentionally out of scope."
+}

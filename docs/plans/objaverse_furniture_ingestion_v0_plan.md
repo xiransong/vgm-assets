@@ -88,6 +88,7 @@ The initial planning layer is now in place:
 
 Do only this next:
 
+- freeze the raw metadata acquisition contract for the first real Objaverse input
 - review the mock narrowing output and tighten any weak category rules or trace strings
 - decide whether `preferred_format_missing` candidates should stay in the queue or be dropped earlier
 - keep live Objaverse ingestion out of scope until the mock behavior looks right

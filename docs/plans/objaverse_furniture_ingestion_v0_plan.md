@@ -82,13 +82,12 @@ The initial planning layer is now in place:
 - lightweight validation commands now exist for both artifacts
 - the narrowing contract from harvest to review queue is documented
 - a stub harvest-to-review-queue helper seam now exists
+- a mock harvest and first rule-based narrowing pass now exist
 
 ## Immediate Next Step
 
 Do only this next:
 
-- decide the exact first narrowing logic we want in `v0`, probably starting with:
-  - license gate
-  - keyword category matching
-  - preferred-format trace
-- keep live Objaverse ingestion out of scope until that logic is written and tested
+- review the mock narrowing output and tighten any weak category rules or trace strings
+- decide whether `preferred_format_missing` candidates should stay in the queue or be dropped earlier
+- keep live Objaverse ingestion out of scope until the mock behavior looks right

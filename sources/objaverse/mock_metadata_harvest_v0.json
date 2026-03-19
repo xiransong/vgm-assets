@@ -1,0 +1,156 @@
+{
+  "harvest_id": "objaverse_furniture_mock_harvest_v0",
+  "source_id": "objaverse_furniture_v0",
+  "created_at": "2026-03-19T00:00:00+00:00",
+  "record_count": 10,
+  "notes": "Mock metadata-harvest artifact for testing the first Objaverse narrowing pass without live downloads.",
+  "records": [
+    {
+      "object_uid": "objv_mock_sofa_001",
+      "source_url": "https://example.org/objaverse/objv_mock_sofa_001",
+      "title": "Modern sectional sofa",
+      "license": "CC0",
+      "source_tags": ["living room", "sofa", "sectional"],
+      "source_categories": ["furniture"],
+      "description": "Textured living-room sofa with cushions.",
+      "available_formats": ["glb", "obj"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_sofa_001.png",
+      "metadata_path": "metadata/objv_mock_sofa_001.json",
+      "payload_ref": "payloads/objv_mock_sofa_001.glb",
+      "triangle_count": 45210,
+      "vertex_count": 22810,
+      "bounds": {
+        "width": 2.1,
+        "depth": 0.95,
+        "height": 0.9
+      }
+    },
+    {
+      "object_uid": "objv_mock_chair_001",
+      "source_url": "https://example.org/objaverse/objv_mock_chair_001",
+      "title": "Lounge armchair",
+      "license": "CC-BY 4.0",
+      "source_tags": ["armchair", "lounge chair"],
+      "source_categories": ["furniture", "chair"],
+      "description": "Padded accent chair for a living room.",
+      "available_formats": ["obj"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_chair_001.png",
+      "metadata_path": "metadata/objv_mock_chair_001.json",
+      "payload_ref": "payloads/objv_mock_chair_001.obj",
+      "triangle_count": 18120,
+      "vertex_count": 9540,
+      "bounds": {
+        "width": 0.85,
+        "depth": 0.82,
+        "height": 0.96
+      }
+    },
+    {
+      "object_uid": "objv_mock_nc_001",
+      "source_url": "https://example.org/objaverse/objv_mock_nc_001",
+      "title": "Wooden coffee table",
+      "license": "CC-BY-NC",
+      "source_tags": ["coffee table", "wood"],
+      "source_categories": ["furniture", "table"],
+      "description": "Low table for living-room use.",
+      "available_formats": ["glb"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_nc_001.png",
+      "metadata_path": "metadata/objv_mock_nc_001.json",
+      "payload_ref": "payloads/objv_mock_nc_001.glb"
+    },
+    {
+      "object_uid": "objv_mock_misc_001",
+      "source_url": "https://example.org/objaverse/objv_mock_misc_001",
+      "title": "Decorative ceramic vase",
+      "license": "CC0",
+      "source_tags": ["decor", "vase"],
+      "source_categories": ["home decor"],
+      "description": "Decor object with no furniture category match.",
+      "available_formats": ["glb"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_misc_001.png",
+      "metadata_path": "metadata/objv_mock_misc_001.json",
+      "payload_ref": "payloads/objv_mock_misc_001.glb"
+    },
+    {
+      "object_uid": "objv_mock_table_001",
+      "source_url": "https://example.org/objaverse/objv_mock_table_001",
+      "title": "Round coffee table",
+      "license": "CC0",
+      "source_tags": ["center table", "living room"],
+      "source_categories": ["furniture", "table"],
+      "description": "Small circular center table.",
+      "available_formats": ["gltf"],
+      "metadata_path": "metadata/objv_mock_table_001.json",
+      "payload_ref": "payloads/objv_mock_table_001.gltf",
+      "bounds": {
+        "width": 0.75,
+        "depth": 0.75,
+        "height": 0.42
+      }
+    },
+    {
+      "object_uid": "objv_mock_lamp_001",
+      "source_url": "https://example.org/objaverse/objv_mock_lamp_001",
+      "title": "Standing floor lamp",
+      "license": "CC-BY 4.0",
+      "source_tags": ["standing lamp", "living room lighting"],
+      "source_categories": ["lighting", "furniture"],
+      "description": "Tall floor lamp with fabric shade.",
+      "available_formats": ["fbx"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_lamp_001.png",
+      "metadata_path": "metadata/objv_mock_lamp_001.json",
+      "payload_ref": "payloads/objv_mock_lamp_001.fbx"
+    },
+    {
+      "object_uid": "objv_mock_tvstand_001",
+      "source_url": "https://example.org/objaverse/objv_mock_tvstand_001",
+      "title": "Oak media console tv stand",
+      "license": "CC0",
+      "source_tags": ["media console", "television stand"],
+      "source_categories": ["furniture", "storage"],
+      "description": "Wide low storage unit for a television.",
+      "available_formats": ["glb"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_tvstand_001.png",
+      "metadata_path": "metadata/objv_mock_tvstand_001.json",
+      "payload_ref": "payloads/objv_mock_tvstand_001.glb"
+    },
+    {
+      "object_uid": "objv_mock_bookshelf_001",
+      "source_url": "https://example.org/objaverse/objv_mock_bookshelf_001",
+      "title": "Wall shelf module",
+      "license": "CC0",
+      "source_tags": ["wall shelf", "storage shelf"],
+      "source_categories": ["furniture", "shelf"],
+      "description": "Mounted shelf unit, not a freestanding bookshelf.",
+      "available_formats": ["glb"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_bookshelf_001.png",
+      "metadata_path": "metadata/objv_mock_bookshelf_001.json",
+      "payload_ref": "payloads/objv_mock_bookshelf_001.glb"
+    },
+    {
+      "object_uid": "objv_mock_sidetable_001",
+      "source_url": "https://example.org/objaverse/objv_mock_sidetable_001",
+      "title": "Walnut side table",
+      "license": "CC-BY 4.0",
+      "source_tags": ["end table", "bedside table"],
+      "source_categories": ["furniture", "table"],
+      "description": "Compact side table with one drawer.",
+      "available_formats": ["glb"],
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_sidetable_001.png",
+      "metadata_path": "metadata/objv_mock_sidetable_001.json",
+      "payload_ref": "payloads/objv_mock_sidetable_001.glb"
+    },
+    {
+      "object_uid": "objv_mock_unknownformat_001",
+      "source_url": "https://example.org/objaverse/objv_mock_unknownformat_001",
+      "title": "Bookcase cabinet",
+      "license": "CC0",
+      "source_tags": ["bookcase", "storage"],
+      "source_categories": ["furniture"],
+      "description": "Mid-height bookcase without format metadata.",
+      "thumbnail_url": "https://example.org/thumbs/objv_mock_unknownformat_001.png",
+      "metadata_path": "metadata/objv_mock_unknownformat_001.json",
+      "payload_ref": "payloads/objv_mock_unknownformat_001"
+    }
+  ]
+}

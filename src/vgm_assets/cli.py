@@ -28,6 +28,7 @@ from .objaverse import (
     load_objaverse_furniture_narrowing_contract,
     validate_objaverse_furniture_metadata_harvest,
     validate_objaverse_furniture_review_queue,
+    write_objaverse_furniture_review_queue,
     write_stub_objaverse_furniture_review_queue,
 )
 from .paths import default_data_root, default_raw_data_root
@@ -313,6 +314,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--contract", type=Path
     )
     write_stub_objaverse_review_queue_parser.add_argument("--created-at")
+
+    narrow_objaverse_harvest_parser = subparsers.add_parser(
+        "narrow-objaverse-furniture-harvest",
+        help="Run the first rule-based Objaverse furniture narrowing pass and write a review queue",
+    )
+    narrow_objaverse_harvest_parser.add_argument("--harvest", type=Path, required=True)
+    narrow_objaverse_harvest_parser.add_argument("--policy", type=Path, required=True)
+    narrow_objaverse_harvest_parser.add_argument("--output", type=Path, required=True)
+    narrow_objaverse_harvest_parser.add_argument("--contract", type=Path)
+    narrow_objaverse_harvest_parser.add_argument("--created-at")
 
     refresh_ceiling_light_fixture_catalog_parser = subparsers.add_parser(
         "refresh-ceiling-light-fixture-catalog",
@@ -672,6 +683,19 @@ def main() -> int:
         if args.contract is not None:
             load_objaverse_furniture_narrowing_contract(args.contract)
         summary = write_stub_objaverse_furniture_review_queue(
+            harvest_path=args.harvest,
+            policy_path=args.policy,
+            output_path=args.output,
+            contract_path=args.contract,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "narrow-objaverse-furniture-harvest":
+        if args.contract is not None:
+            load_objaverse_furniture_narrowing_contract(args.contract)
+        summary = write_objaverse_furniture_review_queue(
             harvest_path=args.harvest,
             policy_path=args.policy,
             output_path=args.output,

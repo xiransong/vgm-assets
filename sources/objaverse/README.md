@@ -88,6 +88,22 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   --output /tmp/objaverse_review_queue_stub.json
 ```
 
+The repo also carries a mock metadata harvest for testing the first real
+narrowing pass without live downloads:
+
+- `sources/objaverse/mock_metadata_harvest_v0.json`
+- `sources/objaverse/mock_review_queue_v0.json`
+
+You can run the current rule-based narrowing pass with:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  narrow-objaverse-furniture-harvest \
+  --harvest sources/objaverse/mock_metadata_harvest_v0.json \
+  --policy sources/objaverse/furniture_ingestion_policy_v0.json \
+  --output sources/objaverse/mock_review_queue_v0.json
+```
+
 ## Expected Future Output
 
 If this source path works, it should eventually feed:

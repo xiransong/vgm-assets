@@ -271,6 +271,16 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   --output /tmp/objaverse_review_queue_stub.json
 ```
 
+Run the first rule-based Objaverse narrowing pass on the mock harvest:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  narrow-objaverse-furniture-harvest \
+  --harvest sources/objaverse/mock_metadata_harvest_v0.json \
+  --policy sources/objaverse/furniture_ingestion_policy_v0.json \
+  --output /tmp/objaverse_mock_review_queue.json
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash

@@ -282,6 +282,15 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   --output /tmp/objaverse_mock_review_queue.json
 ```
 
+Register a real Objaverse raw metadata artifact into `RAW_DATA_ROOT`:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  register-objaverse-raw-metadata-source \
+  sources/objaverse/raw_metadata_source_spec_v0.json \
+  --raw-file /path/to/objaverse_furniture_metadata.jsonl
+```
+
 Generate the current Poly Haven room-surface planning artifacts:
 
 ```bash

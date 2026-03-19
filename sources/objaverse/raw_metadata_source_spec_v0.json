@@ -3,6 +3,8 @@
   "source_family": "objaverse",
   "display_name": "Objaverse Furniture Metadata Source v0",
   "status": "planned",
+  "source_url": "https://huggingface.co/datasets/allenai/objaverse",
+  "acquisition_method": "manual_export",
   "references": {
     "dataset": "https://huggingface.co/datasets/allenai/objaverse",
     "scale_reference": "https://github.com/allenai/objaverse-xl"
@@ -12,6 +14,11 @@
     "preferred_formats": [
       "json",
       "jsonl"
+    ],
+    "accepted_extensions": [
+      ".json",
+      ".jsonl",
+      ".parquet"
     ]
   },
   "processed_layout": {

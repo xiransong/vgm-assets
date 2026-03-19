@@ -50,6 +50,22 @@ def load_source_spec(spec_path: Path) -> dict:
     return payload
 
 
+def load_objaverse_metadata_source_spec(spec_path: Path) -> dict:
+    payload = load_json(spec_path)
+    if not isinstance(payload, dict):
+        raise TypeError(f"Objaverse metadata source spec at {spec_path} must be a JSON object")
+    required = ["source_id", "source_url", "raw_layout"]
+    for key in required:
+        if key not in payload:
+            raise ValueError(f"Objaverse metadata source spec at {spec_path} is missing '{key}'")
+    raw_layout = payload.get("raw_layout")
+    if not isinstance(raw_layout, dict):
+        raise TypeError("Objaverse metadata source spec must define raw_layout")
+    if "root_rel" not in raw_layout:
+        raise ValueError("Objaverse metadata source spec raw_layout is missing 'root_rel'")
+    return payload
+
+
 def load_selection_list(selection_path: Path) -> list[dict]:
     payload = load_json(selection_path)
     if not isinstance(payload, list):
@@ -711,6 +727,64 @@ def register_raw_source(
     }
 
     manifest_path = destination.parent / "source_manifest.json"
+    with manifest_path.open("w", encoding="utf-8") as handle:
+        json.dump(manifest, handle, indent=2)
+        handle.write("\n")
+
+    return manifest
+
+
+def register_objaverse_raw_metadata_source(
+    spec_path: Path,
+    raw_file: Path,
+    raw_data_root: Path | None = None,
+    acquired_by: str | None = None,
+    acquired_at: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    spec = load_objaverse_metadata_source_spec(spec_path)
+    raw_root = raw_data_root or default_raw_data_root()
+
+    raw_layout = spec["raw_layout"]
+    root_rel = raw_layout["root_rel"]
+    destination_dir = resolve_under(raw_root, root_rel)
+    destination_dir.mkdir(parents=True, exist_ok=True)
+
+    raw_file = raw_file.expanduser().resolve()
+    accepted_extensions = raw_layout.get("accepted_extensions", [])
+    if accepted_extensions:
+        allowed = {str(value).lower() for value in accepted_extensions}
+        if raw_file.suffix.lower() not in allowed:
+            raise ValueError(
+                f"Unsupported Objaverse metadata file extension '{raw_file.suffix}' for {raw_file}. "
+                f"Allowed extensions: {sorted(allowed)}"
+            )
+
+    destination = destination_dir / raw_file.name
+    if raw_file != destination.resolve():
+        shutil.copy2(raw_file, destination)
+
+    observed_sha256 = _sha256(destination)
+    canonical_relpath = (Path(root_rel) / raw_file.name).as_posix()
+    manifest = {
+        "source_id": spec["source_id"],
+        "source_family": spec.get("source_family", "objaverse"),
+        "display_name": spec.get("display_name", spec["source_id"]),
+        "source_url": spec["source_url"],
+        "acquisition_method": spec.get("acquisition_method", "manual_export"),
+        "original_filename": raw_file.name,
+        "canonical_filename": destination.name,
+        "canonical_relpath": canonical_relpath,
+        "size_bytes": destination.stat().st_size,
+        "sha256": observed_sha256,
+        "preferred_formats": raw_layout.get("preferred_formats", []),
+        "accepted_extensions": accepted_extensions,
+        "acquired_at": _timestamp(acquired_at),
+        "acquired_by": acquired_by or os.environ.get("USER", "unknown"),
+        "notes": notes or "",
+    }
+
+    manifest_path = destination_dir / "source_manifest.json"
     with manifest_path.open("w", encoding="utf-8") as handle:
         json.dump(manifest, handle, indent=2)
         handle.write("\n")

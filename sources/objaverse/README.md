@@ -40,6 +40,15 @@ The first raw-metadata acquisition contract is now defined by:
 - `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `sources/objaverse/raw_metadata_source_spec_v0.json`
 
+You can register a real raw metadata artifact with:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  register-objaverse-raw-metadata-source \
+  sources/objaverse/raw_metadata_source_spec_v0.json \
+  --raw-file /path/to/objaverse_furniture_metadata.jsonl
+```
+
 ## Current Metadata Contract
 
 The first metadata-harvest contract is now defined by:

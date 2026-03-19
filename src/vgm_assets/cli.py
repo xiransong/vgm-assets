@@ -45,6 +45,7 @@ from .sources import (
     organize_kenney_opening_selection,
     normalize_poly_haven_room_surface_material,
     rebuild_kenney_selection,
+    register_objaverse_raw_metadata_source,
     register_raw_source,
     register_poly_haven_room_surface_material,
     unpack_registered_zip,
@@ -107,6 +108,17 @@ def build_parser() -> argparse.ArgumentParser:
     register_parser.add_argument("--acquired-by")
     register_parser.add_argument("--acquired-at")
     register_parser.add_argument("--notes")
+
+    register_objaverse_metadata_parser = subparsers.add_parser(
+        "register-objaverse-raw-metadata-source",
+        help="Copy an Objaverse metadata artifact into RAW_DATA_ROOT and write source_manifest.json",
+    )
+    register_objaverse_metadata_parser.add_argument("spec", type=Path)
+    register_objaverse_metadata_parser.add_argument("--raw-file", type=Path, required=True)
+    register_objaverse_metadata_parser.add_argument("--raw-data-root", type=Path)
+    register_objaverse_metadata_parser.add_argument("--acquired-by")
+    register_objaverse_metadata_parser.add_argument("--acquired-at")
+    register_objaverse_metadata_parser.add_argument("--notes")
 
     unpack_parser = subparsers.add_parser(
         "unpack-registered-zip",
@@ -504,6 +516,18 @@ def main() -> int:
 
     if args.command == "register-raw-source":
         manifest = register_raw_source(
+            spec_path=args.spec,
+            raw_file=args.raw_file,
+            raw_data_root=args.raw_data_root,
+            acquired_by=args.acquired_by,
+            acquired_at=args.acquired_at,
+            notes=args.notes,
+        )
+        print(json.dumps(manifest, indent=2))
+        return 0
+
+    if args.command == "register-objaverse-raw-metadata-source":
+        manifest = register_objaverse_raw_metadata_source(
             spec_path=args.spec,
             raw_file=args.raw_file,
             raw_data_root=args.raw_data_root,

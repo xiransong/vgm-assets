@@ -1,0 +1,27 @@
+{
+  "catalog_path": "asset_catalog.json",
+  "category_count": 3,
+  "categories": {
+    "coffee_table": {
+      "sampling_policy": "uniform",
+      "asset_count": 1,
+      "asset_ids": [
+        "objaverse_table_70s_01"
+      ]
+    },
+    "side_table": {
+      "sampling_policy": "uniform",
+      "asset_count": 1,
+      "asset_ids": [
+        "objaverse_nightstand_01"
+      ]
+    },
+    "sofa": {
+      "sampling_policy": "uniform",
+      "asset_count": 1,
+      "asset_ids": [
+        "objaverse_leather_fabric_sofa_01"
+      ]
+    }
+  }
+}

@@ -40,6 +40,10 @@ Current categories:
 - `coffee_table`
 - `side_table`
 
+Frozen scene-engine export target:
+
+- `exports/scene_engine/living_room_objaverse_v0_r1`
+
 ## Expected Role
 
 This first slice should serve as:

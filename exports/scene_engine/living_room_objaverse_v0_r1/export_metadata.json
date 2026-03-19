@@ -1,0 +1,89 @@
+{
+  "export_id": "living_room_objaverse_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "living_room_objaverse_v0",
+  "created_at": "2026-03-19T17:03:02+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "asset_catalog": {
+      "path": "catalogs/living_room_objaverse_v0/assets.json",
+      "sha256": "45ff334d848db07ec2273d5f55205a3ab5b2b9f0bb6010bdabd30e10d01bd4c9"
+    },
+    "category_index": {
+      "path": "catalogs/living_room_objaverse_v0/category_index.json",
+      "sha256": "d0d19a2928f71ea5e73df4b72d0a12ae42a3042a1f0649a4c7086b6343e564cb"
+    },
+    "asset_catalog_manifest": {
+      "path": "catalogs/living_room_objaverse_v0/asset_catalog_manifest.json",
+      "sha256": "b7ab740ecf74b818d636177d295900a421e7d665f26b54ad80b37e73ff8c03eb"
+    }
+  },
+  "files": {
+    "asset_catalog": {
+      "path": "asset_catalog.json",
+      "sha256": "c110bdd52d696d66f02dd5d518f787d92b3414ec882c571242873d0d904b5fa6"
+    },
+    "category_index": {
+      "path": "category_index.json",
+      "sha256": "ab89f3ecc8e71005bfaea5ad5ade5a7a44ace5fa32be54aa44c3848fb653652c"
+    },
+    "asset_catalog_manifest": {
+      "path": "asset_catalog_manifest.json",
+      "sha256": "fd9c62ac90699640f947b1f28b97aeee571f20c8a89efe68c012002f47e857a5"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/living_room_objaverse_v0_r1",
+    "asset_payload_count": 3,
+    "payload_file_count": 6,
+    "payload_files": [
+      {
+        "asset_id": "objaverse_leather_fabric_sofa_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/sofa/objaverse_leather_fabric_sofa_01/model.glb",
+        "sha256": "0f0fb29bd9397b3104163b6e4b77ed12e7bf12fe43d67725de2f8f3803f01758",
+        "size_bytes": 2690928
+      },
+      {
+        "asset_id": "objaverse_leather_fabric_sofa_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/sofa/objaverse_leather_fabric_sofa_01/preview.jpeg",
+        "sha256": "30c1c441a64b9c93c972c3c9036333e99eb36852e635d14331efd9d363b532ed",
+        "size_bytes": 54910
+      },
+      {
+        "asset_id": "objaverse_table_70s_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/coffee_table/objaverse_table_70s_01/model.glb",
+        "sha256": "eea421fdbb2e417452fdbd753a147847b0bb947e318dc39cb89222d79c1a1707",
+        "size_bytes": 564652
+      },
+      {
+        "asset_id": "objaverse_table_70s_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/coffee_table/objaverse_table_70s_01/preview.jpeg",
+        "sha256": "ffd024357c544e7c0818649739d381c5a4b4c2312e97e582a3e9ab483f614011",
+        "size_bytes": 452243
+      },
+      {
+        "asset_id": "objaverse_nightstand_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/side_table/objaverse_nightstand_01/model.glb",
+        "sha256": "75ef1018f296d61fbc062472335a2828874bed218fbd8003d53e3dca96f2c1fe",
+        "size_bytes": 1901724
+      },
+      {
+        "asset_id": "objaverse_nightstand_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/side_table/objaverse_nightstand_01/preview.jpeg",
+        "sha256": "e1259d39ccbb84913c0237aa57a9e99f9b8da186fdca9dd48678d788ef4f8edf",
+        "size_bytes": 224902
+      }
+    ]
+  },
+  "notes": "Frozen first Objaverse living-room furniture snapshot for vgm-scene-engine consumption."
+}

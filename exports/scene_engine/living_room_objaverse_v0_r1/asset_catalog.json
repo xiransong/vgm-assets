@@ -1,0 +1,238 @@
+[
+  {
+    "asset_id": "objaverse_leather_fabric_sofa_01",
+    "category": "sofa",
+    "source": "objaverse",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 1.922,
+      "depth": 0.977,
+      "height": 1.013
+    },
+    "placement": {
+      "placement_type": "against_wall",
+      "min_wall_clearance": 0.05,
+      "min_object_clearance": 0.25,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.15
+    },
+    "semantics": {
+      "tags": [
+        "furniture",
+        "seating"
+      ],
+      "affordances": [
+        "approachable_front",
+        "sit"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_objaverse_v0_normalization_v1",
+      "upstream_ids": [
+        "objaverse_000_014_selective_geometry_v0",
+        "objaverse_leather_fabric_sofa_01"
+      ]
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 1.922,
+      "depth": 0.977
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/sofa/objaverse_leather_fabric_sofa_01/model.glb",
+        "format": "glb",
+        "sha256": "0f0fb29bd9397b3104163b6e4b77ed12e7bf12fe43d67725de2f8f3803f01758",
+        "size_bytes": 2690928
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/sofa/objaverse_leather_fabric_sofa_01/preview.jpeg",
+        "format": "jpeg",
+        "sha256": "30c1c441a64b9c93c972c3c9036333e99eb36852e635d14331efd9d363b532ed",
+        "size_bytes": 54910
+      }
+    }
+  },
+  {
+    "asset_id": "objaverse_table_70s_01",
+    "category": "coffee_table",
+    "source": "objaverse",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.904,
+      "depth": 0.901,
+      "height": 0.368
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.15,
+      "min_object_clearance": 0.12,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ],
+      "preferred_anchor_categories": [
+        "sofa"
+      ]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": [
+        "furniture",
+        "table"
+      ],
+      "affordances": [
+        "approachable",
+        "support_surface"
+      ]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.368,
+          "width": 0.768,
+          "depth": 0.766
+        }
+      ]
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_objaverse_v0_normalization_v1",
+      "upstream_ids": [
+        "objaverse_000_014_selective_geometry_v0",
+        "objaverse_table_70s_01"
+      ]
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.904,
+      "depth": 0.901
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/coffee_table/objaverse_table_70s_01/model.glb",
+        "format": "glb",
+        "sha256": "eea421fdbb2e417452fdbd753a147847b0bb947e318dc39cb89222d79c1a1707",
+        "size_bytes": 564652
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/coffee_table/objaverse_table_70s_01/preview.jpeg",
+        "format": "jpeg",
+        "sha256": "ffd024357c544e7c0818649739d381c5a4b4c2312e97e582a3e9ab483f614011",
+        "size_bytes": 452243
+      }
+    }
+  },
+  {
+    "asset_id": "objaverse_nightstand_01",
+    "category": "side_table",
+    "source": "objaverse",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.506,
+      "depth": 0.557,
+      "height": 0.589
+    },
+    "placement": {
+      "placement_type": "near_anchor",
+      "min_wall_clearance": 0.1,
+      "min_object_clearance": 0.15,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ],
+      "preferred_anchor_categories": [
+        "sofa",
+        "armchair"
+      ]
+    },
+    "walkability": {
+      "blocks_walking": true,
+      "clearance_buffer": 0.05
+    },
+    "semantics": {
+      "tags": [
+        "furniture",
+        "table"
+      ],
+      "affordances": [
+        "support_surface"
+      ]
+    },
+    "support": {
+      "supports_objects": true,
+      "support_surfaces": [
+        {
+          "surface_id": "top",
+          "height": 0.589,
+          "width": 0.458,
+          "depth": 0.506
+        }
+      ]
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "living_room_objaverse_v0_normalization_v1",
+      "upstream_ids": [
+        "objaverse_000_014_selective_geometry_v0",
+        "objaverse_nightstand_01"
+      ]
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.506,
+      "depth": 0.557
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/side_table/objaverse_nightstand_01/model.glb",
+        "format": "glb",
+        "sha256": "75ef1018f296d61fbc062472335a2828874bed218fbd8003d53e3dca96f2c1fe",
+        "size_bytes": 1901724
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/living_room_objaverse_v0_r1/assets/side_table/objaverse_nightstand_01/preview.jpeg",
+        "format": "jpeg",
+        "sha256": "e1259d39ccbb84913c0237aa57a9e99f9b8da186fdca9dd48678d788ef4f8edf",
+        "size_bytes": 224902
+      }
+    }
+  }
+]

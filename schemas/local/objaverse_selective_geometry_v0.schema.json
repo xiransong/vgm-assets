@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/objaverse_selective_geometry_v0.schema.json",
+  "title": "ObjaverseSelectiveGeometryV0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "selection_id",
+    "source_id",
+    "review_id",
+    "queue_artifact",
+    "selected_count",
+    "selected_candidates"
+  ],
+  "properties": {
+    "selection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "queue_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selected_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "object_uid",
+          "title",
+          "category_guess",
+          "expected_formats",
+          "priority",
+          "notes"
+        ],
+        "properties": {
+          "object_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category_guess": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_formats": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -28,6 +28,7 @@ from .objaverse import (
     load_objaverse_furniture_narrowing_contract,
     validate_objaverse_furniture_metadata_harvest,
     validate_objaverse_furniture_review_queue,
+    validate_objaverse_selective_geometry,
     write_objaverse_furniture_review_queue,
     write_stub_objaverse_furniture_review_queue,
 )
@@ -332,6 +333,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an Objaverse furniture review-queue artifact against the local vgm-assets schema",
     )
     validate_objaverse_review_queue_parser.add_argument("queue", type=Path)
+
+    validate_objaverse_selective_geometry_parser = subparsers.add_parser(
+        "validate-objaverse-selective-geometry",
+        help="Validate an Objaverse selective-geometry artifact against the local vgm-assets schema",
+    )
+    validate_objaverse_selective_geometry_parser.add_argument("selection", type=Path)
 
     write_stub_objaverse_review_queue_parser = subparsers.add_parser(
         "write-stub-objaverse-furniture-review-queue",
@@ -750,6 +757,13 @@ def main() -> int:
         payload = validate_objaverse_furniture_review_queue(args.queue)
         print(
             f"Validated {payload['candidate_count']} Objaverse review candidates in {args.queue}"
+        )
+        return 0
+
+    if args.command == "validate-objaverse-selective-geometry":
+        payload = validate_objaverse_selective_geometry(args.selection)
+        print(
+            f"Validated {payload['selected_count']} Objaverse selective geometry candidates in {args.selection}"
         )
         return 0
 

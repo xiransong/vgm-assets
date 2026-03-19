@@ -17,6 +17,9 @@ OBJAVERSE_FURNITURE_REVIEW_QUEUE_SCHEMA = (
 OBJAVERSE_FURNITURE_NARROWING_CONTRACT = (
     Path("sources") / "objaverse" / "narrowing_contract_v0.json"
 )
+OBJAVERSE_SELECTIVE_GEOMETRY_SCHEMA = (
+    Path("schemas") / "local" / "objaverse_selective_geometry_v0.schema.json"
+)
 
 
 def objaverse_furniture_metadata_harvest_schema_path() -> Path:
@@ -29,6 +32,10 @@ def objaverse_furniture_review_queue_schema_path() -> Path:
 
 def objaverse_furniture_narrowing_contract_path() -> Path:
     return repo_root() / OBJAVERSE_FURNITURE_NARROWING_CONTRACT
+
+
+def objaverse_selective_geometry_schema_path() -> Path:
+    return repo_root() / OBJAVERSE_SELECTIVE_GEOMETRY_SCHEMA
 
 
 def _load_object_payload(path: Path, *, name: str) -> dict:
@@ -172,6 +179,23 @@ def validate_objaverse_furniture_review_queue_data(payload: object) -> dict:
 def validate_objaverse_furniture_review_queue(path: Path) -> dict:
     return validate_objaverse_furniture_review_queue_data(
         _load_object_payload(path, name="Objaverse review queue")
+    )
+
+
+def validate_objaverse_selective_geometry_data(payload: object) -> dict:
+    schema = load_json(objaverse_selective_geometry_schema_path())
+    validator_cls = validator_for(schema)
+    validator_cls.check_schema(schema)
+    validator = validator_cls(schema)
+    validator.validate(payload)
+    if not isinstance(payload, dict):
+        raise TypeError("Objaverse selective-geometry payload must be a JSON object after validation")
+    return payload
+
+
+def validate_objaverse_selective_geometry(path: Path) -> dict:
+    return validate_objaverse_selective_geometry_data(
+        _load_object_payload(path, name="Objaverse selective geometry")
     )
 
 

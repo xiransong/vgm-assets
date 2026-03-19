@@ -1,7 +1,7 @@
 # Objaverse Furniture Ingestion v0 Plan
 
 Status: `active plan`
-Last updated: `2026-03-18`
+Last updated: `2026-03-19`
 
 This note captures the first careful plan for scaling furniture diversity in
 `vgm-assets` with Objaverse-family sources.
@@ -84,11 +84,23 @@ The initial planning layer is now in place:
 - a stub harvest-to-review-queue helper seam now exists
 - a mock harvest and first rule-based narrowing pass now exist
 
+## Current State
+
+The pipeline is now beyond mocks:
+
+- raw metadata registration works for real artifacts
+- metadata-harvest import works for real Objaverse metadata shards
+- review-queue generation works on imported harvests
+- a first-pass quality filter is in place
+- the first official metadata shard has been reviewed manually
+- the first accepted shortlist for selective geometry acquisition is now frozen
+
 ## Immediate Next Step
 
 Do only this next:
 
-- freeze the raw metadata acquisition contract for the first real Objaverse input
-- review the mock narrowing output and tighten any weak category rules or trace strings
-- decide whether `preferred_format_missing` candidates should stay in the queue or be dropped earlier
-- keep live Objaverse ingestion out of scope until the mock behavior looks right
+- keep geometry acquisition selective, not bulk
+- fetch geometry only for the accepted shortlist from `000-014`
+- record per-candidate acquisition outcome and payload availability
+- inspect the first downloaded meshes before promoting any candidate into a
+  normalized furniture bundle

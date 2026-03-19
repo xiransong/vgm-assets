@@ -1,0 +1,121 @@
+{
+  "review_id": "objaverse_000_014_manual_review_v0",
+  "source_id": "objaverse_furniture_metadata_v0",
+  "queue_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/review_queue/objaverse_000-014_review_queue.json",
+  "reviewed_at": "2026-03-19T00:00:00+00:00",
+  "notes": "Manual metadata-only review of the first real Objaverse shard queue. Decisions are intentionally conservative and meant to seed the first geometry-backed prototype.",
+  "decisions": [
+    {
+      "object_uid": "ac9ef69e1bbf4258aa489635b6cec609",
+      "title": "Earmes Lounge Chair",
+      "category_guess": "armchair",
+      "decision": "accepted",
+      "reason": "Strong category match and no obvious metadata red flags."
+    },
+    {
+      "object_uid": "c715fad78e6c4fc79b3b54d40ab50d07",
+      "title": "Leather and Fabric Sofa",
+      "category_guess": "sofa",
+      "decision": "accepted",
+      "reason": "Promising sofa candidate with useful descriptive metadata and no immediate quality red flag."
+    },
+    {
+      "object_uid": "08d58a4f9c8e4a90b52cec383e05b662",
+      "title": "table 70s",
+      "category_guess": "coffee_table",
+      "decision": "accepted",
+      "reason": "Clear coffee-table semantics and plausible furniture-specific description."
+    },
+    {
+      "object_uid": "2daabc422a2e46f489f31c4a3b2b4d54",
+      "title": "Bookshelf",
+      "category_guess": "bookshelf",
+      "decision": "accepted",
+      "reason": "Simple but plausible storage candidate for the first normalization pass."
+    },
+    {
+      "object_uid": "415990b9b8d7434099682efbc9993132",
+      "title": "nightstand",
+      "category_guess": "side_table",
+      "decision": "accepted",
+      "reason": "Good side-table proxy for a first living-room furniture prototype."
+    },
+    {
+      "object_uid": "cc62391ab66141119f769c20b07a1c11",
+      "title": "new_Armchair",
+      "category_guess": "armchair",
+      "decision": "hold",
+      "reason": "Plausible but metadata is generic; inspect geometry before accepting."
+    },
+    {
+      "object_uid": "c6e26c415f484c24b844c95de2d4e9fe",
+      "title": "armchair",
+      "category_guess": "armchair",
+      "decision": "hold",
+      "reason": "Plausible fallback candidate, but metadata is too generic for immediate promotion."
+    },
+    {
+      "object_uid": "b7291e4a38de4be4a3aa88689bd51f9f",
+      "title": "Bookcase",
+      "category_guess": "bookcase",
+      "decision": "hold",
+      "reason": "Useful category coverage, but low-detail risk remains until geometry inspection."
+    },
+    {
+      "object_uid": "3079f5cc61ea4acb9bdc3d304025b3e2",
+      "title": "Sofa",
+      "category_guess": "sofa",
+      "decision": "hold",
+      "reason": "Potentially useful scanned furniture, but likely cleanup-heavy."
+    },
+    {
+      "object_uid": "065afa72464b47c7911493811233b362",
+      "title": "Shihba - SSC210",
+      "category_guess": "sofa",
+      "decision": "hold",
+      "reason": "Interesting sofa candidate, but scanned classical-set origin may make normalization costly."
+    },
+    {
+      "object_uid": "90033ea46d90407d9bcc8318186a2b1e",
+      "title": "CLASSIC - MODERN - LEATHER SOFA",
+      "category_guess": "sofa",
+      "decision": "hold",
+      "reason": "Visually plausible from metadata, but description suggests mixed intended uses."
+    },
+    {
+      "object_uid": "b60aa915efb34b3ebd44b18403b1b040",
+      "title": "Clients_3_Sofa_2 - CSM239",
+      "category_guess": "sofa",
+      "decision": "hold",
+      "reason": "Could be useful, but very high triangle count and scan-heavy origin suggest extra cleanup burden."
+    },
+    {
+      "object_uid": "447a958614524af09826c60303e445b3",
+      "title": "Sofa Kenni_Pawsome",
+      "category_guess": "sofa",
+      "decision": "hold",
+      "reason": "Name is unusual; inspect actual geometry before promoting."
+    },
+    {
+      "object_uid": "7d4849b06fcf4e78bdf755902ca68a10",
+      "title": "Диван",
+      "category_guess": "sofa",
+      "decision": "rejected",
+      "reason": "Lower-priority sofa candidate due to weak/noisy metadata relative to stronger alternatives."
+    },
+    {
+      "object_uid": "4ed826ac8a8e4e3a98e23d7afb9b0813",
+      "title": "Sofa",
+      "category_guess": "sofa",
+      "decision": "rejected",
+      "reason": "Low-detail generic sofa candidate; not strong enough for the first realism-oriented prototype."
+    },
+    {
+      "object_uid": "581c76292490419481b44621e13746f5",
+      "title": "Projeto Sala",
+      "category_guess": "sofa",
+      "decision": "rejected",
+      "reason": "Likely room-scene export rather than a clean isolated furniture asset."
+    }
+  ]
+}

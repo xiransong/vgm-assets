@@ -140,6 +140,23 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   --output sources/objaverse/mock_review_queue_v0.json
 ```
 
+## Current Real-Shard Review State
+
+The first official metadata shard has now been processed through the
+metadata-only pipeline and reviewed manually.
+
+Repo-side review artifacts:
+
+- `docs/catalogs/objaverse_000_014_review_v0.md`
+- `sources/objaverse/manual_review_objaverse_000_014_v0.json`
+- `sources/objaverse/selective_geometry_objaverse_000_014_v0.json`
+
+The next acquisition step should remain selective:
+
+- fetch geometry only for the accepted shortlist
+- do not bulk-download held candidates yet
+- inspect real payload quality before creating normalized bundles
+
 ## Expected Future Output
 
 If this source path works, it should eventually feed:

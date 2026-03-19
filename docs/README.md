@@ -36,6 +36,7 @@ notes for `vgm-assets`.
 - `architecture/objaverse_furniture_narrowing_v0.md`
 - `architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `architecture/objaverse_furniture_review_queue_v0.md`
+- `architecture/objaverse_selective_geometry_acquisition_v0.md`
 - `architecture/poly_haven_room_surface_manifests_v0.md`
 
 ### Catalogs
@@ -44,6 +45,7 @@ notes for `vgm-assets`.
 - `catalogs/room_surface_materials_v0.md`
 - `catalogs/opening_assemblies_v0.md`
 - `catalogs/ceiling_light_fixtures_v0.md`
+- `catalogs/objaverse_000_014_review_v0.md`
 
 ### Active Plans
 

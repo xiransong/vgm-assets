@@ -1,0 +1,69 @@
+{
+  "selection_id": "objaverse_000_014_selective_geometry_v0",
+  "source_id": "objaverse_furniture_metadata_v0",
+  "review_id": "objaverse_000_014_manual_review_v0",
+  "queue_artifact": "DATA_ROOT/sources/objaverse/furniture_v0/review_queue/objaverse_000-014_review_queue.json",
+  "selected_count": 5,
+  "selected_candidates": [
+    {
+      "object_uid": "ac9ef69e1bbf4258aa489635b6cec609",
+      "title": "Earmes Lounge Chair",
+      "category_guess": "armchair",
+      "expected_formats": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "priority": 1,
+      "notes": "Highest-priority first armchair candidate for the geometry-backed prototype."
+    },
+    {
+      "object_uid": "c715fad78e6c4fc79b3b54d40ab50d07",
+      "title": "Leather and Fabric Sofa",
+      "category_guess": "sofa",
+      "expected_formats": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "priority": 2,
+      "notes": "Primary sofa candidate from the first real shard."
+    },
+    {
+      "object_uid": "08d58a4f9c8e4a90b52cec383e05b662",
+      "title": "table 70s",
+      "category_guess": "coffee_table",
+      "expected_formats": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "priority": 3,
+      "notes": "Coffee-table candidate with clear metadata fit."
+    },
+    {
+      "object_uid": "2daabc422a2e46f489f31c4a3b2b4d54",
+      "title": "Bookshelf",
+      "category_guess": "bookshelf",
+      "expected_formats": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "priority": 4,
+      "notes": "Storage candidate to test non-seating normalization."
+    },
+    {
+      "object_uid": "415990b9b8d7434099682efbc9993132",
+      "title": "nightstand",
+      "category_guess": "side_table",
+      "expected_formats": [
+        "glb",
+        "gltf",
+        "obj"
+      ],
+      "priority": 5,
+      "notes": "Side-table proxy for a first small auxiliary furniture candidate."
+    }
+  ]
+}

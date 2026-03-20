@@ -56,6 +56,7 @@ See:
 - `docs/architecture/objaverse_furniture_narrowing_v0.md`
 - `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `docs/architecture/objaverse_furniture_review_queue_v0.md`
+- `docs/architecture/support_surface_semantics_v1.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/objaverse/README.md`
@@ -69,6 +70,7 @@ See:
 - `docs/plans/opening_assemblies_v0_plan.md`
 - `docs/plans/ceiling_light_fixtures_v0_plan.md`
 - `docs/plans/objaverse_furniture_ingestion_v0_plan.md`
+- `docs/plans/support_surface_semantics_v1_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`

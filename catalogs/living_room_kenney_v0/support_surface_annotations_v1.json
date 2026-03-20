@@ -1,0 +1,176 @@
+{
+  "annotation_set_id": "living_room_kenney_support_surfaces_v1",
+  "version": "support_surface_annotation_set_v1",
+  "notes": "First hand-authored support-surface slice for support-aware clutter placement on the Kenney living-room catalog.",
+  "assets": [
+    {
+      "asset_id": "kenney_table_coffee_01",
+      "category": "coffee_table",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "coffee_table_top",
+          "surface_class": "table_top",
+          "shape": "rectangle",
+          "width_m": 0.94,
+          "depth_m": 0.5,
+          "height_m": 0.45,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.45,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "mug",
+            "book"
+          ],
+          "placement_style": "scattered",
+          "review_status": "reviewed"
+        }
+      ],
+      "notes": "Primary tabletop clutter support surface for the rectangular Kenney coffee table."
+    },
+    {
+      "asset_id": "kenney_side_table_01",
+      "category": "side_table",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "side_table_top",
+          "surface_class": "side_table_top",
+          "shape": "rectangle",
+          "width_m": 0.45,
+          "depth_m": 0.45,
+          "height_m": 0.5,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.5,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "mug",
+            "book"
+          ],
+          "placement_style": "scattered",
+          "review_status": "reviewed"
+        }
+      ],
+      "notes": "Compact support surface intended for one or two tabletop props."
+    },
+    {
+      "asset_id": "kenney_cabinet_television_01",
+      "category": "tv_stand",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "tv_stand_top",
+          "surface_class": "tv_stand_top",
+          "shape": "rectangle",
+          "width_m": 1.24,
+          "depth_m": 0.34,
+          "height_m": 0.6,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.6,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "book"
+          ],
+          "placement_style": "aligned_front",
+          "review_status": "reviewed"
+        }
+      ],
+      "notes": "Useful for a small number of decor or media-adjacent props, but not part of the first bridge minimum."
+    },
+    {
+      "asset_id": "kenney_bookcase_closed_wide_01",
+      "category": "bookshelf",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "shelf_0",
+          "surface_type": "bookshelf_shelf",
+          "surface_class": "bookshelf_shelf",
+          "shape": "rectangle",
+          "width_m": 0.86,
+          "depth_m": 0.25,
+          "height_m": 0.52,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.52,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "book"
+          ],
+          "placement_style": "grid_like",
+          "is_enclosed": false,
+          "review_status": "reviewed"
+        },
+        {
+          "surface_id": "shelf_1",
+          "surface_type": "bookshelf_shelf",
+          "surface_class": "bookshelf_shelf",
+          "shape": "rectangle",
+          "width_m": 0.86,
+          "depth_m": 0.25,
+          "height_m": 1.02,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 1.02,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "book"
+          ],
+          "placement_style": "grid_like",
+          "is_enclosed": false,
+          "review_status": "reviewed"
+        },
+        {
+          "surface_id": "shelf_2",
+          "surface_type": "bookshelf_shelf",
+          "surface_class": "bookshelf_shelf",
+          "shape": "rectangle",
+          "width_m": 0.86,
+          "depth_m": 0.25,
+          "height_m": 1.52,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 1.52,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "book"
+          ],
+          "placement_style": "grid_like",
+          "is_enclosed": false,
+          "review_status": "reviewed"
+        }
+      ],
+      "notes": "First explicit multi-shelf support example for book-only clutter placement."
+    }
+  ]
+}

@@ -16,6 +16,7 @@ Catalog:
 - `catalogs/living_room_kenney_v0/assets.json`
 - `catalogs/living_room_kenney_v0/measurements.json`
 - `catalogs/living_room_kenney_v0/size_normalization_v1.json`
+- `catalogs/living_room_kenney_v0/support_surface_annotations_v1.json`
 - `catalogs/living_room_kenney_v0/category_index.json`
 - `exports/scene_engine/living_room_kenney_v0_r1`
 - `exports/scene_engine/living_room_kenney_v0_r2`
@@ -125,3 +126,40 @@ The latest review applied three truth-preserving adjustments:
 1. the small shelf asset was reclassified from `bookshelf` to `bookcase`
 2. `coffee_table` spacing priors were relaxed to match the smaller measured mesh
 3. `tv_stand` spacing priors were relaxed to match the measured mesh depth
+
+## Support-Surface Annotation Slice
+
+The first richer support-aware clutter annotation slice now exists as a
+repo-local artifact:
+
+- `catalogs/living_room_kenney_v0/support_surface_annotations_v1.json`
+
+This file is intentionally separate from `assets.json`.
+
+Why:
+- the current shared `AssetSpec v0` support block is still intentionally thin
+- the clutter bridge needs richer local support metadata now
+- we want to test the annotation shape before proposing a protocol change
+
+The first annotated support assets are:
+
+- `kenney_table_coffee_01`
+- `kenney_side_table_01`
+- `kenney_cabinet_television_01`
+- `kenney_bookcase_closed_wide_01`
+
+And the current richer support surface types are:
+
+- `coffee_table_top`
+- `side_table_top`
+- `tv_stand_top`
+- `bookshelf_shelf`
+
+The bridge-critical support categories for the first clutter slice are still:
+
+- `coffee_table`
+- `side_table`
+- `bookshelf`
+
+The `tv_stand` annotation is included as an extra reviewed example, but it is
+not required for the first `mug` / `book` bridge milestone.

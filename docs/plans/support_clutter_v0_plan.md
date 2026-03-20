@@ -49,3 +49,5 @@ For this phase, do not:
   validator command in `vgm-assets`.
 - 2026-03-20: selected AI2-THOR as the first practical source for `mug` and
   `book` in `support_clutter_v0_r1`.
+- 2026-03-20: added the first AI2-THOR prop selection file and processed-bundle
+  layout plan for the initial `mug` / `book` slice.

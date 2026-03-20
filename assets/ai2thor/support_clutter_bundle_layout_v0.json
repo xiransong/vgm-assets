@@ -1,0 +1,155 @@
+{
+  "layout_id": "ai2thor_support_clutter_bundle_layout_v0",
+  "source_repo": "ai2thor",
+  "slice_id": "support_clutter_v0",
+  "bundle_roots": {
+    "mug": "assets/props/ai2thor/support_clutter_v0/mug",
+    "book": "assets/props/ai2thor/support_clutter_v0/book"
+  },
+  "required_bundle_files": [
+    "bundle_manifest.json",
+    "source_metadata.json",
+    "model.fbx"
+  ],
+  "optional_bundle_files": [
+    "preview.png"
+  ],
+  "per_asset_layout": [
+    {
+      "asset_id": "ai2thor_mug_01",
+      "category": "mug",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_01",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Kitchen Objects/Mug",
+      "expected_source_files": {
+        "prefab": "Prefabs/Mug_1.prefab",
+        "model": "Models/mugs_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_mug_02",
+      "category": "mug",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_02",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Kitchen Objects/Mug",
+      "expected_source_files": {
+        "prefab": "Prefabs/Mug_2.prefab",
+        "model": "Models/mugs_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_mug_03",
+      "category": "mug",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_03",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Kitchen Objects/Mug",
+      "expected_source_files": {
+        "prefab": "Prefabs/Mug_3.prefab",
+        "model": "Models/mugs_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "category": "book",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_01",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book",
+      "expected_source_files": {
+        "prefab": "Prefabs/Book_1.prefab",
+        "model": "Models/books_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_05",
+      "category": "book",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_05",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book",
+      "expected_source_files": {
+        "prefab": "Prefabs/Book_5.prefab",
+        "model": "Models/books_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_09",
+      "category": "book",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_09",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book",
+      "expected_source_files": {
+        "prefab": "Prefabs/Book_9.prefab",
+        "model": "Models/books_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_13",
+      "category": "book",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_13",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book",
+      "expected_source_files": {
+        "prefab": "Prefabs/Book_13.prefab",
+        "model": "Models/books_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_24",
+      "category": "book",
+      "normalized_rel_dir": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_24",
+      "source_repo_rel_root": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book",
+      "expected_source_files": {
+        "prefab": "Prefabs/Book_24.prefab",
+        "model": "Models/books_grp.fbx",
+        "materials_dir": "Materials"
+      },
+      "normalized_files": {
+        "model": "model.fbx",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    }
+  ]
+}

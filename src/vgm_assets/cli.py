@@ -44,6 +44,7 @@ from .room_surface_materials import (
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .size_normalization import apply_size_normalization
 from .support_surfaces import validate_support_surface_annotation_set
+from .support_clutter import validate_support_clutter_prop_annotation_set
 from .sources import (
     download_objaverse_selective_geometry,
     fetch_poly_haven_room_surface_material,
@@ -334,6 +335,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a local support-surface annotation set against the vgm-assets v1 schema",
     )
     validate_support_surface_annotation_set_parser.add_argument("annotations", type=Path)
+
+    validate_support_clutter_prop_annotation_set_parser = subparsers.add_parser(
+        "validate-support-clutter-prop-annotation-set",
+        help="Validate a local support-clutter prop annotation set against the vgm-assets v0 schema",
+    )
+    validate_support_clutter_prop_annotation_set_parser.add_argument("annotations", type=Path)
 
     validate_objaverse_metadata_harvest_parser = subparsers.add_parser(
         "validate-objaverse-furniture-metadata-harvest",
@@ -847,6 +854,14 @@ def main() -> int:
         print(
             f"Validated support-surface annotation set {payload['annotation_set_id']} "
             f"with {len(payload['assets'])} assets in {args.annotations}"
+        )
+        return 0
+
+    if args.command == "validate-support-clutter-prop-annotation-set":
+        payload = validate_support_clutter_prop_annotation_set(args.annotations)
+        print(
+            f"Validated support-clutter prop annotation set {payload['annotation_set_id']} "
+            f"with {len(payload['props'])} props in {args.annotations}"
         )
         return 0
 

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/support_clutter_prop_annotation_set_v0.schema.json",
+  "title": "Support Clutter Prop Annotation Set v0",
+  "description": "Local vgm-assets schema for prop-side placement metadata used by the first support-aware clutter bridge.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["annotation_set_id", "version", "props"],
+  "properties": {
+    "annotation_set_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "version": {
+      "type": "string",
+      "const": "support_clutter_prop_annotation_set_v0"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/propPlacementAnnotation"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "positiveFloat": {
+      "type": "number",
+      "exclusiveMinimum": 0.0
+    },
+    "nonNegativeFloat": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "axisName": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"]
+    },
+    "surfaceType": {
+      "type": "string",
+      "enum": ["coffee_table_top", "side_table_top", "bookshelf_shelf", "tv_stand_top"]
+    },
+    "propPlacementAnnotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "category",
+        "placement_class",
+        "base_shape",
+        "base_width_m",
+        "base_depth_m",
+        "support_margin_m",
+        "allowed_surface_types",
+        "upright_axis",
+        "stable_support_required"
+      ],
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "category": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "placement_class": {
+          "type": "string",
+          "enum": ["mug", "book", "small_tabletop", "decoration"]
+        },
+        "base_shape": {
+          "type": "string",
+          "enum": ["rectangle", "circle"]
+        },
+        "base_width_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "base_depth_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "support_margin_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "allowed_surface_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/surfaceType"
+          }
+        },
+        "upright_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "front_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "stable_support_required": {
+          "type": "boolean"
+        },
+        "placement_style": {
+          "type": "string",
+          "enum": ["scattered", "aligned_front", "grid_like"]
+        },
+        "review_status": {
+          "type": "string",
+          "enum": ["auto", "reviewed", "uncertain"]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

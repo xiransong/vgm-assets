@@ -57,6 +57,7 @@ See:
 - `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `docs/architecture/objaverse_furniture_review_queue_v0.md`
 - `docs/architecture/support_surface_semantics_v1.md`
+- `docs/architecture/support_clutter_prop_metadata_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/objaverse/README.md`
@@ -71,6 +72,7 @@ See:
 - `docs/plans/ceiling_light_fixtures_v0_plan.md`
 - `docs/plans/objaverse_furniture_ingestion_v0_plan.md`
 - `docs/plans/support_surface_semantics_v1_plan.md`
+- `docs/plans/support_clutter_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
@@ -237,6 +239,15 @@ small furniture slice:
 PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   validate-support-surface-annotation-set \
   /path/to/support_surface_annotations.json
+```
+
+Validate a local prop-side support-clutter annotation set for `mug` / `book`
+style assets:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-support-clutter-prop-annotation-set \
+  /path/to/support_clutter_prop_annotations.json
 ```
 
 Organize the first Kenney ceiling-fixture bundle:

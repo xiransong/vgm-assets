@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/support_surface_annotation_set_v1.schema.json",
+  "title": "Support Surface Annotation Set v1",
+  "description": "Local vgm-assets schema for richer support-surface annotations authored outside the current vgm-protocol AssetSpec v0 contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["annotation_set_id", "version", "assets"],
+  "properties": {
+    "annotation_set_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "version": {
+      "type": "string",
+      "const": "support_surface_annotation_set_v1"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assetSupportAnnotation"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "positiveFloat": {
+      "type": "number",
+      "exclusiveMinimum": 0.0
+    },
+    "nonNegativeFloat": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "axisName": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"]
+    },
+    "point3d": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": {"type": "number"},
+        "y": {"type": "number"},
+        "z": {"type": "number"}
+      }
+    },
+    "supportSurfaceV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface_id",
+        "surface_type",
+        "surface_class",
+        "shape",
+        "width_m",
+        "depth_m",
+        "height_m",
+        "local_center_m",
+        "normal_axis",
+        "front_axis",
+        "usable_margin_m"
+      ],
+      "properties": {
+        "surface_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "surface_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "surface_class": {
+          "type": "string",
+          "enum": [
+            "table_top",
+            "desk_top",
+            "side_table_top",
+            "tv_stand_top",
+            "bookshelf_shelf",
+            "shelf",
+            "counter_top",
+            "seat"
+          ]
+        },
+        "shape": {
+          "type": "string",
+          "enum": ["rectangle"]
+        },
+        "width_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "depth_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "height_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "local_center_m": {
+          "$ref": "#/$defs/point3d"
+        },
+        "normal_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "front_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "usable_margin_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "supports_categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "placement_style": {
+          "type": "string",
+          "enum": ["scattered", "centered", "aligned_front", "grid_like"]
+        },
+        "is_enclosed": {
+          "type": "boolean"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": ["auto", "reviewed", "uncertain"]
+        }
+      }
+    },
+    "assetSupportAnnotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "category",
+        "supports_objects",
+        "support_surfaces_v1"
+      ],
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "category": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "supports_objects": {
+          "type": "boolean"
+        },
+        "support_surfaces_v1": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/supportSurfaceV1"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

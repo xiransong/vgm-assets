@@ -71,11 +71,19 @@ For `vgm-assets`, the next richer surface record should carry:
 - `surface_id`
   - stable object-local identifier such as `top`, `shelf_01`, `upper_shelf`
 - `surface_type`
+  - concrete exported label used by downstream consumers
+  - examples:
+    - `coffee_table_top`
+    - `side_table_top`
+    - `bookshelf_shelf`
+- `surface_class`
+  - smaller generic semantic class
   - one of:
     - `table_top`
     - `desk_top`
     - `side_table_top`
     - `tv_stand_top`
+    - `bookshelf_shelf`
     - `shelf`
     - `counter_top`
     - `seat`
@@ -171,6 +179,7 @@ For the first `vgm-assets` upgrade, the minimum useful additions are:
 
 1. richer parent support surfaces
 - `surface_type`
+- `surface_class`
 - `local_center_m`
 - `normal_axis`
 - `front_axis`

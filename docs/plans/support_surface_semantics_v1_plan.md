@@ -62,3 +62,5 @@ We should consider this phase successful when we have:
 
 - 2026-03-20: wrote the first support-surface semantics note using AI2-THOR as
   the semantic reference for receptacle and placement concepts.
+- 2026-03-20: added the first local support-surface annotation-set schema and a
+  validator command in `vgm-assets`.

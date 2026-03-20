@@ -230,6 +230,15 @@ Export the first frozen opening-assembly scene-engine snapshot:
 ./scripts/exports/export_opening_assemblies_v0_r1.sh
 ```
 
+Validate a local richer support-surface annotation set before applying it to a
+small furniture slice:
+
+```bash
+PYTHONPATH=src python3 tools/validate_asset_catalog.py \
+  validate-support-surface-annotation-set \
+  /path/to/support_surface_annotations.json
+```
+
 Organize the first Kenney ceiling-fixture bundle:
 
 ```bash

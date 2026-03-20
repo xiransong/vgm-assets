@@ -273,6 +273,13 @@ Run the full AI2-THOR support-clutter source-to-processed flow:
   --source-repo-root /home/ubuntu/scratch/repos/ai2thor
 ```
 
+Refresh the current repo-side AI2-THOR support-clutter measurement and prop
+annotation artifacts:
+
+```bash
+./scripts/catalogs/refresh_ai2thor_support_clutter_metadata_v0.sh
+```
+
 Organize the first Kenney ceiling-fixture bundle:
 
 ```bash

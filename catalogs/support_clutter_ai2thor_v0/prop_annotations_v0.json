@@ -1,0 +1,156 @@
+{
+  "annotation_set_id": "support_clutter_ai2thor_v0_prop_annotations_v0",
+  "version": "support_clutter_prop_annotation_set_v0",
+  "notes": "First AI2-THOR-derived prop annotation set for the support-aware clutter bridge. Derived from prefab-based measurements.",
+  "props": [
+    {
+      "asset_id": "ai2thor_mug_01",
+      "category": "mug",
+      "placement_class": "mug",
+      "base_shape": "circle",
+      "base_width_m": 0.144491,
+      "base_depth_m": 0.144491,
+      "support_margin_m": 0.015,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "scattered",
+      "review_status": "auto",
+      "notes": "Derived from bounding_box_collider in AI2-THOR prefab metadata."
+    },
+    {
+      "asset_id": "ai2thor_mug_02",
+      "category": "mug",
+      "placement_class": "mug",
+      "base_shape": "circle",
+      "base_width_m": 0.126633,
+      "base_depth_m": 0.126633,
+      "support_margin_m": 0.015,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "scattered",
+      "review_status": "auto",
+      "notes": "Derived from bounding_box_collider in AI2-THOR prefab metadata."
+    },
+    {
+      "asset_id": "ai2thor_mug_03",
+      "category": "mug",
+      "placement_class": "mug",
+      "base_shape": "circle",
+      "base_width_m": 0.119294,
+      "base_depth_m": 0.119294,
+      "support_margin_m": 0.015,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "scattered",
+      "review_status": "auto",
+      "notes": "Derived from bounding_box_collider in AI2-THOR prefab metadata."
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "category": "book",
+      "placement_class": "book",
+      "base_shape": "rectangle",
+      "base_width_m": 0.44489,
+      "base_depth_m": 0.342402,
+      "support_margin_m": 0.01,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "grid_like",
+      "review_status": "auto",
+      "notes": "Derived from prefab collider bounds and treated as a flat-lying v0 clutter prop."
+    },
+    {
+      "asset_id": "ai2thor_book_05",
+      "category": "book",
+      "placement_class": "book",
+      "base_shape": "rectangle",
+      "base_width_m": 0.372264,
+      "base_depth_m": 0.288669,
+      "support_margin_m": 0.01,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "grid_like",
+      "review_status": "auto",
+      "notes": "Derived from prefab collider bounds and treated as a flat-lying v0 clutter prop."
+    },
+    {
+      "asset_id": "ai2thor_book_09",
+      "category": "book",
+      "placement_class": "book",
+      "base_shape": "rectangle",
+      "base_width_m": 0.228799,
+      "base_depth_m": 0.179307,
+      "support_margin_m": 0.01,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "grid_like",
+      "review_status": "auto",
+      "notes": "Derived from prefab collider bounds and treated as a flat-lying v0 clutter prop."
+    },
+    {
+      "asset_id": "ai2thor_book_13",
+      "category": "book",
+      "placement_class": "book",
+      "base_shape": "rectangle",
+      "base_width_m": 0.291413,
+      "base_depth_m": 0.226657,
+      "support_margin_m": 0.01,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "grid_like",
+      "review_status": "auto",
+      "notes": "Derived from prefab collider bounds and treated as a flat-lying v0 clutter prop."
+    },
+    {
+      "asset_id": "ai2thor_book_24",
+      "category": "book",
+      "placement_class": "book",
+      "base_shape": "rectangle",
+      "base_width_m": 0.419232,
+      "base_depth_m": 0.28192,
+      "support_margin_m": 0.01,
+      "allowed_surface_types": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf"
+      ],
+      "upright_axis": "+y",
+      "stable_support_required": true,
+      "placement_style": "grid_like",
+      "review_status": "auto",
+      "notes": "Derived from prefab collider bounds and treated as a flat-lying v0 clutter prop."
+    }
+  ]
+}

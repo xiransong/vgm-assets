@@ -44,7 +44,11 @@ from .room_surface_materials import (
 from .sampling import category_summary, sample_uniform_asset, write_category_index
 from .size_normalization import apply_size_normalization
 from .support_surfaces import validate_support_surface_annotation_set
-from .support_clutter import validate_support_clutter_prop_annotation_set
+from .support_clutter import (
+    validate_support_clutter_prop_annotation_set,
+    write_ai2thor_support_clutter_measurements,
+    write_support_clutter_prop_annotation_set_from_measurements,
+)
 from .sources import (
     download_objaverse_selective_geometry,
     fetch_poly_haven_room_surface_material,
@@ -343,6 +347,31 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a local support-clutter prop annotation set against the vgm-assets v0 schema",
     )
     validate_support_clutter_prop_annotation_set_parser.add_argument("annotations", type=Path)
+
+    write_ai2thor_support_clutter_measurements_parser = subparsers.add_parser(
+        "write-ai2thor-support-clutter-measurements",
+        help="Derive approximate AI2-THOR prop measurements from Unity prefab colliders and write a measurement report",
+    )
+    write_ai2thor_support_clutter_measurements_parser.add_argument(
+        "--selection-manifest", type=Path, required=True
+    )
+    write_ai2thor_support_clutter_measurements_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_ai2thor_support_clutter_measurements_parser.add_argument("--raw-data-root", type=Path)
+    write_ai2thor_support_clutter_measurements_parser.add_argument("--created-at")
+
+    write_support_clutter_prop_annotations_parser = subparsers.add_parser(
+        "write-support-clutter-prop-annotations",
+        help="Write a first support-clutter prop annotation set from a measurement report",
+    )
+    write_support_clutter_prop_annotations_parser.add_argument(
+        "--measurements", type=Path, required=True
+    )
+    write_support_clutter_prop_annotations_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_support_clutter_prop_annotations_parser.add_argument("--created-at")
 
     register_ai2thor_support_clutter_parser = subparsers.add_parser(
         "register-ai2thor-support-clutter-selection",
@@ -891,6 +920,25 @@ def main() -> int:
             f"Validated support-clutter prop annotation set {payload['annotation_set_id']} "
             f"with {len(payload['props'])} props in {args.annotations}"
         )
+        return 0
+
+    if args.command == "write-ai2thor-support-clutter-measurements":
+        summary = write_ai2thor_support_clutter_measurements(
+            selection_manifest_path=args.selection_manifest,
+            output_path=args.output,
+            raw_data_root=args.raw_data_root,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "write-support-clutter-prop-annotations":
+        summary = write_support_clutter_prop_annotation_set_from_measurements(
+            measurements_path=args.measurements,
+            output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "register-ai2thor-support-clutter-selection":

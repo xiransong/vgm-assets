@@ -57,23 +57,45 @@ Each normalized bundle currently includes:
 - `bundle_manifest.json`
 - `materials/` when available
 
-## Important Current Limitation
+## Current Catalog Artifacts
 
-This is a source-to-bundle slice, not a full prop catalog yet.
+The current repo-side support-clutter artifacts live under:
+
+- `catalogs/support_clutter_ai2thor_v0`
+
+and include:
+
+- `measurements.json`
+- `prop_annotations_v0.json`
+
+The measurement report is derived from AI2-THOR Unity prefab colliders. For
+the current slice, all selected props expose an explicit `BoundingBox`
+collider, so the first measurements use that source-authored metadata rather
+than ad hoc mesh parsing.
+
+## Current Status
 
 What exists already:
 - source registration into `RAW_DATA_ROOT`
 - normalized processed bundles in `DATA_ROOT`
 - bundle manifests and source metadata
+- approximate prop dimensions and footprints from prefab collider bounds
+- first real prop placement annotations for the selected mugs and books
 
 What still remains before the first frozen support-clutter export:
-- prop dimensions and footprints
-- prop placement annotations for the real selected assets
-- a compact compatibility export
+- a compact support-compatibility export
 - a prop asset catalog and frozen snapshot
 
-## Recommendation
+## Refresh Command
 
-The next clean step is to measure or otherwise normalize practical dimensions
-for these props and then author the first real prop placement annotation set
-for the selected AI2-THOR mugs and books.
+The current prop metadata slice can be refreshed with:
+
+```bash
+./scripts/catalogs/refresh_ai2thor_support_clutter_metadata_v0.sh
+```
+
+This command:
+- reads the processed AI2-THOR selection manifest from `DATA_ROOT`
+- derives approximate prop measurements from raw prefab metadata in `RAW_DATA_ROOT`
+- writes the current repo-side measurement and annotation artifacts
+- validates the resulting prop annotation set

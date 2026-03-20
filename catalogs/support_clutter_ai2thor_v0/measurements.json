@@ -1,0 +1,233 @@
+{
+  "measurement_set_id": "support_clutter_ai2thor_v0_prefab_measurements_v0",
+  "version": "support_clutter_ai2thor_prefab_measurements_v0",
+  "selection_id": "ai2thor_support_clutter_v0",
+  "created_at": "2026-03-20T16:41:53+00:00",
+  "notes": "Approximate prop measurements derived from AI2-THOR Unity prefab colliders. BoundingBox colliders are preferred when available.",
+  "props": [
+    {
+      "asset_id": "ai2thor_mug_01",
+      "category": "mug",
+      "source_name": "Mug_1",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/mug/ai2thor_mug_01/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 22,
+      "used_collider_count": 1,
+      "width_m": 0.144491,
+      "height_m": 0.111814,
+      "depth_m": 0.114718,
+      "center_m": {
+        "x": -0.012402,
+        "y": 0.055907,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.084648,
+        "y": 0.0,
+        "z": -0.057359
+      },
+      "max_corner_m": {
+        "x": 0.059843,
+        "y": 0.111814,
+        "z": 0.057359
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_mug_02",
+      "category": "mug",
+      "source_name": "Mug_2",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/mug/ai2thor_mug_02/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 22,
+      "used_collider_count": 1,
+      "width_m": 0.126633,
+      "height_m": 0.111814,
+      "depth_m": 0.101641,
+      "center_m": {
+        "x": -0.013764,
+        "y": 0.055907,
+        "z": -2.4e-05
+      },
+      "min_corner_m": {
+        "x": -0.07708,
+        "y": 0.0,
+        "z": -0.050845
+      },
+      "max_corner_m": {
+        "x": 0.049553,
+        "y": 0.111814,
+        "z": 0.050796
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_mug_03",
+      "category": "mug",
+      "source_name": "Mug_3",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/mug/ai2thor_mug_03/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 22,
+      "used_collider_count": 1,
+      "width_m": 0.119294,
+      "height_m": 0.111814,
+      "depth_m": 0.1024,
+      "center_m": {
+        "x": -0.015202,
+        "y": 0.055907,
+        "z": -1.7e-05
+      },
+      "min_corner_m": {
+        "x": -0.07485,
+        "y": 0.0,
+        "z": -0.051217
+      },
+      "max_corner_m": {
+        "x": 0.044445,
+        "y": 0.111814,
+        "z": 0.051183
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "category": "book",
+      "source_name": "Book_1",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/book/ai2thor_book_01/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 21,
+      "used_collider_count": 1,
+      "width_m": 0.44489,
+      "height_m": 0.084812,
+      "depth_m": 0.342402,
+      "center_m": {
+        "x": -0.003935,
+        "y": 0.038016,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.22638,
+        "y": -0.00439,
+        "z": -0.171201
+      },
+      "max_corner_m": {
+        "x": 0.21851,
+        "y": 0.080422,
+        "z": 0.171201
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_book_05",
+      "category": "book",
+      "source_name": "Book_5",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/book/ai2thor_book_05/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 21,
+      "used_collider_count": 1,
+      "width_m": 0.288669,
+      "height_m": 0.055639,
+      "depth_m": 0.372264,
+      "center_m": {
+        "x": -0.000323,
+        "y": 0.024421,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.144658,
+        "y": -0.003398,
+        "z": -0.186132
+      },
+      "max_corner_m": {
+        "x": 0.144011,
+        "y": 0.052241,
+        "z": 0.186132
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_book_09",
+      "category": "book",
+      "source_name": "Book_9",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/book/ai2thor_book_09/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 21,
+      "used_collider_count": 1,
+      "width_m": 0.179307,
+      "height_m": 0.025908,
+      "depth_m": 0.228799,
+      "center_m": {
+        "x": -0.004496,
+        "y": 0.011152,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.094149,
+        "y": -0.001801,
+        "z": -0.114399
+      },
+      "max_corner_m": {
+        "x": 0.085158,
+        "y": 0.024106,
+        "z": 0.114399
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_book_13",
+      "category": "book",
+      "source_name": "Book_13",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/book/ai2thor_book_13/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 21,
+      "used_collider_count": 1,
+      "width_m": 0.226657,
+      "height_m": 0.035491,
+      "depth_m": 0.291413,
+      "center_m": {
+        "x": -0.002218,
+        "y": 0.015293,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.115546,
+        "y": -0.002452,
+        "z": -0.145706
+      },
+      "max_corner_m": {
+        "x": 0.111111,
+        "y": 0.033039,
+        "z": 0.145706
+      },
+      "upright_axis": "+y"
+    },
+    {
+      "asset_id": "ai2thor_book_24",
+      "category": "book",
+      "source_name": "Book_24",
+      "raw_prefab_path": "sources/ai2thor/support_clutter_v0/book/ai2thor_book_24/raw/source_prefab.prefab",
+      "measurement_source": "bounding_box_collider",
+      "collider_count": 21,
+      "used_collider_count": 1,
+      "width_m": 0.28192,
+      "height_m": 0.054629,
+      "depth_m": 0.419232,
+      "center_m": {
+        "x": -0.004407,
+        "y": 0.025611,
+        "z": 0.0
+      },
+      "min_corner_m": {
+        "x": -0.145367,
+        "y": -0.001703,
+        "z": -0.209616
+      },
+      "max_corner_m": {
+        "x": 0.136553,
+        "y": 0.052925,
+        "z": 0.209616
+      },
+      "upright_axis": "+y"
+    }
+  ]
+}

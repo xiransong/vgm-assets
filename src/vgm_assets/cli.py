@@ -20,6 +20,7 @@ from .exports import (
     export_opening_assembly_snapshot,
     export_room_surface_material_snapshot,
     export_scene_engine_snapshot,
+    export_scene_engine_snapshot_with_support_annotations,
     export_support_clutter_snapshot,
 )
 from .opening_assemblies import (
@@ -653,6 +654,19 @@ def build_parser() -> argparse.ArgumentParser:
     export_parser.add_argument("--output-dir", type=Path, required=True)
     export_parser.add_argument("--notes")
 
+    support_annotated_export_parser = subparsers.add_parser(
+        "export-scene-engine-snapshot-with-support-annotations",
+        help="Export a frozen scene-engine furniture snapshot with thin support synced from rich support annotations and a companion support annotation file",
+    )
+    support_annotated_export_parser.add_argument("--export-id", required=True)
+    support_annotated_export_parser.add_argument("--source-catalog-id", required=True)
+    support_annotated_export_parser.add_argument("--catalog", type=Path, required=True)
+    support_annotated_export_parser.add_argument("--category-index", type=Path, required=True)
+    support_annotated_export_parser.add_argument("--manifest", type=Path, required=True)
+    support_annotated_export_parser.add_argument("--support-annotations", type=Path, required=True)
+    support_annotated_export_parser.add_argument("--output-dir", type=Path, required=True)
+    support_annotated_export_parser.add_argument("--notes")
+
     material_export_parser = subparsers.add_parser(
         "export-room-surface-material-snapshot",
         help="Export a frozen scene-engine snapshot from room-surface material catalog artifacts",
@@ -1228,6 +1242,20 @@ def main() -> int:
             catalog_path=args.catalog,
             category_index_path=args.category_index,
             manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-scene-engine-snapshot-with-support-annotations":
+        summary = export_scene_engine_snapshot_with_support_annotations(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            category_index_path=args.category_index,
+            manifest_path=args.manifest,
+            support_annotations_path=args.support_annotations,
             output_dir=args.output_dir,
             notes=args.notes,
         )

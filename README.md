@@ -217,6 +217,13 @@ Export the current size-normalized scene-engine snapshot:
 ./scripts/exports/export_living_room_kenney_v0_r2.sh
 ```
 
+Export the current support-synced living-room scene-engine snapshot with the
+rich support-surface companion file:
+
+```bash
+./scripts/exports/export_living_room_kenney_v0_r3.sh
+```
+
 Organize the first Kenney opening-assembly bundles:
 
 ```bash

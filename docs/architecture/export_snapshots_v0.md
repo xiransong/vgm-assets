@@ -14,6 +14,9 @@ Each snapshot should also own an immutable processed-payload snapshot under
 `DATA_ROOT`, so downstream repos do not need to dereference the mutable working
 processed tree.
 
+Some snapshots may also carry companion metadata files when the current shared
+protocol shape is intentionally thinner than the authored repo-local metadata.
+
 ## Scene-Engine Snapshot Layout
 
 ```text
@@ -24,6 +27,7 @@ exports/
       category_index.json
       asset_catalog_manifest.json
       export_metadata.json
+      <optional companion metadata files>
 
 DATA_ROOT/
   exports/
@@ -64,6 +68,10 @@ The first frozen scene-engine snapshot is:
 The current size-normalized scene-engine snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r2`
+
+The current support-synced living-room snapshot is:
+
+- `exports/scene_engine/living_room_kenney_v0_r3`
 
 The first frozen room-surface material snapshot is:
 

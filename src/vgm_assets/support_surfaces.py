@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import json
+from copy import deepcopy
 from pathlib import Path
+from typing import Any
 
 from jsonschema.validators import validator_for
 
@@ -39,3 +42,89 @@ def validate_support_surface_annotation_set_data(payload: object) -> dict:
 
 def validate_support_surface_annotation_set(path: Path) -> dict:
     return validate_support_surface_annotation_set_data(load_support_surface_annotation_set(path))
+
+
+def _support_annotation_map(payload: dict) -> dict[str, dict[str, Any]]:
+    assets = payload.get("assets")
+    if not isinstance(assets, list):
+        raise TypeError("Support-surface annotation payload must define an assets list")
+    mapped: dict[str, dict[str, Any]] = {}
+    for asset in assets:
+        if not isinstance(asset, dict):
+            raise TypeError("Support-surface asset entries must be objects")
+        asset_id = asset.get("asset_id")
+        if not isinstance(asset_id, str) or not asset_id:
+            raise ValueError("Support-surface asset entry is missing asset_id")
+        mapped[asset_id] = asset
+    return mapped
+
+
+def build_protocol_support_from_annotation(annotation: dict[str, Any]) -> dict[str, Any]:
+    surfaces = annotation.get("support_surfaces_v1")
+    if not isinstance(surfaces, list):
+        raise TypeError("support_surfaces_v1 must be a list")
+    thin_surfaces: list[dict[str, Any]] = []
+    for surface in surfaces:
+        if not isinstance(surface, dict):
+            raise TypeError("support surface annotations must be objects")
+        thin_surfaces.append(
+            {
+                "surface_id": surface["surface_id"],
+                "height": surface["height_m"],
+                "width": surface["width_m"],
+                "depth": surface["depth_m"],
+            }
+        )
+    return {
+        "supports_objects": bool(annotation.get("supports_objects", False)),
+        "support_surfaces": thin_surfaces,
+    }
+
+
+def apply_support_surface_annotations_to_asset_records(
+    records: list[dict[str, Any]],
+    support_annotations_payload: dict,
+) -> list[dict[str, Any]]:
+    annotation_map = _support_annotation_map(support_annotations_payload)
+    updated: list[dict[str, Any]] = []
+    for record in records:
+        if not isinstance(record, dict):
+            raise TypeError("Asset records must be objects")
+        cloned = deepcopy(record)
+        asset_id = cloned.get("asset_id")
+        if isinstance(asset_id, str) and asset_id in annotation_map:
+            cloned["support"] = build_protocol_support_from_annotation(annotation_map[asset_id])
+        updated.append(cloned)
+    return updated
+
+
+def filter_support_surface_annotations_for_asset_records(
+    records: list[dict[str, Any]],
+    support_annotations_payload: dict,
+) -> dict[str, Any]:
+    validated = validate_support_surface_annotation_set_data(support_annotations_payload)
+    annotation_map = _support_annotation_map(validated)
+    asset_ids = {
+        record.get("asset_id")
+        for record in records
+        if isinstance(record, dict) and isinstance(record.get("asset_id"), str)
+    }
+    filtered_assets = [
+        deepcopy(annotation_map[asset_id])
+        for asset_id in sorted(asset_ids)
+        if asset_id in annotation_map
+    ]
+    result = {
+        "annotation_set_id": validated["annotation_set_id"],
+        "version": validated["version"],
+        "notes": validated.get("notes", ""),
+        "assets": filtered_assets,
+    }
+    return validate_support_surface_annotation_set_data(result)
+
+
+def write_support_surface_annotation_set(payload: dict[str, Any], output_path: Path) -> dict[str, Any]:
+    validated = validate_support_surface_annotation_set_data(payload)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(validated, indent=2) + "\n", encoding="utf-8")
+    return validated

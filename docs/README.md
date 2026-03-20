@@ -54,6 +54,7 @@ notes for `vgm-assets`.
 - `catalogs/objaverse_000_014_review_v0.md`
 - `catalogs/objaverse_000_014_geometry_inspection_v0.md`
 - `catalogs/living_room_objaverse_v0.md`
+- `catalogs/support_clutter_ai2thor_v0.md`
 
 ### Active Plans
 

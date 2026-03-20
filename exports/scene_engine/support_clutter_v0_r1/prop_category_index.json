@@ -1,0 +1,26 @@
+{
+  "catalog_path": "prop_asset_catalog.json",
+  "category_count": 2,
+  "categories": {
+    "book": {
+      "sampling_policy": "uniform",
+      "asset_count": 5,
+      "asset_ids": [
+        "ai2thor_book_01",
+        "ai2thor_book_05",
+        "ai2thor_book_09",
+        "ai2thor_book_13",
+        "ai2thor_book_24"
+      ]
+    },
+    "mug": {
+      "sampling_policy": "uniform",
+      "asset_count": 3,
+      "asset_ids": [
+        "ai2thor_mug_01",
+        "ai2thor_mug_02",
+        "ai2thor_mug_03"
+      ]
+    }
+  }
+}

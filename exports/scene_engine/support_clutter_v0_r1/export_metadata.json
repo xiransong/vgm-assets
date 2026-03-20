@@ -1,0 +1,116 @@
+{
+  "export_id": "support_clutter_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "support_clutter_ai2thor_v0",
+  "created_at": "2026-03-20T16:49:47+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "prop_asset_catalog": {
+      "path": "catalogs/support_clutter_ai2thor_v0/assets.json",
+      "sha256": "90bbb7e00efb24160b5201ddc2444c143bbfca7f283318f5cd14113f2075c378"
+    },
+    "prop_category_index": {
+      "path": "catalogs/support_clutter_ai2thor_v0/category_index.json",
+      "sha256": "e29871cd48529a07f29d4dda491ddd17eef46acdf0cba0d7b0d1c68df955f9ff"
+    },
+    "support_compatibility": {
+      "path": "catalogs/support_clutter_ai2thor_v0/support_compatibility.json",
+      "sha256": "daa2df20537001a3564eb767204b1e0b4d1f312884e49cc9a40f93c53551c479"
+    },
+    "asset_catalog_manifest": {
+      "path": "catalogs/support_clutter_ai2thor_v0/asset_catalog_manifest.json",
+      "sha256": "10c5f17cd84b1be0517dccb7b3c26d021e032ae619aeae332f959c776ed81500"
+    }
+  },
+  "files": {
+    "prop_asset_catalog": {
+      "path": "prop_asset_catalog.json",
+      "sha256": "ee2a09961de7a3862a6e52a7ca5f38ec2fa04c413f9671f6450689d6f40f801b"
+    },
+    "prop_category_index": {
+      "path": "prop_category_index.json",
+      "sha256": "7b3ab56b8f432a2c8616ccb21066442081cc15347ec4d9718a1ee1a94585b444"
+    },
+    "support_compatibility": {
+      "path": "support_compatibility.json",
+      "sha256": "daa2df20537001a3564eb767204b1e0b4d1f312884e49cc9a40f93c53551c479"
+    },
+    "asset_catalog_manifest": {
+      "path": "asset_catalog_manifest.json",
+      "sha256": "0ea1330a397193e1670496c03bad4989cb0bb3607ff69eac6bb398517627283e"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/support_clutter_v0_r1",
+    "asset_payload_count": 8,
+    "payload_file_count": 8,
+    "payload_files": [
+      {
+        "asset_id": "ai2thor_mug_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/mug/ai2thor_mug_01/model.fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      },
+      {
+        "asset_id": "ai2thor_mug_02",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/mug/ai2thor_mug_02/model.fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      },
+      {
+        "asset_id": "ai2thor_mug_03",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/mug/ai2thor_mug_03/model.fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      },
+      {
+        "asset_id": "ai2thor_book_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/book/ai2thor_book_01/model.fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      },
+      {
+        "asset_id": "ai2thor_book_05",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/book/ai2thor_book_05/model.fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      },
+      {
+        "asset_id": "ai2thor_book_09",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/book/ai2thor_book_09/model.fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      },
+      {
+        "asset_id": "ai2thor_book_13",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/book/ai2thor_book_13/model.fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      },
+      {
+        "asset_id": "ai2thor_book_24",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/support_clutter_v0_r1/assets/book/ai2thor_book_24/model.fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    ]
+  },
+  "contract": {
+    "compatibility_schema_path": "schemas/local/support_clutter_compatibility_v0.schema.json",
+    "support_surface_annotation_path": "catalogs/living_room_kenney_v0/support_surface_annotations_v1.json",
+    "prop_annotation_path": "catalogs/support_clutter_ai2thor_v0/prop_annotations_v0.json"
+  },
+  "notes": ""
+}

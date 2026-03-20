@@ -59,6 +59,7 @@ See:
 - `docs/architecture/support_surface_semantics_v1.md`
 - `docs/architecture/support_clutter_prop_metadata_v0.md`
 - `docs/architecture/support_clutter_prop_source_selection_v0.md`
+- `docs/architecture/support_clutter_scene_engine_consumer_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
 - `sources/ai2thor/README.md`
@@ -278,6 +279,19 @@ annotation artifacts:
 
 ```bash
 ./scripts/catalogs/refresh_ai2thor_support_clutter_metadata_v0.sh
+```
+
+Refresh the full repo-side support-clutter catalog, category index, support
+compatibility export, and manifest:
+
+```bash
+./scripts/catalogs/refresh_support_clutter_ai2thor_v0.sh
+```
+
+Export the first frozen support-clutter scene-engine snapshot:
+
+```bash
+./scripts/exports/export_support_clutter_v0_r1.sh
 ```
 
 Organize the first Kenney ceiling-fixture bundle:

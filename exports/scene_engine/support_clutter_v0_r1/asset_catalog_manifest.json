@@ -1,0 +1,19 @@
+{
+  "catalog_id": "support_clutter_v0_r1",
+  "asset_count": 8,
+  "catalog_files": [
+    {
+      "path": "prop_asset_catalog.json",
+      "format": "json",
+      "sha256": "ee2a09961de7a3862a6e52a7ca5f38ec2fa04c413f9671f6450689d6f40f801b",
+      "size_bytes": 13917
+    }
+  ],
+  "protocol_version": "v0",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-20T16:49:47+00:00"
+}

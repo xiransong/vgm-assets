@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/support_clutter_compatibility_v0.schema.json",
+  "title": "Support Clutter Compatibility v0",
+  "description": "Local vgm-assets schema for the first support-clutter compatibility export consumed by scene-engine.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "source_support_annotation_set_id",
+    "source_prop_annotation_set_id",
+    "prop_categories",
+    "support_surface_types"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "support_clutter_v0"
+    },
+    "source_support_annotation_set_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "source_prop_annotation_set_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "prop_categories": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "allowed_support_surface_types",
+          "prop_asset_ids"
+        ],
+        "properties": {
+          "allowed_support_surface_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "prop_asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_\\-]+$"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "support_surface_types": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "support_asset_ids",
+          "prop_categories"
+        ],
+        "properties": {
+          "support_asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_\\-]+$"
+            },
+            "uniqueItems": true
+          },
+          "prop_categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_\\-]+$"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}

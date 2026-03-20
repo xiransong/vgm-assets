@@ -65,6 +65,10 @@ The current repo-side support-clutter artifacts live under:
 
 and include:
 
+- `assets.json`
+- `category_index.json`
+- `support_compatibility.json`
+- `asset_catalog_manifest.json`
 - `measurements.json`
 - `prop_annotations_v0.json`
 
@@ -81,10 +85,11 @@ What exists already:
 - bundle manifests and source metadata
 - approximate prop dimensions and footprints from prefab collider bounds
 - first real prop placement annotations for the selected mugs and books
+- first prop `AssetSpec` catalog for the selected slice
+- first compact support-compatibility export for downstream support-aware placement
 
 What still remains before the first frozen support-clutter export:
-- a compact support-compatibility export
-- a prop asset catalog and frozen snapshot
+- a frozen snapshot export for `vgm-scene-engine`
 
 ## Refresh Command
 
@@ -99,3 +104,9 @@ This command:
 - derives approximate prop measurements from raw prefab metadata in `RAW_DATA_ROOT`
 - writes the current repo-side measurement and annotation artifacts
 - validates the resulting prop annotation set
+
+Refresh the full repo-side support-clutter catalog and compatibility slice:
+
+```bash
+./scripts/catalogs/refresh_support_clutter_ai2thor_v0.sh
+```

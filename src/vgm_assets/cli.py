@@ -20,6 +20,7 @@ from .exports import (
     export_opening_assembly_snapshot,
     export_room_surface_material_snapshot,
     export_scene_engine_snapshot,
+    export_support_clutter_snapshot,
 )
 from .opening_assemblies import (
     refresh_opening_assembly_catalog,
@@ -45,6 +46,8 @@ from .sampling import category_summary, sample_uniform_asset, write_category_ind
 from .size_normalization import apply_size_normalization
 from .support_surfaces import validate_support_surface_annotation_set
 from .support_clutter import (
+    refresh_support_clutter_asset_catalog,
+    validate_support_clutter_compatibility,
     validate_support_clutter_prop_annotation_set,
     write_ai2thor_support_clutter_measurements,
     write_support_clutter_prop_annotation_set_from_measurements,
@@ -348,6 +351,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     validate_support_clutter_prop_annotation_set_parser.add_argument("annotations", type=Path)
 
+    validate_support_clutter_compatibility_parser = subparsers.add_parser(
+        "validate-support-clutter-compatibility",
+        help="Validate a support-clutter compatibility export against the local vgm-assets v0 schema",
+    )
+    validate_support_clutter_compatibility_parser.add_argument("compatibility", type=Path)
+
     write_ai2thor_support_clutter_measurements_parser = subparsers.add_parser(
         "write-ai2thor-support-clutter-measurements",
         help="Derive approximate AI2-THOR prop measurements from Unity prefab colliders and write a measurement report",
@@ -372,6 +381,37 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", type=Path, required=True
     )
     write_support_clutter_prop_annotations_parser.add_argument("--created-at")
+
+    refresh_support_clutter_asset_catalog_parser = subparsers.add_parser(
+        "refresh-support-clutter-asset-catalog",
+        help="Build the first support-clutter prop asset catalog, category index, compatibility file, and manifest",
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument("--catalog-id", required=True)
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--selection-manifest", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--measurements", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--prop-annotations", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--support-surface-annotations", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--catalog-output", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--category-index-output", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--support-compatibility-output", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument(
+        "--manifest-output", type=Path, required=True
+    )
+    refresh_support_clutter_asset_catalog_parser.add_argument("--created-at")
 
     register_ai2thor_support_clutter_parser = subparsers.add_parser(
         "register-ai2thor-support-clutter-selection",
@@ -649,6 +689,19 @@ def build_parser() -> argparse.ArgumentParser:
     ceiling_fixture_export_parser.add_argument("--output-dir", type=Path, required=True)
     ceiling_fixture_export_parser.add_argument("--notes")
 
+    support_clutter_export_parser = subparsers.add_parser(
+        "export-support-clutter-snapshot",
+        help="Export a frozen scene-engine snapshot from the first support-clutter prop catalog and compatibility artifacts",
+    )
+    support_clutter_export_parser.add_argument("--export-id", required=True)
+    support_clutter_export_parser.add_argument("--source-catalog-id", required=True)
+    support_clutter_export_parser.add_argument("--catalog", type=Path, required=True)
+    support_clutter_export_parser.add_argument("--category-index", type=Path, required=True)
+    support_clutter_export_parser.add_argument("--support-compatibility", type=Path, required=True)
+    support_clutter_export_parser.add_argument("--manifest", type=Path, required=True)
+    support_clutter_export_parser.add_argument("--output-dir", type=Path, required=True)
+    support_clutter_export_parser.add_argument("--notes")
+
     return parser
 
 
@@ -922,6 +975,14 @@ def main() -> int:
         )
         return 0
 
+    if args.command == "validate-support-clutter-compatibility":
+        payload = validate_support_clutter_compatibility(args.compatibility)
+        print(
+            f"Validated support-clutter compatibility {payload['version']} "
+            f"with {len(payload['prop_categories'])} prop categories in {args.compatibility}"
+        )
+        return 0
+
     if args.command == "write-ai2thor-support-clutter-measurements":
         summary = write_ai2thor_support_clutter_measurements(
             selection_manifest_path=args.selection_manifest,
@@ -936,6 +997,22 @@ def main() -> int:
         summary = write_support_clutter_prop_annotation_set_from_measurements(
             measurements_path=args.measurements,
             output_path=args.output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "refresh-support-clutter-asset-catalog":
+        summary = refresh_support_clutter_asset_catalog(
+            catalog_id=args.catalog_id,
+            selection_manifest_path=args.selection_manifest,
+            measurements_path=args.measurements,
+            prop_annotations_path=args.prop_annotations,
+            support_surface_annotations_path=args.support_surface_annotations,
+            catalog_output=args.catalog_output,
+            category_index_output=args.category_index_output,
+            support_compatibility_output=args.support_compatibility_output,
+            manifest_output=args.manifest_output,
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))
@@ -1189,6 +1266,20 @@ def main() -> int:
             source_catalog_id=args.source_catalog_id,
             catalog_path=args.catalog,
             fixture_index_path=args.fixture_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-support-clutter-snapshot":
+        summary = export_support_clutter_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            category_index_path=args.category_index,
+            support_compatibility_path=args.support_compatibility,
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             notes=args.notes,

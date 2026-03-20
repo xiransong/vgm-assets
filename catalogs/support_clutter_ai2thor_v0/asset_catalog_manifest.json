@@ -1,0 +1,19 @@
+{
+  "catalog_id": "support_clutter_ai2thor_v0",
+  "asset_count": 8,
+  "catalog_files": [
+    {
+      "path": "catalogs/support_clutter_ai2thor_v0/assets.json",
+      "format": "json",
+      "sha256": "90bbb7e00efb24160b5201ddc2444c143bbfca7f283318f5cd14113f2075c378",
+      "size_bytes": 13837
+    }
+  ],
+  "protocol_version": "v0",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-20T16:49:16+00:00"
+}

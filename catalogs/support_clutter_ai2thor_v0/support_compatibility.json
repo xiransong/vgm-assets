@@ -1,0 +1,60 @@
+{
+  "version": "support_clutter_v0",
+  "source_support_annotation_set_id": "living_room_kenney_support_surfaces_v1",
+  "source_prop_annotation_set_id": "support_clutter_ai2thor_v0_prop_annotations_v0",
+  "prop_categories": {
+    "book": {
+      "allowed_support_surface_types": [
+        "bookshelf_shelf",
+        "coffee_table_top",
+        "side_table_top"
+      ],
+      "prop_asset_ids": [
+        "ai2thor_book_01",
+        "ai2thor_book_05",
+        "ai2thor_book_09",
+        "ai2thor_book_13",
+        "ai2thor_book_24"
+      ]
+    },
+    "mug": {
+      "allowed_support_surface_types": [
+        "coffee_table_top",
+        "side_table_top"
+      ],
+      "prop_asset_ids": [
+        "ai2thor_mug_01",
+        "ai2thor_mug_02",
+        "ai2thor_mug_03"
+      ]
+    }
+  },
+  "support_surface_types": {
+    "coffee_table_top": {
+      "support_asset_ids": [
+        "kenney_table_coffee_01"
+      ],
+      "prop_categories": [
+        "book",
+        "mug"
+      ]
+    },
+    "side_table_top": {
+      "support_asset_ids": [
+        "kenney_side_table_01"
+      ],
+      "prop_categories": [
+        "book",
+        "mug"
+      ]
+    },
+    "bookshelf_shelf": {
+      "support_asset_ids": [
+        "kenney_bookcase_closed_wide_01"
+      ],
+      "prop_categories": [
+        "book"
+      ]
+    }
+  }
+}

@@ -8,11 +8,20 @@ from typing import Any
 
 from jsonschema.validators import validator_for
 
+from .catalog import write_catalog_manifest
 from .paths import default_raw_data_root, resolve_under
 from .protocol import load_json
+from .sampling import write_category_index
+from .support_surfaces import (
+    load_support_surface_annotation_set,
+    validate_support_surface_annotation_set_data,
+)
 
 SUPPORT_CLUTTER_PROP_ANNOTATION_SET_SCHEMA = (
     Path("schemas") / "local" / "support_clutter_prop_annotation_set_v0.schema.json"
+)
+SUPPORT_CLUTTER_COMPATIBILITY_SCHEMA = (
+    Path("schemas") / "local" / "support_clutter_compatibility_v0.schema.json"
 )
 AI2THOR_SUPPORT_CLUTTER_SLICE_ROOT = Path("sources") / "ai2thor" / "support_clutter_v0"
 
@@ -42,6 +51,10 @@ def support_clutter_prop_annotation_set_schema_path() -> Path:
     return repo_root() / SUPPORT_CLUTTER_PROP_ANNOTATION_SET_SCHEMA
 
 
+def support_clutter_compatibility_schema_path() -> Path:
+    return repo_root() / SUPPORT_CLUTTER_COMPATIBILITY_SCHEMA
+
+
 def load_support_clutter_prop_annotation_set(path: Path) -> dict:
     payload = load_json(path)
     if not isinstance(payload, dict):
@@ -64,6 +77,28 @@ def validate_support_clutter_prop_annotation_set(path: Path) -> dict:
     return validate_support_clutter_prop_annotation_set_data(
         load_support_clutter_prop_annotation_set(path)
     )
+
+
+def load_support_clutter_compatibility(path: Path) -> dict:
+    payload = load_json(path)
+    if not isinstance(payload, dict):
+        raise TypeError(f"Support-clutter compatibility payload at {path} must be a JSON object")
+    return payload
+
+
+def validate_support_clutter_compatibility_data(payload: object) -> dict:
+    schema = load_json(support_clutter_compatibility_schema_path())
+    validator_cls = validator_for(schema)
+    validator_cls.check_schema(schema)
+    validator = validator_cls(schema)
+    validator.validate(payload)
+    if not isinstance(payload, dict):
+        raise TypeError("Support-clutter compatibility payload must be an object after validation")
+    return payload
+
+
+def validate_support_clutter_compatibility(path: Path) -> dict:
+    return validate_support_clutter_compatibility_data(load_support_clutter_compatibility(path))
 
 
 def _parse_scalar(lines: list[str], key: str) -> str | None:
@@ -422,4 +457,296 @@ def write_support_clutter_prop_annotation_set_from_measurements(
         "annotation_set_id": annotations["annotation_set_id"],
         "output": str(output_path.resolve()),
         "prop_count": len(annotations["props"]),
+    }
+
+
+def _annotation_map_by_asset_id(payload: dict, field_name: str) -> dict[str, dict[str, Any]]:
+    records = payload.get(field_name)
+    if not isinstance(records, list):
+        raise TypeError(f"Expected {field_name} list in payload")
+    mapped: dict[str, dict[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, dict):
+            raise TypeError(f"{field_name} entries must be objects")
+        asset_id = record.get("asset_id")
+        if not isinstance(asset_id, str) or not asset_id:
+            raise ValueError(f"{field_name} entry is missing asset_id")
+        mapped[asset_id] = record
+    return mapped
+
+
+def build_support_clutter_compatibility(
+    *,
+    support_surface_annotations_path: Path,
+    prop_annotations_path: Path,
+) -> dict:
+    support_payload = validate_support_surface_annotation_set_data(
+        load_support_surface_annotation_set(support_surface_annotations_path)
+    )
+    prop_payload = validate_support_clutter_prop_annotation_set_data(
+        load_support_clutter_prop_annotation_set(prop_annotations_path)
+    )
+
+    support_assets = support_payload.get("assets", [])
+    prop_records = prop_payload.get("props", [])
+
+    available_surface_types: dict[str, dict[str, Any]] = {}
+    for asset in support_assets:
+        if not isinstance(asset, dict):
+            raise TypeError("Support-surface asset annotations must be objects")
+        asset_id = asset.get("asset_id")
+        if not isinstance(asset_id, str) or not asset_id:
+            raise ValueError("Support-surface asset annotation is missing asset_id")
+        surfaces = asset.get("support_surfaces_v1", [])
+        if not isinstance(surfaces, list):
+            raise TypeError("support_surfaces_v1 must be a list")
+        for surface in surfaces:
+            if not isinstance(surface, dict):
+                raise TypeError("support surface entries must be objects")
+            surface_type = surface.get("surface_type")
+            if not isinstance(surface_type, str) or not surface_type:
+                raise ValueError("support surface entry is missing surface_type")
+            categories = surface.get("supports_categories", [])
+            if not isinstance(categories, list):
+                raise TypeError("supports_categories must be a list")
+            payload = available_surface_types.setdefault(
+                surface_type,
+                {"support_asset_ids": set(), "prop_categories": set()},
+            )
+            payload["support_asset_ids"].add(asset_id)
+            for category in categories:
+                if isinstance(category, str) and category:
+                    payload["prop_categories"].add(category)
+
+    prop_categories: dict[str, dict[str, Any]] = {}
+    for record in prop_records:
+        if not isinstance(record, dict):
+            raise TypeError("Prop annotation entries must be objects")
+        category = record.get("category")
+        asset_id = record.get("asset_id")
+        allowed = record.get("allowed_surface_types")
+        if not isinstance(category, str) or not isinstance(asset_id, str):
+            raise ValueError("Prop annotation entry must define category and asset_id")
+        if not isinstance(allowed, list):
+            raise TypeError("allowed_surface_types must be a list")
+        entry = prop_categories.setdefault(
+            category,
+            {"allowed_support_surface_types": set(), "prop_asset_ids": []},
+        )
+        entry["prop_asset_ids"].append(asset_id)
+        for surface_type in allowed:
+            if not isinstance(surface_type, str):
+                continue
+            surface_info = available_surface_types.get(surface_type)
+            if surface_info is None:
+                continue
+            if category not in surface_info["prop_categories"]:
+                continue
+            entry["allowed_support_surface_types"].add(surface_type)
+
+    support_surface_types: dict[str, dict[str, Any]] = {}
+    for surface_type, entry in available_surface_types.items():
+        allowed_categories = sorted(
+            category
+            for category, prop_entry in prop_categories.items()
+            if surface_type in prop_entry["allowed_support_surface_types"]
+        )
+        if not allowed_categories:
+            continue
+        support_surface_types[surface_type] = {
+            "support_asset_ids": sorted(entry["support_asset_ids"]),
+            "prop_categories": allowed_categories,
+        }
+
+    compatibility = {
+        "version": "support_clutter_v0",
+        "source_support_annotation_set_id": support_payload["annotation_set_id"],
+        "source_prop_annotation_set_id": prop_payload["annotation_set_id"],
+        "prop_categories": {
+            category: {
+                "allowed_support_surface_types": sorted(entry["allowed_support_surface_types"]),
+                "prop_asset_ids": sorted(entry["prop_asset_ids"]),
+            }
+            for category, entry in sorted(prop_categories.items())
+        },
+        "support_surface_types": support_surface_types,
+    }
+    return validate_support_clutter_compatibility_data(compatibility)
+
+
+def write_support_clutter_compatibility(
+    *,
+    support_surface_annotations_path: Path,
+    prop_annotations_path: Path,
+    output_path: Path,
+) -> dict:
+    compatibility = build_support_clutter_compatibility(
+        support_surface_annotations_path=support_surface_annotations_path,
+        prop_annotations_path=prop_annotations_path,
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(compatibility, indent=2) + "\n", encoding="utf-8")
+    return {
+        "version": compatibility["version"],
+        "output": str(output_path.resolve()),
+        "prop_category_count": len(compatibility["prop_categories"]),
+        "support_surface_type_count": len(compatibility["support_surface_types"]),
+    }
+
+
+def _build_prop_asset_record(
+    *,
+    bundle_manifest: dict[str, Any],
+    measurement: dict[str, Any],
+    annotation: dict[str, Any],
+) -> dict[str, Any]:
+    category = str(bundle_manifest["category"])
+    width_m = float(measurement["width_m"])
+    depth_m = float(measurement["depth_m"])
+    height_m = float(measurement["height_m"])
+    style_tags = bundle_manifest.get("style_tags", [])
+    tags = ["prop", "support_clutter", category]
+    if isinstance(style_tags, list):
+        for tag in style_tags:
+            if isinstance(tag, str) and tag not in tags:
+                tags.append(tag)
+
+    affordance_map = {
+        "mug": ["tabletop_prop", "grasp"],
+        "book": ["tabletop_prop", "book"],
+    }
+    record = {
+        "asset_id": bundle_manifest["asset_id"],
+        "category": category,
+        "source": bundle_manifest["source"],
+        "sample_weight": 1.0,
+        "dimensions": {
+            "width": round(width_m, 6),
+            "depth": round(depth_m, 6),
+            "height": round(height_m, 6),
+        },
+        "footprint": {
+            "shape": annotation["base_shape"],
+            "width": float(annotation["base_width_m"]),
+            "depth": float(annotation["base_depth_m"]),
+        },
+        "placement": {
+            "placement_type": "interior",
+            "min_wall_clearance": 0.0,
+            "min_object_clearance": 0.0,
+            "allowed_orientations_deg": [0.0, 90.0, 180.0, 270.0],
+        },
+        "walkability": {
+            "blocks_walking": False,
+            "clearance_buffer": 0.0,
+        },
+        "semantics": {
+            "tags": tags,
+            "affordances": affordance_map.get(category, ["tabletop_prop"]),
+        },
+        "support": {
+            "supports_objects": False,
+            "support_surfaces": [],
+        },
+        "files": bundle_manifest.get("files", {}),
+        "provenance": {
+            "protocol_version": "v0",
+            "producer": {
+                "repo": "vgm-assets",
+                "version": "0.1.0-dev",
+                "commit": "working_tree",
+            },
+            "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+            "upstream_ids": [
+                bundle_manifest["selection_id"],
+                bundle_manifest["asset_id"],
+                "support_clutter_ai2thor_v0_prefab_measurements_v0",
+                "support_clutter_ai2thor_v0_prop_annotations_v0",
+            ],
+        },
+    }
+    return record
+
+
+def refresh_support_clutter_asset_catalog(
+    *,
+    catalog_id: str,
+    selection_manifest_path: Path,
+    measurements_path: Path,
+    prop_annotations_path: Path,
+    support_surface_annotations_path: Path,
+    catalog_output: Path,
+    category_index_output: Path,
+    support_compatibility_output: Path,
+    manifest_output: Path,
+    created_at: str | None = None,
+) -> dict:
+    selection_manifest = load_json(selection_manifest_path)
+    if not isinstance(selection_manifest, dict):
+        raise TypeError(f"Selection manifest at {selection_manifest_path} must be an object")
+    assets = selection_manifest.get("assets")
+    if not isinstance(assets, list):
+        raise TypeError(f"Selection manifest at {selection_manifest_path} must define assets")
+
+    measurements_payload = load_json(measurements_path)
+    if not isinstance(measurements_payload, dict):
+        raise TypeError(f"Measurements payload at {measurements_path} must be an object")
+    measurement_map = _annotation_map_by_asset_id(measurements_payload, "props")
+
+    prop_annotations_payload = validate_support_clutter_prop_annotation_set_data(
+        load_support_clutter_prop_annotation_set(prop_annotations_path)
+    )
+    annotation_map = _annotation_map_by_asset_id(prop_annotations_payload, "props")
+
+    records: list[dict[str, Any]] = []
+    selection_root = selection_manifest_path.parent
+    for asset in assets:
+        if not isinstance(asset, dict):
+            raise TypeError("Selection manifest assets must be objects")
+        asset_id = asset.get("asset_id")
+        normalized_dir = asset.get("normalized_dir")
+        if not isinstance(asset_id, str) or not isinstance(normalized_dir, str):
+            raise ValueError("Selection manifest asset entry must define asset_id and normalized_dir")
+        bundle_manifest_path = selection_root / normalized_dir / "bundle_manifest.json"
+        bundle_manifest = load_json(bundle_manifest_path)
+        if not isinstance(bundle_manifest, dict):
+            raise TypeError(f"Bundle manifest at {bundle_manifest_path} must be an object")
+        measurement = measurement_map.get(asset_id)
+        annotation = annotation_map.get(asset_id)
+        if measurement is None:
+            raise ValueError(f"Missing measurement for asset_id {asset_id}")
+        if annotation is None:
+            raise ValueError(f"Missing prop annotation for asset_id {asset_id}")
+        records.append(
+            _build_prop_asset_record(
+                bundle_manifest=bundle_manifest,
+                measurement=measurement,
+                annotation=annotation,
+            )
+        )
+
+    catalog_output.parent.mkdir(parents=True, exist_ok=True)
+    catalog_output.write_text(json.dumps(records, indent=2) + "\n", encoding="utf-8")
+    category_index = write_category_index(catalog_output, category_index_output)
+    manifest = write_catalog_manifest(
+        catalog_path=catalog_output,
+        output_path=manifest_output,
+        catalog_id=catalog_id,
+        created_at=created_at,
+    )
+    compatibility_summary = write_support_clutter_compatibility(
+        support_surface_annotations_path=support_surface_annotations_path,
+        prop_annotations_path=prop_annotations_path,
+        output_path=support_compatibility_output,
+    )
+    return {
+        "catalog_id": catalog_id,
+        "asset_count": len(records),
+        "catalog_output": str(catalog_output.resolve()),
+        "category_index_output": str(category_index_output.resolve()),
+        "category_count": category_index["category_count"],
+        "support_compatibility_output": str(support_compatibility_output.resolve()),
+        "support_surface_type_count": compatibility_summary["support_surface_type_count"],
+        "manifest_output": str(manifest_output.resolve()),
+        "manifest_created_at": manifest["created_at"],
     }

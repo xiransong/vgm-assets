@@ -1,0 +1,586 @@
+[
+  {
+    "asset_id": "ai2thor_mug_01",
+    "category": "mug",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.144491,
+      "depth": 0.114718,
+      "height": 0.111814
+    },
+    "footprint": {
+      "shape": "circle",
+      "width": 0.144491,
+      "depth": 0.144491
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "mug",
+        "indoor",
+        "kitchen",
+        "ceramic",
+        "tabletop"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "grasp"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_01/model.fbx",
+        "format": "fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_mug_01_v0",
+        "ai2thor_mug_01",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_mug_02",
+    "category": "mug",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.126633,
+      "depth": 0.101641,
+      "height": 0.111814
+    },
+    "footprint": {
+      "shape": "circle",
+      "width": 0.126633,
+      "depth": 0.126633
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "mug",
+        "indoor",
+        "kitchen",
+        "ceramic",
+        "tabletop"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "grasp"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_02/model.fbx",
+        "format": "fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_mug_02_v0",
+        "ai2thor_mug_02",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_mug_03",
+    "category": "mug",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.119294,
+      "depth": 0.1024,
+      "height": 0.111814
+    },
+    "footprint": {
+      "shape": "circle",
+      "width": 0.119294,
+      "depth": 0.119294
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "mug",
+        "indoor",
+        "kitchen",
+        "ceramic",
+        "tabletop"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "grasp"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/mug/ai2thor_mug_03/model.fbx",
+        "format": "fbx",
+        "sha256": "97ff721c3206a3b552e3d040db6a8255b1ce6d1bdec8fa4570d21d8cac56a5b2",
+        "size_bytes": 192832
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_mug_03_v0",
+        "ai2thor_mug_03",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_book_01",
+    "category": "book",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.44489,
+      "depth": 0.342402,
+      "height": 0.084812
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.44489,
+      "depth": 0.342402
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "book",
+        "indoor",
+        "bedroom",
+        "tabletop",
+        "shelf"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "book"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_01/model.fbx",
+        "format": "fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_book_01_v0",
+        "ai2thor_book_01",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_book_05",
+    "category": "book",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.288669,
+      "depth": 0.372264,
+      "height": 0.055639
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.372264,
+      "depth": 0.288669
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "book",
+        "indoor",
+        "bedroom",
+        "tabletop",
+        "shelf"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "book"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_05/model.fbx",
+        "format": "fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_book_05_v0",
+        "ai2thor_book_05",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_book_09",
+    "category": "book",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.179307,
+      "depth": 0.228799,
+      "height": 0.025908
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.228799,
+      "depth": 0.179307
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "book",
+        "indoor",
+        "bedroom",
+        "tabletop",
+        "shelf"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "book"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_09/model.fbx",
+        "format": "fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_book_09_v0",
+        "ai2thor_book_09",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_book_13",
+    "category": "book",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.226657,
+      "depth": 0.291413,
+      "height": 0.035491
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.291413,
+      "depth": 0.226657
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "book",
+        "indoor",
+        "bedroom",
+        "tabletop",
+        "shelf"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "book"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_13/model.fbx",
+        "format": "fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_book_13_v0",
+        "ai2thor_book_13",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  },
+  {
+    "asset_id": "ai2thor_book_24",
+    "category": "book",
+    "source": "ai2thor",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width": 0.28192,
+      "depth": 0.419232,
+      "height": 0.054629
+    },
+    "footprint": {
+      "shape": "rectangle",
+      "width": 0.419232,
+      "depth": 0.28192
+    },
+    "placement": {
+      "placement_type": "interior",
+      "min_wall_clearance": 0.0,
+      "min_object_clearance": 0.0,
+      "allowed_orientations_deg": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ]
+    },
+    "walkability": {
+      "blocks_walking": false,
+      "clearance_buffer": 0.0
+    },
+    "semantics": {
+      "tags": [
+        "prop",
+        "support_clutter",
+        "book",
+        "indoor",
+        "bedroom",
+        "tabletop",
+        "shelf"
+      ],
+      "affordances": [
+        "tabletop_prop",
+        "book"
+      ]
+    },
+    "support": {
+      "supports_objects": false,
+      "support_surfaces": []
+    },
+    "files": {
+      "mesh": {
+        "path": "assets/props/ai2thor/support_clutter_v0/book/ai2thor_book_24/model.fbx",
+        "format": "fbx",
+        "sha256": "14e3b40cf657f8c9b8f099aefa26e4b30b7da041acd29f05ca6c108da23ca095",
+        "size_bytes": 1047344
+      }
+    },
+    "provenance": {
+      "protocol_version": "v0",
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "support_clutter_ai2thor_v0_prefab_metadata_v0",
+      "upstream_ids": [
+        "ai2thor_support_clutter_book_24_v0",
+        "ai2thor_book_24",
+        "support_clutter_ai2thor_v0_prefab_measurements_v0",
+        "support_clutter_ai2thor_v0_prop_annotations_v0"
+      ]
+    }
+  }
+]

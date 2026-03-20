@@ -24,6 +24,7 @@ from .room_surface_materials import (
     build_surface_type_index,
     validate_room_surface_material_catalog_data,
 )
+from .support_clutter import validate_support_clutter_compatibility_data
 from .sampling import build_category_index
 
 
@@ -671,6 +672,133 @@ def export_ceiling_light_fixture_snapshot(
         "ceiling_light_fixture_catalog": str(fixture_catalog_out.resolve()),
         "fixture_index": str(fixture_index_out.resolve()),
         "fixture_catalog_manifest": str(manifest_out.resolve()),
+        "export_metadata": str(metadata_path.resolve()),
+        "data_snapshot_root": str(
+            (data_root / payload_manifest["data_snapshot_root"]).resolve()
+        ),
+        "payload_file_count": payload_manifest["payload_file_count"],
+    }
+
+
+def export_support_clutter_snapshot(
+    *,
+    export_id: str,
+    source_catalog_id: str,
+    catalog_path: Path,
+    category_index_path: Path,
+    support_compatibility_path: Path,
+    manifest_path: Path,
+    output_dir: Path,
+    notes: str | None = None,
+) -> dict:
+    output_dir = output_dir.resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    catalog_path = catalog_path.resolve()
+    category_index_path = category_index_path.resolve()
+    support_compatibility_path = support_compatibility_path.resolve()
+    manifest_path = manifest_path.resolve()
+    data_root = default_data_root()
+
+    prop_catalog_out = output_dir / "prop_asset_catalog.json"
+    prop_category_index_out = output_dir / "prop_category_index.json"
+    support_compatibility_out = output_dir / "support_compatibility.json"
+    manifest_out = output_dir / "asset_catalog_manifest.json"
+
+    source_records = json.loads(catalog_path.read_text(encoding="utf-8"))
+    exported_records, payload_manifest = _materialize_asset_payload_snapshot(
+        records=source_records,
+        export_id=export_id,
+        data_root=data_root,
+    )
+    prop_catalog_out.write_text(
+        json.dumps(exported_records, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    category_index = build_category_index(prop_catalog_out)
+    category_index["catalog_path"] = "prop_asset_catalog.json"
+    prop_category_index_out.write_text(
+        json.dumps(category_index, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    support_compatibility = json.loads(support_compatibility_path.read_text(encoding="utf-8"))
+    validate_support_clutter_compatibility_data(support_compatibility)
+    support_compatibility_out.write_text(
+        json.dumps(support_compatibility, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    manifest = build_catalog_manifest(prop_catalog_out, catalog_id=export_id)
+    manifest["catalog_files"][0]["path"] = "prop_asset_catalog.json"
+    manifest_out.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    metadata = {
+        "export_id": export_id,
+        "consumer": "vgm-scene-engine",
+        "source_catalog_id": source_catalog_id,
+        "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "producer": {
+            "repo": "vgm-assets",
+            "version": "0.1.0-dev",
+            "commit": "working_tree",
+        },
+        "source_artifacts": {
+            "prop_asset_catalog": {
+                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "sha256": _sha256(catalog_path),
+            },
+            "prop_category_index": {
+                "path": category_index_path.relative_to(repo_root()).as_posix(),
+                "sha256": _sha256(category_index_path),
+            },
+            "support_compatibility": {
+                "path": support_compatibility_path.relative_to(repo_root()).as_posix(),
+                "sha256": _sha256(support_compatibility_path),
+            },
+            "asset_catalog_manifest": {
+                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "sha256": _sha256(manifest_path),
+            },
+        },
+        "files": {
+            "prop_asset_catalog": {
+                "path": "prop_asset_catalog.json",
+                "sha256": _sha256(prop_catalog_out),
+            },
+            "prop_category_index": {
+                "path": "prop_category_index.json",
+                "sha256": _sha256(prop_category_index_out),
+            },
+            "support_compatibility": {
+                "path": "support_compatibility.json",
+                "sha256": _sha256(support_compatibility_out),
+            },
+            "asset_catalog_manifest": {
+                "path": "asset_catalog_manifest.json",
+                "sha256": _sha256(manifest_out),
+            },
+        },
+        "data_snapshot": payload_manifest,
+        "contract": {
+            "compatibility_schema_path": "schemas/local/support_clutter_compatibility_v0.schema.json",
+            "support_surface_annotation_path": "catalogs/living_room_kenney_v0/support_surface_annotations_v1.json",
+            "prop_annotation_path": "catalogs/support_clutter_ai2thor_v0/prop_annotations_v0.json",
+        },
+        "notes": notes or "",
+    }
+
+    metadata_path = output_dir / "export_metadata.json"
+    metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+
+    return {
+        "export_id": export_id,
+        "output_dir": str(output_dir.resolve()),
+        "prop_asset_catalog": str(prop_catalog_out.resolve()),
+        "prop_category_index": str(prop_category_index_out.resolve()),
+        "support_compatibility": str(support_compatibility_out.resolve()),
+        "asset_catalog_manifest": str(manifest_out.resolve()),
         "export_metadata": str(metadata_path.resolve()),
         "data_snapshot_root": str(
             (data_root / payload_manifest["data_snapshot_root"]).resolve()

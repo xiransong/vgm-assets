@@ -14,6 +14,7 @@ Deliver the smallest useful cross-repo handoff for:
 - `docs/architecture/support_surface_semantics_v1.md`
 - `catalogs/living_room_kenney_v0/support_surface_annotations_v1.json`
 - `/home/ubuntu/scratch/repos/vgm/vgm-scene-engine/docs/architecture/support_clutter_bridge_v0.md`
+- `docs/architecture/support_clutter_prop_source_selection_v0.md`
 
 ## Recommended Sequence
 
@@ -46,3 +47,5 @@ For this phase, do not:
 - 2026-03-20: started the prop-side metadata contract for `mug` and `book`.
 - 2026-03-20: added the first local support-clutter prop annotation schema and
   validator command in `vgm-assets`.
+- 2026-03-20: selected AI2-THOR as the first practical source for `mug` and
+  `book` in `support_clutter_v0_r1`.

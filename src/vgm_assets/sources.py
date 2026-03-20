@@ -5,6 +5,7 @@ import gzip
 from importlib.metadata import PackageNotFoundError, version
 import json
 import os
+import subprocess
 import shutil
 import tempfile
 import zipfile
@@ -47,6 +48,20 @@ def _timestamp(value: str | None = None) -> str:
     if value:
         return value
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def _git_commit_or_none(repo_dir: Path) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo_dir), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    commit = result.stdout.strip()
+    return commit or None
 
 
 def load_source_spec(spec_path: Path) -> dict:
@@ -115,6 +130,26 @@ def _archive_stem(path: Path) -> str:
         if name.endswith(suffix):
             return name[: -len(suffix)]
     return path.stem
+
+
+def load_selection_list(selection_path: Path) -> list[dict]:
+    payload = load_json(selection_path)
+    if not isinstance(payload, list):
+        raise TypeError(f"Selection list at {selection_path} must be a JSON array")
+    normalized: list[dict] = []
+    for index, entry in enumerate(payload):
+        if not isinstance(entry, dict):
+            raise TypeError(
+                f"Selection list at {selection_path} contains a non-object entry at index {index}"
+            )
+        normalized.append(entry)
+    return normalized
+
+
+def _require_entry(entry: dict, key: str):
+    if key not in entry:
+        raise ValueError(f"Selection entry {entry.get('selection_id')} is missing '{key}'")
+    return entry[key]
 
 
 def _normalize_objaverse_license(value: object) -> str | None:
@@ -330,30 +365,6 @@ def _load_objaverse_metadata_records(raw_path: Path) -> list[dict]:
         return [payload]
 
     raise TypeError(f"Unsupported Objaverse metadata payload shape in {raw_path}")
-
-
-def load_selection_list(selection_path: Path) -> list[dict]:
-    payload = load_json(selection_path)
-    if not isinstance(payload, list):
-        raise TypeError(f"Selection file at {selection_path} must be a JSON array")
-    records: list[dict] = []
-    for index, entry in enumerate(payload):
-        if not isinstance(entry, dict):
-            raise TypeError(
-                f"Selection file at {selection_path} contains a non-object entry at index {index}"
-            )
-        records.append(entry)
-    return records
-
-
-def _require_entry(entry: dict, key: str) -> str:
-    value = entry.get(key)
-    if not isinstance(value, str) or not value:
-        raise ValueError(
-            f"Selection entry {entry.get('selection_id', '<unknown>')} is missing '{key}'"
-        )
-    return value
-
 
 def find_selection_entry(selection_path: Path, selection_id: str) -> dict:
     for entry in load_selection_list(selection_path):
@@ -2126,6 +2137,329 @@ def organize_kenney_ceiling_fixture_selection(
     return {
         "selection_id": selection_manifest["selection_id"],
         "fixture_count": len(root_level_fixtures),
+        "slice_root": str(slice_root),
+        "selected_ids": [entry["selection_id"] for entry in selected_payload],
+    }
+
+
+def _default_ai2thor_repo_root() -> Path:
+    override = os.environ.get("VGM_AI2THOR_ROOT")
+    if override:
+        return Path(override).expanduser().resolve()
+    return repo_root().parents[2] / "ai2thor"
+
+
+def _select_entries(
+    payload: list[dict],
+    *,
+    selection_ids: list[str] | None,
+    label: str,
+    selection_path: Path,
+) -> list[dict]:
+    selected_payload = []
+    selected_ids = set(selection_ids or [])
+    for entry in payload:
+        entry_id = entry.get("selection_id")
+        if selected_ids and entry_id not in selected_ids:
+            continue
+        selected_payload.append(entry)
+
+    if selected_ids:
+        found_ids = {entry.get("selection_id") for entry in selected_payload}
+        missing_ids = sorted(selected_ids - found_ids)
+        if missing_ids:
+            raise ValueError(
+                f"{label} selection ids not found in {selection_path.as_posix()}: {missing_ids}"
+            )
+
+    if not selected_payload:
+        raise ValueError(f"No {label} selections chosen from {selection_path.as_posix()}")
+
+    return selected_payload
+
+
+def _copy_tree_without_meta(source_dir: Path, destination_dir: Path) -> list[str]:
+    copied: list[str] = []
+    for path in sorted(source_dir.rglob("*")):
+        if path.is_dir():
+            if path.name.startswith("."):
+                continue
+            continue
+        if path.name.endswith(".meta"):
+            continue
+        if any(part.startswith(".") for part in path.relative_to(source_dir).parts):
+            continue
+        relative = path.relative_to(source_dir)
+        target = destination_dir / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, target)
+        copied.append(relative.as_posix())
+    return copied
+
+
+def register_ai2thor_support_clutter_selection(
+    selection_path: Path,
+    *,
+    source_repo_root: Path | None = None,
+    selection_ids: list[str] | None = None,
+    raw_data_root: Path | None = None,
+    acquired_by: str | None = None,
+    acquired_at: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    source_root = (source_repo_root or _default_ai2thor_repo_root()).resolve()
+    raw_root = raw_data_root or default_raw_data_root()
+    payload = load_selection_list(selection_path)
+    selected_payload = _select_entries(
+        payload,
+        selection_ids=selection_ids,
+        label="AI2-THOR support clutter",
+        selection_path=selection_path,
+    )
+
+    source_commit = _git_commit_or_none(source_root)
+    slice_root_rel = Path("sources") / "ai2thor" / "support_clutter_v0"
+    slice_root = resolve_under(raw_root, slice_root_rel)
+    slice_root.mkdir(parents=True, exist_ok=True)
+
+    manifest_assets = []
+    for entry in selected_payload:
+        category = str(_require_entry(entry, "category"))
+        asset_id = str(_require_entry(entry, "asset_id"))
+        source_repo_rel_root = Path(str(_require_entry(entry, "source_repo_rel_root")))
+        source_dir = source_root / source_repo_rel_root
+        prefab_src = source_root / source_repo_rel_root / str(_require_entry(entry, "raw_prefab_rel"))
+        model_src = source_root / source_repo_rel_root / str(_require_entry(entry, "raw_model_rel"))
+        materials_src = source_root / source_repo_rel_root / str(_require_entry(entry, "raw_material_dir_rel"))
+        if not source_dir.exists():
+            raise FileNotFoundError(f"Missing AI2-THOR source directory: {source_dir}")
+        if not prefab_src.exists():
+            raise FileNotFoundError(f"Missing AI2-THOR prefab file: {prefab_src}")
+        if not model_src.exists():
+            raise FileNotFoundError(f"Missing AI2-THOR model file: {model_src}")
+        if not materials_src.exists() or not materials_src.is_dir():
+            raise FileNotFoundError(f"Missing AI2-THOR materials directory: {materials_src}")
+
+        raw_dir_rel = slice_root_rel / category / asset_id / "raw"
+        raw_dir = resolve_under(raw_root, raw_dir_rel)
+        raw_dir.mkdir(parents=True, exist_ok=True)
+
+        prefab_dst = raw_dir / "source_prefab.prefab"
+        model_dst = raw_dir / "source_model.fbx"
+        materials_dst = raw_dir / "materials"
+        shutil.copy2(prefab_src, prefab_dst)
+        shutil.copy2(model_src, model_dst)
+        copied_materials = _copy_tree_without_meta(materials_src, materials_dst)
+
+        source_manifest = {
+            "selection_id": _require_entry(entry, "selection_id"),
+            "asset_id": asset_id,
+            "category": category,
+            "source_repo": str(_require_entry(entry, "source_repo")),
+            "source_repo_root": str(source_root),
+            "source_commit": source_commit,
+            "source_url": _require_entry(entry, "source_url"),
+            "source_repo_rel_root": source_repo_rel_root.as_posix(),
+            "source_name": _require_entry(entry, "source_name"),
+            "license": _require_entry(entry, "license"),
+            "registered_at": _timestamp(acquired_at),
+            "acquired_by": acquired_by or "unknown",
+            "notes": notes or entry.get("notes"),
+            "raw_files": {
+                "prefab": _file_ref(prefab_dst, raw_root),
+                "model": _file_ref(model_dst, raw_root),
+            },
+            "raw_material_files": copied_materials,
+        }
+        with (raw_dir / "source_manifest.json").open("w", encoding="utf-8") as handle:
+            json.dump(source_manifest, handle, indent=2)
+            handle.write("\n")
+
+        manifest_assets.append(
+            {
+                "category": category,
+                "asset_id": asset_id,
+                "selection_id": entry["selection_id"],
+                "source_name": entry["source_name"],
+                "raw_dir": raw_dir_rel.relative_to(slice_root_rel).as_posix(),
+            }
+        )
+
+    selection_manifest = {
+        "selection_id": "ai2thor_support_clutter_v0",
+        "source_pack": "ai2thor",
+        "source_repo_root": str(source_root),
+        "source_commit": source_commit,
+        "asset_count": len(manifest_assets),
+        "assets": manifest_assets,
+    }
+    with (slice_root / "selection_manifest.json").open("w", encoding="utf-8") as handle:
+        json.dump(selection_manifest, handle, indent=2)
+        handle.write("\n")
+
+    return {
+        "selection_id": selection_manifest["selection_id"],
+        "asset_count": len(manifest_assets),
+        "slice_root": str(slice_root),
+        "selected_ids": [entry["selection_id"] for entry in selected_payload],
+    }
+
+
+def normalize_ai2thor_support_clutter_selection(
+    selection_path: Path,
+    *,
+    selection_ids: list[str] | None = None,
+    raw_data_root: Path | None = None,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    raw_root = raw_data_root or default_raw_data_root()
+    processed_root = data_root or default_data_root()
+    payload = load_selection_list(selection_path)
+    selected_payload = _select_entries(
+        payload,
+        selection_ids=selection_ids,
+        label="AI2-THOR support clutter",
+        selection_path=selection_path,
+    )
+
+    slice_root_rel = Path("sources") / "ai2thor" / "support_clutter_v0"
+    raw_slice_root = resolve_under(raw_root, slice_root_rel)
+    if not raw_slice_root.exists():
+        raise FileNotFoundError(
+            f"Missing registered AI2-THOR raw slice at {raw_slice_root}; run register-ai2thor-support-clutter-selection first"
+        )
+
+    manifest_assets = []
+    rel_dirs: list[Path] = []
+    for entry in selected_payload:
+        category = str(_require_entry(entry, "category"))
+        asset_id = str(_require_entry(entry, "asset_id"))
+        raw_dir_rel = slice_root_rel / category / asset_id / "raw"
+        raw_dir = resolve_under(raw_root, raw_dir_rel)
+        prefab_src = raw_dir / "source_prefab.prefab"
+        model_src = raw_dir / "source_model.fbx"
+        materials_src = raw_dir / "materials"
+        if not prefab_src.exists() or not model_src.exists():
+            raise FileNotFoundError(
+                f"Missing registered AI2-THOR raw payloads for {asset_id} under {raw_dir}"
+            )
+
+        normalized_rel_dir = Path(str(_require_entry(entry, "normalized_rel_dir")))
+        rel_dirs.append(normalized_rel_dir)
+        destination = resolve_under(processed_root, normalized_rel_dir)
+        destination.mkdir(parents=True, exist_ok=True)
+
+        model_dst = destination / "model.fbx"
+        shutil.copy2(model_src, model_dst)
+
+        copied_materials: list[str] = []
+        if materials_src.exists():
+            copied_materials = _copy_tree_without_meta(materials_src, destination / "materials")
+
+        source_manifest_path = raw_dir / "source_manifest.json"
+        source_manifest = load_json(source_manifest_path) if source_manifest_path.exists() else {}
+
+        source_metadata = {
+            "asset_id": asset_id,
+            "category": category,
+            "source": "ai2thor",
+            "license": _require_entry(entry, "license"),
+            "source_name": _require_entry(entry, "source_name"),
+            "source_repo": _require_entry(entry, "source_repo"),
+            "source_repo_rel_root": _require_entry(entry, "source_repo_rel_root"),
+            "source_url": _require_entry(entry, "source_url"),
+            "source_prefab_path": str(_require_entry(entry, "raw_prefab_rel")),
+            "source_model_path": str(_require_entry(entry, "raw_model_rel")),
+            "normalized_files": {
+                "mesh": "model.fbx",
+            },
+        }
+        if copied_materials:
+            source_metadata["normalized_material_files"] = copied_materials
+        if isinstance(source_manifest, dict):
+            if "source_commit" in source_manifest:
+                source_metadata["source_commit"] = source_manifest["source_commit"]
+            if "selection_id" in source_manifest:
+                source_metadata["selection_id"] = source_manifest["selection_id"]
+
+        with (destination / "source_metadata.json").open("w", encoding="utf-8") as handle:
+            json.dump(source_metadata, handle, indent=2)
+            handle.write("\n")
+
+        bundle_manifest = {
+            "manifest_version": "v0",
+            "bundle_id": asset_id,
+            "selection_id": _require_entry(entry, "selection_id"),
+            "asset_id": asset_id,
+            "category": category,
+            "display_name": _require_entry(entry, "display_name"),
+            "source": "ai2thor",
+            "normalized_rel_dir": normalized_rel_dir.as_posix(),
+            "created_at": _timestamp(created_at),
+            "files": {
+                "mesh": _file_ref(model_dst, processed_root),
+            },
+            "upstream": {
+                "raw_dir_relpath": raw_dir_rel.as_posix(),
+            },
+        }
+        optional_pairs = {
+            "style_tags": entry.get("style_tags"),
+            "license": entry.get("license"),
+            "source_url": entry.get("source_url"),
+        }
+        for key, value in optional_pairs.items():
+            if value is not None:
+                bundle_manifest[key] = value
+        if copied_materials:
+            bundle_manifest["materials_rel_dir"] = "materials"
+            bundle_manifest["material_files"] = copied_materials
+
+        with (destination / "bundle_manifest.json").open("w", encoding="utf-8") as handle:
+            json.dump(bundle_manifest, handle, indent=2)
+            handle.write("\n")
+
+        manifest_assets.append(
+            {
+                "category": category,
+                "asset_id": asset_id,
+                "selection_id": entry["selection_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": normalized_rel_dir.as_posix(),
+            }
+        )
+
+    slice_root_rel = Path(os.path.commonpath([path.as_posix() for path in rel_dirs]))
+    if len(rel_dirs) == 1:
+        slice_root_rel = rel_dirs[0].parent
+    slice_root = resolve_under(processed_root, slice_root_rel)
+    root_level_assets = []
+    for entry in manifest_assets:
+        normalized_dir = Path(entry["normalized_dir"]).relative_to(slice_root_rel)
+        root_level_assets.append(
+            {
+                "category": entry["category"],
+                "asset_id": entry["asset_id"],
+                "selection_id": entry["selection_id"],
+                "source_name": entry["source_name"],
+                "normalized_dir": normalized_dir.as_posix(),
+            }
+        )
+
+    selection_manifest = {
+        "selection_id": "ai2thor_support_clutter_v0",
+        "source_pack": "ai2thor",
+        "asset_count": len(root_level_assets),
+        "assets": root_level_assets,
+    }
+    with (slice_root / "selection_manifest.json").open("w", encoding="utf-8") as handle:
+        json.dump(selection_manifest, handle, indent=2)
+        handle.write("\n")
+
+    return {
+        "selection_id": selection_manifest["selection_id"],
+        "asset_count": len(root_level_assets),
         "slice_root": str(slice_root),
         "selected_ids": [entry["selection_id"] for entry in selected_payload],
     }

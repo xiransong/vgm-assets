@@ -50,7 +50,9 @@ from .sources import (
     fetch_poly_haven_room_surface_material,
     generate_objaverse_furniture_review_queue_from_harvest,
     import_objaverse_furniture_metadata_harvest,
+    normalize_ai2thor_support_clutter_selection,
     normalize_objaverse_furniture_selection,
+    register_ai2thor_support_clutter_selection,
     organize_kenney_ceiling_fixture_selection,
     organize_kenney_selection,
     organize_kenney_opening_selection,
@@ -341,6 +343,32 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a local support-clutter prop annotation set against the vgm-assets v0 schema",
     )
     validate_support_clutter_prop_annotation_set_parser.add_argument("annotations", type=Path)
+
+    register_ai2thor_support_clutter_parser = subparsers.add_parser(
+        "register-ai2thor-support-clutter-selection",
+        help="Copy the selected local AI2-THOR mug/book source files into RAW_DATA_ROOT",
+    )
+    register_ai2thor_support_clutter_parser.add_argument("selection", type=Path)
+    register_ai2thor_support_clutter_parser.add_argument("--source-repo-root", type=Path)
+    register_ai2thor_support_clutter_parser.add_argument(
+        "--selection-id", action="append", dest="selection_ids"
+    )
+    register_ai2thor_support_clutter_parser.add_argument("--raw-data-root", type=Path)
+    register_ai2thor_support_clutter_parser.add_argument("--acquired-by")
+    register_ai2thor_support_clutter_parser.add_argument("--acquired-at")
+    register_ai2thor_support_clutter_parser.add_argument("--notes")
+
+    normalize_ai2thor_support_clutter_parser = subparsers.add_parser(
+        "normalize-ai2thor-support-clutter-selection",
+        help="Normalize the selected AI2-THOR mug/book raw payloads into DATA_ROOT",
+    )
+    normalize_ai2thor_support_clutter_parser.add_argument("selection", type=Path)
+    normalize_ai2thor_support_clutter_parser.add_argument(
+        "--selection-id", action="append", dest="selection_ids"
+    )
+    normalize_ai2thor_support_clutter_parser.add_argument("--raw-data-root", type=Path)
+    normalize_ai2thor_support_clutter_parser.add_argument("--data-root", type=Path)
+    normalize_ai2thor_support_clutter_parser.add_argument("--created-at")
 
     validate_objaverse_metadata_harvest_parser = subparsers.add_parser(
         "validate-objaverse-furniture-metadata-harvest",
@@ -863,6 +891,30 @@ def main() -> int:
             f"Validated support-clutter prop annotation set {payload['annotation_set_id']} "
             f"with {len(payload['props'])} props in {args.annotations}"
         )
+        return 0
+
+    if args.command == "register-ai2thor-support-clutter-selection":
+        summary = register_ai2thor_support_clutter_selection(
+            selection_path=args.selection,
+            source_repo_root=args.source_repo_root,
+            selection_ids=args.selection_ids,
+            raw_data_root=args.raw_data_root,
+            acquired_by=args.acquired_by,
+            acquired_at=args.acquired_at,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "normalize-ai2thor-support-clutter-selection":
+        summary = normalize_ai2thor_support_clutter_selection(
+            selection_path=args.selection,
+            selection_ids=args.selection_ids,
+            raw_data_root=args.raw_data_root,
+            data_root=args.data_root,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "validate-objaverse-furniture-metadata-harvest":

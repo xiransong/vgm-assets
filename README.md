@@ -252,6 +252,27 @@ PYTHONPATH=src python3 tools/validate_asset_catalog.py \
   /path/to/support_clutter_prop_annotations.json
 ```
 
+Register the selected local AI2-THOR `mug` / `book` source files into
+`RAW_DATA_ROOT`:
+
+```bash
+./scripts/sources/register_ai2thor_support_clutter_v0.sh \
+  --source-repo-root /home/ubuntu/scratch/repos/ai2thor
+```
+
+Normalize the selected AI2-THOR support-clutter slice into `DATA_ROOT`:
+
+```bash
+./scripts/sources/normalize_ai2thor_support_clutter_v0.sh
+```
+
+Run the full AI2-THOR support-clutter source-to-processed flow:
+
+```bash
+./scripts/pipelines/refresh_ai2thor_support_clutter_v0.sh \
+  --source-repo-root /home/ubuntu/scratch/repos/ai2thor
+```
+
 Organize the first Kenney ceiling-fixture bundle:
 
 ```bash

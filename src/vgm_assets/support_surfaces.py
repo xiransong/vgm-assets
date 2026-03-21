@@ -64,6 +64,7 @@ def build_protocol_support_from_annotation(annotation: dict[str, Any]) -> dict[s
     if not isinstance(surfaces, list):
         raise TypeError("support_surfaces_v1 must be a list")
     thin_surfaces: list[dict[str, Any]] = []
+    rich_surfaces: list[dict[str, Any]] = []
     for surface in surfaces:
         if not isinstance(surface, dict):
             raise TypeError("support surface annotations must be objects")
@@ -75,9 +76,25 @@ def build_protocol_support_from_annotation(annotation: dict[str, Any]) -> dict[s
                 "depth": surface["depth_m"],
             }
         )
+        rich_surfaces.append(
+            {
+                "surface_id": surface["surface_id"],
+                "surface_type": surface["surface_type"],
+                "surface_class": surface["surface_class"],
+                "shape": surface["shape"],
+                "width_m": surface["width_m"],
+                "depth_m": surface["depth_m"],
+                "height_m": surface["height_m"],
+                "local_center_m": deepcopy(surface["local_center_m"]),
+                "normal_axis": surface["normal_axis"],
+                "front_axis": surface["front_axis"],
+                "usable_margin_m": surface["usable_margin_m"],
+            }
+        )
     return {
         "supports_objects": bool(annotation.get("supports_objects", False)),
         "support_surfaces": thin_surfaces,
+        "support_surfaces_v1": rich_surfaces,
     }
 
 

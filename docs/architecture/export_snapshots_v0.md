@@ -73,6 +73,10 @@ The current support-synced living-room snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r3`
 
+The current protocol-aligned support-surface living-room snapshot is:
+
+- `exports/scene_engine/living_room_kenney_v0_r4`
+
 The first frozen room-surface material snapshot is:
 
 - `exports/scene_engine/room_surface_materials_v0_r1`

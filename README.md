@@ -224,6 +224,12 @@ rich support-surface companion file:
 ./scripts/exports/export_living_room_kenney_v0_r3.sh
 ```
 
+Export the current protocol-aligned support-surface living-room snapshot:
+
+```bash
+./scripts/exports/export_living_room_kenney_v0_r4.sh
+```
+
 Organize the first Kenney opening-assembly bundles:
 
 ```bash

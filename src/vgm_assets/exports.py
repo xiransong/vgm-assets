@@ -924,6 +924,8 @@ def export_scene_engine_snapshot_with_support_annotations(
         "contract": {
             "support_surface_annotation_set_version": filtered_annotations["version"],
             "support_surface_companion_file": "support_surface_annotations_v1.json",
+            "canonical_shared_support_field": "support.support_surfaces_v1",
+            "compatibility_support_field": "support.support_surfaces",
         },
         "notes": notes or "",
     }

@@ -230,6 +230,12 @@ Export the current protocol-aligned support-surface living-room snapshot:
 ./scripts/exports/export_living_room_kenney_v0_r4.sh
 ```
 
+Export the current expanded-support-coverage living-room snapshot:
+
+```bash
+./scripts/exports/export_living_room_kenney_v0_r5.sh
+```
+
 Organize the first Kenney opening-assembly bundles:
 
 ```bash

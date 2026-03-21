@@ -7,7 +7,7 @@ living-room asset snapshot.
 
 `vgm-scene-engine` should consume the frozen snapshot:
 
-- `exports/scene_engine/living_room_kenney_v0_r4`
+- `exports/scene_engine/living_room_kenney_v0_r5`
 
 It should not depend directly on the mutable working catalog under `catalogs/`.
 
@@ -33,6 +33,7 @@ snapshot under:
 - `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r2/assets/...`
 - `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r3/assets/...`
 - `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r4/assets/...`
+- `DATA_ROOT/exports/scene_engine/living_room_kenney_v0_r5/assets/...`
 
 They remain relative to `DATA_ROOT` in the JSON itself.
 
@@ -55,7 +56,7 @@ For `v0`, the expected downstream flow is:
 
 ## Support-aware Placement
 
-For the current `r4` snapshot:
+For the current `r5` snapshot:
 
 - rich shared protocol support in `asset_catalog.json` is now carried under:
   - `support.support_surfaces_v1`

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "wall_fixtures_v0",
+  "fixture_count": 2,
+  "catalog_files": [
+    {
+      "path": "catalogs/wall_fixtures_v0/wall_fixture_catalog.json",
+      "format": "json",
+      "sha256": "5bce26cc70469e6e7c2f361dfd3fa05e2aa4721036d04f9aab2662f71da04d6a",
+      "size_bytes": 3732
+    }
+  ],
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "created_at": "2026-03-22T23:34:07+00:00"
+}

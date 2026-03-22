@@ -73,6 +73,7 @@ See:
 - `docs/catalogs/room_surface_materials_v0.md`
 - `docs/catalogs/opening_assemblies_v0.md`
 - `docs/catalogs/ceiling_light_fixtures_v0.md`
+- `docs/catalogs/wall_fixtures_v0.md`
 - `docs/catalogs/wall_fixtures_v0_candidate_review.md`
 - `docs/plans/room_surface_materials_v0_plan.md`
 - `docs/plans/opening_assemblies_v0_plan.md`

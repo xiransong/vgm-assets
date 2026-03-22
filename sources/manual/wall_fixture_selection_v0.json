@@ -5,7 +5,7 @@
     "source_pack": "manual_curated",
     "source_url": "https://sketchfab.com/3d-models/victorian-framed-painting-pbr-game-ready-b2895c1c3b42401a949deac049e0051d",
     "license": "CC-BY 4.0",
-    "status": "shortlisted",
+    "status": "staged",
     "priority": 1,
     "source_name": "Victorian Framed Painting - PBR Game Ready",
     "raw_model_rel": "painting/candidate_painting_01/model.glb",
@@ -14,9 +14,9 @@
     "display_name": "Victorian Framed Painting 01",
     "style_tags": ["wall_art", "framed", "victorian", "ornate"],
     "dimensions": {
-      "width_m": 0.75,
-      "height_m": 0.55,
-      "depth_m": 0.04
+      "width_m": 1.135768,
+      "height_m": 0.840015,
+      "depth_m": 0.047043
     },
     "mount": {
       "mount_type": "wall_mounted",
@@ -30,7 +30,7 @@
     "preferred_room_types": ["living_room"],
     "review_status": "reviewed",
     "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/painting/manual_painting_01",
-    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab. Page lists CC Attribution and a low-poly framed painting suitable for game and archviz use. Real raw files still need to be downloaded, staged, and geometry-checked before export."
+    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab, then staged locally and measured from the downloaded GLB. Measured extents are approximately 1.136m x 0.840m x 0.047m, so the original placeholder dimensions were updated before export."
   },
   {
     "selection_id": "manual_wall_fixture_clock_01_v0",
@@ -38,7 +38,7 @@
     "source_pack": "manual_curated",
     "source_url": "https://sketchfab.com/3d-models/wooden-wall-clock-f35bfeecca9b415a95e1e7d728becad6",
     "license": "CC-BY 4.0",
-    "status": "shortlisted",
+    "status": "staged",
     "priority": 1,
     "source_name": "Wooden Wall Clock",
     "raw_model_rel": "clock/candidate_clock_01/model.glb",
@@ -47,9 +47,9 @@
     "display_name": "Wooden Wall Clock 01",
     "style_tags": ["clock", "wall_mounted", "wooden", "round"],
     "dimensions": {
-      "width_m": 0.3,
-      "height_m": 0.3,
-      "depth_m": 0.03
+      "width_m": 0.297541,
+      "height_m": 0.297541,
+      "depth_m": 0.036385
     },
     "mount": {
       "mount_type": "wall_mounted",
@@ -63,6 +63,6 @@
     "preferred_room_types": ["living_room", "kitchen"],
     "review_status": "reviewed",
     "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/clock/manual_clock_01",
-    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab. Page lists CC Attribution and explicit real-world size of 30cm x 3cm x 30cm. Real raw files still need to be downloaded, staged, and geometry-checked before export."
+    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab, then staged locally and measured from the downloaded GLB. Measured extents are approximately 0.298m x 0.298m x 0.036m, which closely match the source-page size claim."
   }
 ]

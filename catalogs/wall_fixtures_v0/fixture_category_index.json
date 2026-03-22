@@ -1,0 +1,20 @@
+{
+  "catalog_path": "catalogs/wall_fixtures_v0/wall_fixture_catalog.json",
+  "category_count": 2,
+  "categories": {
+    "clock": {
+      "sampling_policy": "uniform",
+      "fixture_count": 1,
+      "fixture_ids": [
+        "manual_clock_01"
+      ]
+    },
+    "painting": {
+      "sampling_policy": "uniform",
+      "fixture_count": 1,
+      "fixture_ids": [
+        "manual_painting_01"
+      ]
+    }
+  }
+}

@@ -1,0 +1,123 @@
+[
+  {
+    "fixture_id": "manual_painting_01",
+    "category": "painting",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width_m": 1.135768,
+      "height_m": 0.840015,
+      "depth_m": 0.047043
+    },
+    "mount": {
+      "mount_type": "wall_mounted",
+      "mount_plane": "vertical_wall",
+      "usable_margin_m": 0.05
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/painting/manual_painting_01/model.glb",
+        "format": "glb",
+        "sha256": "fe9c00fd0727c13cdee2938f2f7df1309f04cedb636d2a3048b281768193a82c",
+        "size_bytes": 2724512
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/painting/manual_painting_01/preview.png",
+        "format": "png",
+        "sha256": "37e6d70136f76c3141cd6defa9ec2d3701163b7e167bbf290ae5073e5befc12a",
+        "size_bytes": 2319772
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "wall_fixtures_v0_bundle_import_v1",
+      "upstream_ids": [
+        "manual_wall_fixture_painting_01_v0"
+      ],
+      "upstream_bundle_relpath": "fixtures/wall/manual/wall_fixtures_v0/painting/manual_painting_01/bundle_manifest.json"
+    },
+    "display_name": "Victorian Framed Painting 01",
+    "style_tags": [
+      "wall_art",
+      "framed",
+      "victorian",
+      "ornate"
+    ],
+    "preferred_height_band_m": {
+      "min_center_height_m": 1.35,
+      "max_center_height_m": 1.6
+    },
+    "preferred_room_types": [
+      "living_room"
+    ],
+    "review_status": "reviewed",
+    "source": "manual_curated",
+    "selection_id": "manual_wall_fixture_painting_01_v0",
+    "license": "CC-BY 4.0",
+    "source_url": "https://sketchfab.com/3d-models/victorian-framed-painting-pbr-game-ready-b2895c1c3b42401a949deac049e0051d"
+  },
+  {
+    "fixture_id": "manual_clock_01",
+    "category": "clock",
+    "sample_weight": 1.0,
+    "dimensions": {
+      "width_m": 0.297541,
+      "height_m": 0.297541,
+      "depth_m": 0.036385
+    },
+    "mount": {
+      "mount_type": "wall_mounted",
+      "mount_plane": "vertical_wall",
+      "usable_margin_m": 0.04
+    },
+    "files": {
+      "mesh": {
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/clock/manual_clock_01/model.glb",
+        "format": "glb",
+        "sha256": "370c0dcb0cf7a673daf6537ea2ec57663778c63cbc8e6097a135d98b29fc34e4",
+        "size_bytes": 4373916
+      },
+      "preview_image": {
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/clock/manual_clock_01/preview.png",
+        "format": "png",
+        "sha256": "41fde4ea8e87f1fd8bdf5e931d7f234a5a536480317bb40d619e5faf6dbc79ab",
+        "size_bytes": 2820673
+      }
+    },
+    "provenance": {
+      "producer": {
+        "repo": "vgm-assets",
+        "version": "0.1.0-dev",
+        "commit": "working_tree"
+      },
+      "config_id": "wall_fixtures_v0_bundle_import_v1",
+      "upstream_ids": [
+        "manual_wall_fixture_clock_01_v0"
+      ],
+      "upstream_bundle_relpath": "fixtures/wall/manual/wall_fixtures_v0/clock/manual_clock_01/bundle_manifest.json"
+    },
+    "display_name": "Wooden Wall Clock 01",
+    "style_tags": [
+      "clock",
+      "wall_mounted",
+      "wooden",
+      "round"
+    ],
+    "preferred_height_band_m": {
+      "min_center_height_m": 1.55,
+      "max_center_height_m": 1.9
+    },
+    "preferred_room_types": [
+      "living_room",
+      "kitchen"
+    ],
+    "review_status": "reviewed",
+    "source": "manual_curated",
+    "selection_id": "manual_wall_fixture_clock_01_v0",
+    "license": "CC-BY 4.0",
+    "source_url": "https://sketchfab.com/3d-models/wooden-wall-clock-f35bfeecca9b415a95e1e7d728becad6"
+  }
+]

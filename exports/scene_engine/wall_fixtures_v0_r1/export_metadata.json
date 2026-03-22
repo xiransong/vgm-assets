@@ -1,0 +1,79 @@
+{
+  "export_id": "wall_fixtures_v0_r1",
+  "consumer": "vgm-scene-engine",
+  "source_catalog_id": "wall_fixtures_v0",
+  "created_at": "2026-03-22T23:34:18+00:00",
+  "producer": {
+    "repo": "vgm-assets",
+    "version": "0.1.0-dev",
+    "commit": "working_tree"
+  },
+  "source_artifacts": {
+    "wall_fixture_catalog": {
+      "path": "catalogs/wall_fixtures_v0/wall_fixture_catalog.json",
+      "sha256": "5bce26cc70469e6e7c2f361dfd3fa05e2aa4721036d04f9aab2662f71da04d6a"
+    },
+    "fixture_category_index": {
+      "path": "catalogs/wall_fixtures_v0/fixture_category_index.json",
+      "sha256": "fb4f493bf1e36d31338b2070093b8f510d51147ab4d125b0d53649e613df8e63"
+    },
+    "fixture_catalog_manifest": {
+      "path": "catalogs/wall_fixtures_v0/fixture_catalog_manifest.json",
+      "sha256": "cac783e4e4dd7d418ff8f7480e7d7bca39ad0c970bf582668ebd672a1e2f5f60"
+    }
+  },
+  "files": {
+    "wall_fixture_catalog": {
+      "path": "wall_fixture_catalog.json",
+      "sha256": "9677230028a1995f88088f9a97ceb3c723a1a15148ccdbf9e1b24d1b7d4ffe89"
+    },
+    "fixture_category_index": {
+      "path": "fixture_category_index.json",
+      "sha256": "4b3673726957d28de8554eec1092277b6e5ce09e1f21c3efa101ae789cc01ed1"
+    },
+    "fixture_catalog_manifest": {
+      "path": "fixture_catalog_manifest.json",
+      "sha256": "5a0babd8879acf53189891a9a001a899db49cd65c0c3d1eca955b0168865228a"
+    }
+  },
+  "data_snapshot": {
+    "data_snapshot_root": "exports/scene_engine/wall_fixtures_v0_r1",
+    "fixture_payload_count": 2,
+    "payload_file_count": 4,
+    "payload_files": [
+      {
+        "fixture_id": "manual_painting_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/painting/manual_painting_01/model.glb",
+        "sha256": "fe9c00fd0727c13cdee2938f2f7df1309f04cedb636d2a3048b281768193a82c",
+        "size_bytes": 2724512
+      },
+      {
+        "fixture_id": "manual_painting_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/painting/manual_painting_01/preview.png",
+        "sha256": "37e6d70136f76c3141cd6defa9ec2d3701163b7e167bbf290ae5073e5befc12a",
+        "size_bytes": 2319772
+      },
+      {
+        "fixture_id": "manual_clock_01",
+        "file_key": "mesh",
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/clock/manual_clock_01/model.glb",
+        "sha256": "370c0dcb0cf7a673daf6537ea2ec57663778c63cbc8e6097a135d98b29fc34e4",
+        "size_bytes": 4373916
+      },
+      {
+        "fixture_id": "manual_clock_01",
+        "file_key": "preview_image",
+        "path": "exports/scene_engine/wall_fixtures_v0_r1/wall_fixtures/clock/manual_clock_01/preview.png",
+        "sha256": "41fde4ea8e87f1fd8bdf5e931d7f234a5a536480317bb40d619e5faf6dbc79ab",
+        "size_bytes": 2820673
+      }
+    ]
+  },
+  "contract": {
+    "schema_path": "schemas/local/wall_fixture_catalog_v0.schema.json",
+    "consumer_note": "docs/architecture/wall_fixture_catalog_v0.md"
+  },
+  "notes": "Frozen v0 wall-fixture snapshot for vgm-scene-engine. First metadata-reviewed manual pair: one framed painting and one wall clock."
+}

@@ -104,10 +104,12 @@ The repo also now has a manual-shortlist source seam for the first real pair:
 
 - `sources/manual/wall_fixture_source_spec_v0.json`
 - `sources/manual/wall_fixture_selection_v0.json`
+- `sources/manual/wall_fixture_manual_review_v0.json`
 - `fixtures/manual/wall_fixture_bundle_layout_v0.json`
 - `scripts/sources/organize_manual_wall_fixtures_v0.sh`
 
-The first real `painting` / `clock` source pair is still not checked in.
+The first real `painting` / `clock` source pair is now shortlisted at the
+metadata level, but its raw payloads are still not checked in.
 
 ## Next Step
 

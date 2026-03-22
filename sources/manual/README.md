@@ -23,6 +23,7 @@ This avoids prematurely committing to a broad new source adapter.
 
 - `wall_fixture_source_spec_v0.json`
 - `wall_fixture_selection_v0.json`
+- `wall_fixture_manual_review_v0.json`
 
 ## Raw Staging Layout
 
@@ -63,3 +64,8 @@ Both should have:
 - explicit reviewed license
 - simple wall-mounted geometry
 - generic living-room visual style
+
+The current metadata-shortlisted pair is:
+
+- `Victorian Framed Painting - PBR Game Ready`
+- `Wooden Wall Clock`

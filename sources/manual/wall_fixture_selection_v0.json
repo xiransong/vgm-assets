@@ -3,18 +3,18 @@
     "selection_id": "manual_wall_fixture_painting_01_v0",
     "category": "painting",
     "source_pack": "manual_curated",
-    "source_url": "https://example.org/manual-wall-fixtures/painting-01",
-    "license": "pending_manual_review",
-    "status": "planned",
+    "source_url": "https://sketchfab.com/3d-models/victorian-framed-painting-pbr-game-ready-b2895c1c3b42401a949deac049e0051d",
+    "license": "CC-BY 4.0",
+    "status": "shortlisted",
     "priority": 1,
-    "source_name": "candidate_painting_01",
+    "source_name": "Victorian Framed Painting - PBR Game Ready",
     "raw_model_rel": "painting/candidate_painting_01/model.glb",
     "raw_preview_rel": "painting/candidate_painting_01/preview.png",
     "fixture_id": "manual_painting_01",
-    "display_name": "Manual Painting 01",
-    "style_tags": ["wall_art", "framed", "generic"],
+    "display_name": "Victorian Framed Painting 01",
+    "style_tags": ["wall_art", "framed", "victorian", "ornate"],
     "dimensions": {
-      "width_m": 0.8,
+      "width_m": 0.75,
       "height_m": 0.55,
       "depth_m": 0.04
     },
@@ -28,28 +28,28 @@
       "max_center_height_m": 1.6
     },
     "preferred_room_types": ["living_room"],
-    "review_status": "draft",
+    "review_status": "reviewed",
     "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/painting/manual_painting_01",
-    "notes": "Placeholder planning entry. Replace source_url, license, and staged raw files once a real candidate is approved."
+    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab. Page lists CC Attribution and a low-poly framed painting suitable for game and archviz use. Real raw files still need to be downloaded, staged, and geometry-checked before export."
   },
   {
     "selection_id": "manual_wall_fixture_clock_01_v0",
     "category": "clock",
     "source_pack": "manual_curated",
-    "source_url": "https://example.org/manual-wall-fixtures/clock-01",
-    "license": "pending_manual_review",
-    "status": "planned",
+    "source_url": "https://sketchfab.com/3d-models/wooden-wall-clock-f35bfeecca9b415a95e1e7d728becad6",
+    "license": "CC-BY 4.0",
+    "status": "shortlisted",
     "priority": 1,
-    "source_name": "candidate_clock_01",
+    "source_name": "Wooden Wall Clock",
     "raw_model_rel": "clock/candidate_clock_01/model.glb",
     "raw_preview_rel": "clock/candidate_clock_01/preview.png",
     "fixture_id": "manual_clock_01",
-    "display_name": "Manual Clock 01",
-    "style_tags": ["clock", "wall_mounted", "generic"],
+    "display_name": "Wooden Wall Clock 01",
+    "style_tags": ["clock", "wall_mounted", "wooden", "round"],
     "dimensions": {
-      "width_m": 0.34,
-      "height_m": 0.34,
-      "depth_m": 0.06
+      "width_m": 0.3,
+      "height_m": 0.3,
+      "depth_m": 0.03
     },
     "mount": {
       "mount_type": "wall_mounted",
@@ -61,8 +61,8 @@
       "max_center_height_m": 1.9
     },
     "preferred_room_types": ["living_room", "kitchen"],
-    "review_status": "draft",
+    "review_status": "reviewed",
     "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/clock/manual_clock_01",
-    "notes": "Placeholder planning entry. Replace source_url, license, and staged raw files once a real candidate is approved."
+    "notes": "Metadata-shortlisted on 2026-03-22 from Sketchfab. Page lists CC Attribution and explicit real-world size of 30cm x 3cm x 30cm. Real raw files still need to be downloaded, staged, and geometry-checked before export."
   }
 ]

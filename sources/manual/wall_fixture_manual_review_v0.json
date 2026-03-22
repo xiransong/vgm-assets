@@ -1,0 +1,27 @@
+{
+  "review_id": "manual_wall_fixture_review_v0",
+  "source_id": "manual_wall_fixtures_v0",
+  "selection_artifact": "sources/manual/wall_fixture_selection_v0.json",
+  "reviewed_at": "2026-03-22T00:00:00+00:00",
+  "notes": "Manual metadata-only review for the first wall-fixture shortlist. Decisions are conservative because real geometry has not been downloaded or inspected yet.",
+  "decisions": [
+    {
+      "selection_id": "manual_wall_fixture_painting_01_v0",
+      "title": "Victorian Framed Painting - PBR Game Ready",
+      "category": "painting",
+      "decision": "accepted_metadata_only",
+      "license": "CC-BY 4.0",
+      "source_url": "https://sketchfab.com/3d-models/victorian-framed-painting-pbr-game-ready-b2895c1c3b42401a949deac049e0051d",
+      "reason": "Strong wall-art semantics, isolated framed painting presentation, and a low-poly profile that looks suitable for an initial additive fixture slice."
+    },
+    {
+      "selection_id": "manual_wall_fixture_clock_01_v0",
+      "title": "Wooden Wall Clock",
+      "category": "clock",
+      "decision": "accepted_metadata_only",
+      "license": "CC-BY 4.0",
+      "source_url": "https://sketchfab.com/3d-models/wooden-wall-clock-f35bfeecca9b415a95e1e7d728becad6",
+      "reason": "Clear wall-clock semantics, explicit real-world size on the source page, and a visually generic style appropriate for living-room enrichment."
+    }
+  ]
+}

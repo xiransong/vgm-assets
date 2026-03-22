@@ -53,6 +53,7 @@ notes for `vgm-assets`.
 - `catalogs/room_surface_materials_v0.md`
 - `catalogs/opening_assemblies_v0.md`
 - `catalogs/ceiling_light_fixtures_v0.md`
+- `catalogs/wall_fixtures_v0_candidate_review.md`
 - `catalogs/objaverse_000_014_review_v0.md`
 - `catalogs/objaverse_000_014_geometry_inspection_v0.md`
 - `catalogs/living_room_objaverse_v0.md`

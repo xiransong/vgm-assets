@@ -98,11 +98,19 @@ DATA_ROOT/exports/scene_engine/wall_fixtures_v0_r1/
 
 ## Current State
 
-The local wall-fixture architecture and code path are now being added.
+The local wall-fixture architecture and code path are now in place.
 
-The first real `painting` / `clock` source slice is not yet checked in.
+The repo also now has a manual-shortlist source seam for the first real pair:
+
+- `sources/manual/wall_fixture_source_spec_v0.json`
+- `sources/manual/wall_fixture_selection_v0.json`
+- `fixtures/manual/wall_fixture_bundle_layout_v0.json`
+- `scripts/sources/organize_manual_wall_fixtures_v0.sh`
+
+The first real `painting` / `clock` source pair is still not checked in.
 
 ## Next Step
 
-Finish the local wall-fixture contract and export helpers first, then plug in a
-tiny real source pair without redesigning the bridge.
+Replace the placeholder manual shortlist entries with two reviewed real assets,
+stage their raw files, and build the first real `wall_fixtures_v0_r1` snapshot
+without redesigning the bridge.

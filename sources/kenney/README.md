@@ -90,6 +90,12 @@ You can rebuild the first ceiling-fixture bundle with:
 ./scripts/sources/organize_kenney_ceiling_fixtures_v0.sh
 ```
 
+The wall-fixture intake is currently expected to use a tiny manual shortlist
+instead of a new Kenney slice:
+
+- `sources/manual/wall_fixture_selection_v0.json`
+- `fixtures/manual/wall_fixture_bundle_layout_v0.json`
+
 ## Intake Workflow
 
 1. place the manually downloaded source zip into `RAW_DATA_ROOT` via

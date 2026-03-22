@@ -1,0 +1,10 @@
+{
+  "source_id": "manual_wall_fixtures_v0",
+  "source_url": "manual_curated_wall_fixture_shortlist",
+  "license": "per_asset_manual_review",
+  "processing": {
+    "raw_root_relpath": "sources/manual/wall_fixtures_v0",
+    "normalized_root_relpath": "fixtures/wall/manual/wall_fixtures_v0"
+  },
+  "notes": "Repo-side source spec for the first tiny manually curated wall-fixture slice. Each shortlisted asset must carry its own reviewed provenance and license metadata in wall_fixture_selection_v0.json."
+}

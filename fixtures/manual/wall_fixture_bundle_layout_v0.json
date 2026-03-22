@@ -1,0 +1,35 @@
+{
+  "layout_id": "manual_wall_fixture_bundle_layout_v0",
+  "source_id": "manual_wall_fixtures_v0",
+  "selection_path": "sources/manual/wall_fixture_selection_v0.json",
+  "planned_at": "2026-03-22T00:00:00+00:00",
+  "data_root_env_var": "VGM_ASSETS_DATA_ROOT",
+  "normalized_root_relpath": "fixtures/wall/manual/wall_fixtures_v0",
+  "bundle_count": 2,
+  "bundles": [
+    {
+      "selection_id": "manual_wall_fixture_painting_01_v0",
+      "category": "painting",
+      "fixture_id": "manual_painting_01",
+      "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/painting/manual_painting_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    },
+    {
+      "selection_id": "manual_wall_fixture_clock_01_v0",
+      "category": "clock",
+      "fixture_id": "manual_clock_01",
+      "normalized_rel_dir": "fixtures/wall/manual/wall_fixtures_v0/clock/manual_clock_01",
+      "files": {
+        "mesh": "model.glb",
+        "preview_image": "preview.png",
+        "source_metadata": "source_metadata.json",
+        "bundle_manifest": "bundle_manifest.json"
+      }
+    }
+  ]
+}

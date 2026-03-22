@@ -63,6 +63,7 @@ See:
 - `docs/architecture/support_clutter_scene_engine_consumer_v0.md`
 - `docs/architecture/poly_haven_room_surface_manifests_v0.md`
 - `sources/kenney/README.md`
+- `sources/manual/README.md`
 - `sources/ai2thor/README.md`
 - `sources/objaverse/README.md`
 - `sources/poly_haven/README.md`

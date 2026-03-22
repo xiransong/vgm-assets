@@ -10,13 +10,9 @@ source "${ROOT_DIR}/scripts/lib/micromamba.sh"
 from importlib.metadata import version
 
 import jsonschema
-import numpy
-import PIL
 import trimesh
 
 print("python stack ok")
-print("numpy", numpy.__version__)
 print("trimesh", trimesh.__version__)
-print("pillow", PIL.__version__)
 print("jsonschema", version("jsonschema"))
 PY

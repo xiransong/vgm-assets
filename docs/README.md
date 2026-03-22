@@ -66,3 +66,4 @@ notes for `vgm-assets`.
 - `plans/objaverse_furniture_normalization_v0_plan.md`
 - `plans/support_surface_semantics_v1_plan.md`
 - `plans/support_clutter_v0_plan.md`
+- `plans/maintained_asset_export_alignment_v0_plan.md`

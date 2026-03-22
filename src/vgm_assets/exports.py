@@ -33,14 +33,34 @@ from .support_surfaces import (
 from .sampling import build_category_index
 
 
+def _repo_relative_or_absolute(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(repo_root()).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def _replace_directory(path: Path) -> Path:
+    resolved = path.resolve()
+    if resolved.exists():
+        shutil.rmtree(resolved)
+    resolved.mkdir(parents=True, exist_ok=True)
+    return resolved
+
+
+def _snapshot_root(export_id: str, data_root: Path) -> tuple[Path, Path]:
+    snapshot_root_relative = Path("exports") / "scene_engine" / export_id
+    return snapshot_root_relative, data_root / snapshot_root_relative
+
+
 def _materialize_asset_payload_snapshot(
     *,
     records: list[dict],
     export_id: str,
     data_root: Path,
 ) -> tuple[list[dict], dict]:
-    snapshot_root_relative = Path("exports") / "scene_engine" / export_id
-    snapshot_root = data_root / snapshot_root_relative
+    snapshot_root_relative, snapshot_root = _snapshot_root(export_id, data_root)
     payload_root = snapshot_root / "assets"
     payload_root.mkdir(parents=True, exist_ok=True)
 
@@ -93,8 +113,7 @@ def _materialize_room_surface_payload_snapshot(
     export_id: str,
     data_root: Path,
 ) -> tuple[list[dict], dict]:
-    snapshot_root_relative = Path("exports") / "scene_engine" / export_id
-    snapshot_root = data_root / snapshot_root_relative
+    snapshot_root_relative, snapshot_root = _snapshot_root(export_id, data_root)
     payload_root = snapshot_root / "materials"
     payload_root.mkdir(parents=True, exist_ok=True)
 
@@ -147,8 +166,7 @@ def _materialize_opening_payload_snapshot(
     export_id: str,
     data_root: Path,
 ) -> tuple[list[dict], dict]:
-    snapshot_root_relative = Path("exports") / "scene_engine" / export_id
-    snapshot_root = data_root / snapshot_root_relative
+    snapshot_root_relative, snapshot_root = _snapshot_root(export_id, data_root)
     payload_root = snapshot_root / "assemblies"
     payload_root.mkdir(parents=True, exist_ok=True)
 
@@ -201,8 +219,7 @@ def _materialize_ceiling_fixture_payload_snapshot(
     export_id: str,
     data_root: Path,
 ) -> tuple[list[dict], dict]:
-    snapshot_root_relative = Path("exports") / "scene_engine" / export_id
-    snapshot_root = data_root / snapshot_root_relative
+    snapshot_root_relative, snapshot_root = _snapshot_root(export_id, data_root)
     payload_root = snapshot_root / "fixtures"
     payload_root.mkdir(parents=True, exist_ok=True)
 
@@ -259,13 +276,13 @@ def export_scene_engine_snapshot(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     category_index_path = category_index_path.resolve()
     manifest_path = manifest_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     asset_catalog_out = output_dir / "asset_catalog.json"
     category_index_out = output_dir / "category_index.json"
@@ -305,15 +322,15 @@ def export_scene_engine_snapshot(
         },
         "source_artifacts": {
             "asset_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "category_index": {
-                "path": category_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(category_index_path),
                 "sha256": _sha256(category_index_path),
             },
             "asset_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
         },
@@ -362,13 +379,13 @@ def export_room_surface_material_snapshot(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     surface_type_index_path = surface_type_index_path.resolve()
     manifest_path = manifest_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     material_catalog_out = output_dir / "room_surface_material_catalog.json"
     surface_type_index_out = output_dir / "surface_type_index.json"
@@ -412,15 +429,15 @@ def export_room_surface_material_snapshot(
         },
         "source_artifacts": {
             "room_surface_material_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "surface_type_index": {
-                "path": surface_type_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(surface_type_index_path),
                 "sha256": _sha256(surface_type_index_path),
             },
             "material_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
         },
@@ -473,13 +490,13 @@ def export_opening_assembly_snapshot(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     opening_type_index_path = opening_type_index_path.resolve()
     manifest_path = manifest_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     assembly_catalog_out = output_dir / "opening_assembly_catalog.json"
     opening_type_index_out = output_dir / "opening_type_index.json"
@@ -523,15 +540,15 @@ def export_opening_assembly_snapshot(
         },
         "source_artifacts": {
             "opening_assembly_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "opening_type_index": {
-                "path": opening_type_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(opening_type_index_path),
                 "sha256": _sha256(opening_type_index_path),
             },
             "assembly_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
         },
@@ -584,13 +601,13 @@ def export_ceiling_light_fixture_snapshot(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     fixture_index_path = fixture_index_path.resolve()
     manifest_path = manifest_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     fixture_catalog_out = output_dir / "ceiling_light_fixture_catalog.json"
     fixture_index_out = output_dir / "fixture_index.json"
@@ -634,15 +651,15 @@ def export_ceiling_light_fixture_snapshot(
         },
         "source_artifacts": {
             "ceiling_light_fixture_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "fixture_index": {
-                "path": fixture_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(fixture_index_path),
                 "sha256": _sha256(fixture_index_path),
             },
             "fixture_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
         },
@@ -696,14 +713,14 @@ def export_support_clutter_snapshot(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     category_index_path = category_index_path.resolve()
     support_compatibility_path = support_compatibility_path.resolve()
     manifest_path = manifest_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     prop_catalog_out = output_dir / "prop_asset_catalog.json"
     prop_category_index_out = output_dir / "prop_category_index.json"
@@ -751,19 +768,19 @@ def export_support_clutter_snapshot(
         },
         "source_artifacts": {
             "prop_asset_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "prop_category_index": {
-                "path": category_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(category_index_path),
                 "sha256": _sha256(category_index_path),
             },
             "support_compatibility": {
-                "path": support_compatibility_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(support_compatibility_path),
                 "sha256": _sha256(support_compatibility_path),
             },
             "asset_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
         },
@@ -823,14 +840,14 @@ def export_scene_engine_snapshot_with_support_annotations(
     output_dir: Path,
     notes: str | None = None,
 ) -> dict:
-    output_dir = output_dir.resolve()
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _replace_directory(output_dir)
 
     catalog_path = catalog_path.resolve()
     category_index_path = category_index_path.resolve()
     manifest_path = manifest_path.resolve()
     support_annotations_path = support_annotations_path.resolve()
     data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
 
     asset_catalog_out = output_dir / "asset_catalog.json"
     category_index_out = output_dir / "category_index.json"
@@ -886,19 +903,19 @@ def export_scene_engine_snapshot_with_support_annotations(
         },
         "source_artifacts": {
             "asset_catalog": {
-                "path": catalog_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(catalog_path),
                 "sha256": _sha256(catalog_path),
             },
             "category_index": {
-                "path": category_index_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(category_index_path),
                 "sha256": _sha256(category_index_path),
             },
             "asset_catalog_manifest": {
-                "path": manifest_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(manifest_path),
                 "sha256": _sha256(manifest_path),
             },
             "support_surface_annotations_v1": {
-                "path": support_annotations_path.relative_to(repo_root()).as_posix(),
+                "path": _repo_relative_or_absolute(support_annotations_path),
                 "sha256": _sha256(support_annotations_path),
             },
         },

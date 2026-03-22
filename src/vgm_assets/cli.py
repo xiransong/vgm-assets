@@ -112,6 +112,11 @@ def build_parser() -> argparse.ArgumentParser:
     measure_parser.add_argument("catalog", type=Path)
     measure_parser.add_argument("--output", type=Path)
     measure_parser.add_argument("--pretty", action="store_true")
+    measure_parser.add_argument(
+        "--require-mesh-for-all",
+        action="store_true",
+        help="Fail if any asset record is missing files.mesh instead of skipping it",
+    )
 
     paths_parser = subparsers.add_parser(
         "print-paths",
@@ -754,7 +759,10 @@ def main() -> int:
     if args.command == "measure-catalog":
         from .measure import measure_catalog_meshes
 
-        report = measure_catalog_meshes(args.catalog)
+        report = measure_catalog_meshes(
+            args.catalog,
+            require_mesh_for_all=args.require_mesh_for_all,
+        )
         text = json.dumps(report, indent=2 if args.pretty or args.output else None)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)

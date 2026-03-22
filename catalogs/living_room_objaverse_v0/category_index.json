@@ -1,5 +1,5 @@
 {
-  "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_objaverse_v0/assets.json",
+  "catalog_path": "catalogs/living_room_objaverse_v0/assets.json",
   "category_count": 3,
   "categories": {
     "coffee_table": {

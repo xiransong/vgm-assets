@@ -5,6 +5,7 @@ import random
 from pathlib import Path
 
 from .catalog import load_asset_specs
+from .paths import repo_relative_or_absolute
 
 
 def assets_by_category(catalog_path: Path) -> dict[str, list[dict]]:
@@ -29,7 +30,7 @@ def category_summary(catalog_path: Path) -> dict:
             }
         )
     return {
-        "catalog_path": str(catalog_path.resolve()),
+        "catalog_path": repo_relative_or_absolute(catalog_path),
         "category_count": len(categories),
         "categories": categories,
     }
@@ -46,7 +47,7 @@ def build_category_index(catalog_path: Path) -> dict:
             "asset_ids": [asset["asset_id"] for asset in assets],
         }
     return {
-        "catalog_path": str(catalog_path.resolve()),
+        "catalog_path": repo_relative_or_absolute(catalog_path),
         "category_count": len(categories),
         "categories": categories,
     }
@@ -73,7 +74,7 @@ def sample_uniform_asset(
     index = rng.randrange(len(candidates))
     sampled = candidates[index]
     return {
-        "catalog_path": str(catalog_path.resolve()),
+        "catalog_path": repo_relative_or_absolute(catalog_path),
         "category": category,
         "sampling_policy": "uniform",
         "candidate_count": len(candidates),

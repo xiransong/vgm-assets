@@ -1,5 +1,5 @@
 {
-  "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/support_clutter_ai2thor_v0/assets.json",
+  "catalog_path": "catalogs/support_clutter_ai2thor_v0/assets.json",
   "category_count": 2,
   "categories": {
     "book": {

@@ -1,11 +1,13 @@
 {
-  "catalog_path": "/home/ubuntu/scratch/repos/vgm/vgm-assets/catalogs/living_room_kenney_v0/assets.json",
+  "catalog_path": "catalogs/living_room_kenney_v0/assets.json",
   "asset_count": 14,
+  "measured_asset_count": 14,
+  "skipped_asset_count": 0,
   "measurements": [
     {
       "asset_id": "kenney_lounge_sofa_01",
       "category": "sofa",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -30,7 +32,7 @@
     {
       "asset_id": "kenney_lounge_sofa_long_01",
       "category": "sofa",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/sofa/kenney_lounge_sofa_long_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -55,7 +57,7 @@
     {
       "asset_id": "kenney_table_coffee_01",
       "category": "coffee_table",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_01/model.glb",
       "bounds_min": {
         "x": -0.4609960913658142,
         "y": -3.609557054039112e-16,
@@ -80,7 +82,7 @@
     {
       "asset_id": "kenney_table_coffee_square_01",
       "category": "coffee_table",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_square_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/coffee_table/kenney_table_coffee_square_01/model.glb",
       "bounds_min": {
         "x": -0.4609960913658142,
         "y": -3.609557054039112e-16,
@@ -105,7 +107,7 @@
     {
       "asset_id": "kenney_cabinet_television_01",
       "category": "tv_stand",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -130,7 +132,7 @@
     {
       "asset_id": "kenney_bookcase_open_01",
       "category": "bookcase",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookcase/kenney_bookcase_open_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -155,7 +157,7 @@
     {
       "asset_id": "kenney_lounge_chair_01",
       "category": "armchair",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -180,7 +182,7 @@
     {
       "asset_id": "kenney_lounge_chair_relax_01",
       "category": "armchair",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/armchair/kenney_lounge_chair_relax_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -205,7 +207,7 @@
     {
       "asset_id": "kenney_side_table_01",
       "category": "side_table",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_01/model.glb",
       "bounds_min": {
         "x": -0.009999999776482582,
         "y": 0.0,
@@ -230,7 +232,7 @@
     {
       "asset_id": "kenney_side_table_drawers_01",
       "category": "side_table",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/side_table/kenney_side_table_drawers_01/model.glb",
       "bounds_min": {
         "x": -0.009999999776482582,
         "y": 0.0,
@@ -255,7 +257,7 @@
     {
       "asset_id": "kenney_lamp_round_floor_01",
       "category": "floor_lamp",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_round_floor_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_round_floor_01/model.glb",
       "bounds_min": {
         "x": -0.016019709408283234,
         "y": 0.0,
@@ -280,7 +282,7 @@
     {
       "asset_id": "kenney_lamp_square_floor_01",
       "category": "floor_lamp",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/floor_lamp/kenney_lamp_square_floor_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -305,7 +307,7 @@
     {
       "asset_id": "kenney_cabinet_television_doors_01",
       "category": "tv_stand",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/tv_stand/kenney_cabinet_television_doors_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -330,7 +332,7 @@
     {
       "asset_id": "kenney_bookcase_closed_wide_01",
       "category": "bookshelf",
-      "mesh_path": "/home/ubuntu/scratch/processed/vgm/vgm-assets/sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01/model.glb",
+      "mesh_path": "sources/kenney/furniture_kit/normalized/living_room_v0/bookshelf/kenney_bookcase_closed_wide_01/model.glb",
       "bounds_min": {
         "x": 0.0,
         "y": 0.0,
@@ -352,5 +354,6 @@
         "height": 2.0
       }
     }
-  ]
+  ],
+  "skipped_assets": []
 }

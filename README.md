@@ -76,6 +76,7 @@ See:
 - `docs/plans/objaverse_furniture_ingestion_v0_plan.md`
 - `docs/plans/support_surface_semantics_v1_plan.md`
 - `docs/plans/support_clutter_v0_plan.md`
+- `docs/plans/maintained_asset_export_alignment_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
@@ -224,17 +225,25 @@ rich support-surface companion file:
 ./scripts/exports/export_living_room_kenney_v0_r3.sh
 ```
 
+This is the current maintained protocol-facing asset anchor.
+
 Export the current protocol-aligned support-surface living-room snapshot:
 
 ```bash
 ./scripts/exports/export_living_room_kenney_v0_r4.sh
 ```
 
+Treat this as a later local follow-up snapshot until the maintained anchor is
+deliberately promoted.
+
 Export the current expanded-support-coverage living-room snapshot:
 
 ```bash
 ./scripts/exports/export_living_room_kenney_v0_r5.sh
 ```
+
+Treat this as a later local follow-up snapshot until the maintained anchor is
+deliberately promoted.
 
 Organize the first Kenney opening-assembly bundles:
 

@@ -51,9 +51,13 @@ def _sha256(path: Path) -> str:
 
 
 def _file_ref_for(path: Path, base_dir: Path) -> dict:
-    relative = path.resolve().relative_to(base_dir.resolve())
+    resolved = path.resolve()
+    try:
+        stored_path = resolved.relative_to(base_dir.resolve()).as_posix()
+    except ValueError:
+        stored_path = str(resolved)
     return {
-        "path": relative.as_posix(),
+        "path": stored_path,
         "format": path.suffix.lstrip(".") or "json",
         "sha256": _sha256(path),
         "size_bytes": path.stat().st_size,

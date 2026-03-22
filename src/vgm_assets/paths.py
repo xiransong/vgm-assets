@@ -35,3 +35,22 @@ def resolve_data_ref(path_str: str | Path, data_root: Path | None = None) -> Pat
         return path.resolve()
     root = data_root or default_data_root()
     return resolve_under(root, path).resolve()
+
+
+def repo_relative_or_absolute(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(repo_root()).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def data_root_relative_or_absolute(
+    path: Path, data_root: Path | None = None
+) -> str:
+    resolved = path.resolve()
+    root = (data_root or default_data_root()).resolve()
+    try:
+        return resolved.relative_to(root).as_posix()
+    except ValueError:
+        return str(resolved)

@@ -4,8 +4,13 @@ import json
 import os
 from pathlib import Path
 
-from jsonschema import RefResolver
 from jsonschema.validators import validator_for
+
+try:
+    from referencing import Registry, Resource
+except ImportError:  # pragma: no cover - exercised only in older fallback envs
+    Registry = None
+    Resource = None
 
 
 def repo_root() -> Path:
@@ -48,6 +53,16 @@ def build_store(protocol_root: Path | None = None) -> dict[str, dict]:
     return store
 
 
+def build_registry(protocol_root: Path | None = None):
+    if Registry is None or Resource is None:
+        return None
+
+    registry = Registry()
+    for schema_id, contents in build_store(protocol_root).items():
+        registry = registry.with_resource(schema_id, Resource.from_contents(contents))
+    return registry
+
+
 def validate_instance(
     instance: object,
     schema_rel_path: str,
@@ -57,6 +72,18 @@ def validate_instance(
     store = build_store(protocol_root)
     validator_cls = validator_for(schema)
     validator_cls.check_schema(schema)
+    registry = build_registry(protocol_root)
+    if registry is not None:
+        try:
+            validator = validator_cls(schema, registry=registry)
+        except TypeError:
+            registry = None
+        else:
+            validator.validate(instance)
+            return
+
+    from jsonschema import RefResolver
+
     resolver = RefResolver.from_schema(schema, store=store)
     validator = validator_cls(schema, resolver=resolver)
     validator.validate(instance)

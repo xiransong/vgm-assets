@@ -73,6 +73,10 @@ The current support-synced living-room snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r3`
 
+The current maintained protocol-facing asset anchor is:
+
+- `exports/scene_engine/living_room_kenney_v0_r3`
+
 The current protocol-aligned support-surface living-room snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r4`
@@ -80,6 +84,9 @@ The current protocol-aligned support-surface living-room snapshot is:
 The current expanded-support-coverage living-room snapshot is:
 
 - `exports/scene_engine/living_room_kenney_v0_r5`
+
+For now, `r4` and `r5` should be read as later local follow-up revisions, not
+as automatic replacements for the maintained cross-repo anchor.
 
 The first frozen room-surface material snapshot is:
 

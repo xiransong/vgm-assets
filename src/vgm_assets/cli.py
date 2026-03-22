@@ -14,6 +14,10 @@ from .ceiling_fixtures import (
     refresh_ceiling_light_fixture_catalog,
     validate_ceiling_light_fixture_catalog,
 )
+from .wall_fixtures import (
+    refresh_wall_fixture_catalog,
+    validate_wall_fixture_catalog,
+)
 from .furniture_assets import refresh_furniture_asset_catalog
 from .exports import (
     export_ceiling_light_fixture_snapshot,
@@ -22,6 +26,7 @@ from .exports import (
     export_scene_engine_snapshot,
     export_scene_engine_snapshot_with_support_annotations,
     export_support_clutter_snapshot,
+    export_wall_fixture_snapshot,
 )
 from .opening_assemblies import (
     refresh_opening_assembly_catalog,
@@ -603,6 +608,35 @@ def build_parser() -> argparse.ArgumentParser:
     )
     validate_ceiling_light_fixture_catalog_parser.add_argument("catalog", type=Path)
 
+    refresh_wall_fixture_catalog_parser = subparsers.add_parser(
+        "refresh-wall-fixture-catalog",
+        help="Build a wall-fixture catalog from normalized bundle manifests and write its index and manifest",
+    )
+    refresh_wall_fixture_catalog_parser.add_argument("--catalog-id", required=True)
+    refresh_wall_fixture_catalog_parser.add_argument(
+        "--bundle-manifest",
+        type=Path,
+        action="append",
+        required=True,
+        dest="bundle_manifests",
+    )
+    refresh_wall_fixture_catalog_parser.add_argument(
+        "--catalog-output", type=Path, required=True
+    )
+    refresh_wall_fixture_catalog_parser.add_argument(
+        "--fixture-category-index-output", type=Path, required=True
+    )
+    refresh_wall_fixture_catalog_parser.add_argument(
+        "--manifest-output", type=Path, required=True
+    )
+    refresh_wall_fixture_catalog_parser.add_argument("--created-at")
+
+    validate_wall_fixture_catalog_parser = subparsers.add_parser(
+        "validate-wall-fixture-catalog",
+        help="Validate a wall-fixture catalog against the local vgm-assets v0 schema",
+    )
+    validate_wall_fixture_catalog_parser.add_argument("catalog", type=Path)
+
     refresh_parser = subparsers.add_parser(
         "refresh-catalog-artifacts",
         help="Validate a catalog, refresh its measurement report, and write its manifest",
@@ -707,6 +741,20 @@ def build_parser() -> argparse.ArgumentParser:
     ceiling_fixture_export_parser.add_argument("--manifest", type=Path, required=True)
     ceiling_fixture_export_parser.add_argument("--output-dir", type=Path, required=True)
     ceiling_fixture_export_parser.add_argument("--notes")
+
+    wall_fixture_export_parser = subparsers.add_parser(
+        "export-wall-fixture-snapshot",
+        help="Export a frozen scene-engine snapshot from wall-fixture catalog artifacts",
+    )
+    wall_fixture_export_parser.add_argument("--export-id", required=True)
+    wall_fixture_export_parser.add_argument("--source-catalog-id", required=True)
+    wall_fixture_export_parser.add_argument("--catalog", type=Path, required=True)
+    wall_fixture_export_parser.add_argument(
+        "--fixture-category-index", type=Path, required=True
+    )
+    wall_fixture_export_parser.add_argument("--manifest", type=Path, required=True)
+    wall_fixture_export_parser.add_argument("--output-dir", type=Path, required=True)
+    wall_fixture_export_parser.add_argument("--notes")
 
     support_clutter_export_parser = subparsers.add_parser(
         "export-support-clutter-snapshot",
@@ -1191,6 +1239,23 @@ def main() -> int:
         print(f"Validated {len(records)} ceiling-light fixtures in {args.catalog}")
         return 0
 
+    if args.command == "refresh-wall-fixture-catalog":
+        summary = refresh_wall_fixture_catalog(
+            catalog_id=args.catalog_id,
+            bundle_manifest_paths=args.bundle_manifests,
+            catalog_output=args.catalog_output,
+            fixture_category_index_output=args.fixture_category_index_output,
+            manifest_output=args.manifest_output,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "validate-wall-fixture-catalog":
+        records = validate_wall_fixture_catalog(args.catalog)
+        print(f"Validated {len(records)} wall fixtures in {args.catalog}")
+        return 0
+
     if args.command == "refresh-catalog-artifacts":
         summary = refresh_catalog_artifacts(
             catalog_path=args.catalog,
@@ -1302,6 +1367,19 @@ def main() -> int:
             source_catalog_id=args.source_catalog_id,
             catalog_path=args.catalog,
             fixture_index_path=args.fixture_index,
+            manifest_path=args.manifest,
+            output_dir=args.output_dir,
+            notes=args.notes,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "export-wall-fixture-snapshot":
+        summary = export_wall_fixture_snapshot(
+            export_id=args.export_id,
+            source_catalog_id=args.source_catalog_id,
+            catalog_path=args.catalog,
+            fixture_category_index_path=args.fixture_category_index,
             manifest_path=args.manifest,
             output_dir=args.output_dir,
             notes=args.notes,

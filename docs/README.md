@@ -32,6 +32,7 @@ notes for `vgm-assets`.
 - `architecture/opening_assemblies_scene_engine_consumer_v0.md`
 - `architecture/ceiling_fixture_catalog_v0.md`
 - `architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
+- `architecture/wall_fixture_catalog_v0.md`
 - `architecture/objaverse_furniture_ingestion_v0.md`
 - `architecture/objaverse_furniture_metadata_harvest_v0.md`
 - `architecture/objaverse_furniture_narrowing_v0.md`
@@ -67,3 +68,4 @@ notes for `vgm-assets`.
 - `plans/support_surface_semantics_v1_plan.md`
 - `plans/support_clutter_v0_plan.md`
 - `plans/maintained_asset_export_alignment_v0_plan.md`
+- `plans/wall_fixtures_v0_plan.md`

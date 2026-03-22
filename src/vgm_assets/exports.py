@@ -12,6 +12,11 @@ from .ceiling_fixtures import (
     build_fixture_index,
     validate_ceiling_light_fixture_catalog_data,
 )
+from .wall_fixtures import (
+    build_wall_fixture_catalog_manifest,
+    build_wall_fixture_category_index,
+    validate_wall_fixture_catalog_data,
+)
 from .paths import default_data_root, resolve_data_ref
 from .opening_assemblies import (
     build_opening_assembly_catalog_manifest,
@@ -238,6 +243,59 @@ def _materialize_ceiling_fixture_payload_snapshot(
 
             source_path = resolve_data_ref(file_ref["path"], data_root=data_root)
             destination_dir = payload_root / mount_type / fixture_id
+            destination_dir.mkdir(parents=True, exist_ok=True)
+            destination_path = destination_dir / source_path.name
+            shutil.copy2(source_path, destination_path)
+
+            relative_destination = destination_path.relative_to(data_root)
+            file_ref["path"] = relative_destination.as_posix()
+
+            payload_files.append(
+                {
+                    "fixture_id": fixture_id,
+                    "file_key": file_key,
+                    "path": relative_destination.as_posix(),
+                    "sha256": _sha256(destination_path),
+                    "size_bytes": destination_path.stat().st_size,
+                }
+            )
+
+        exported_records.append(exported_record)
+
+    payload_manifest = {
+        "data_snapshot_root": snapshot_root_relative.as_posix(),
+        "fixture_payload_count": len(exported_records),
+        "payload_file_count": len(payload_files),
+        "payload_files": payload_files,
+    }
+    return exported_records, payload_manifest
+
+
+def _materialize_wall_fixture_payload_snapshot(
+    *,
+    records: list[dict],
+    export_id: str,
+    data_root: Path,
+) -> tuple[list[dict], dict]:
+    snapshot_root_relative, snapshot_root = _snapshot_root(export_id, data_root)
+    payload_root = snapshot_root / "wall_fixtures"
+    payload_root.mkdir(parents=True, exist_ok=True)
+
+    exported_records: list[dict] = []
+    payload_files: list[dict] = []
+
+    for record in records:
+        exported_record = deepcopy(record)
+        fixture_id = exported_record["fixture_id"]
+        category = exported_record["category"]
+        files = exported_record.get("files", {})
+
+        for file_key, file_ref in files.items():
+            if not isinstance(file_ref, dict) or "path" not in file_ref:
+                continue
+
+            source_path = resolve_data_ref(file_ref["path"], data_root=data_root)
+            destination_dir = payload_root / category / fixture_id
             destination_dir.mkdir(parents=True, exist_ok=True)
             destination_path = destination_dir / source_path.name
             shutil.copy2(source_path, destination_path)
@@ -821,6 +879,117 @@ def export_support_clutter_snapshot(
         "prop_category_index": str(prop_category_index_out.resolve()),
         "support_compatibility": str(support_compatibility_out.resolve()),
         "asset_catalog_manifest": str(manifest_out.resolve()),
+        "export_metadata": str(metadata_path.resolve()),
+        "data_snapshot_root": str(
+            (data_root / payload_manifest["data_snapshot_root"]).resolve()
+        ),
+        "payload_file_count": payload_manifest["payload_file_count"],
+    }
+
+
+def export_wall_fixture_snapshot(
+    *,
+    export_id: str,
+    source_catalog_id: str,
+    catalog_path: Path,
+    fixture_category_index_path: Path,
+    manifest_path: Path,
+    output_dir: Path,
+    notes: str | None = None,
+) -> dict:
+    output_dir = _replace_directory(output_dir)
+
+    catalog_path = catalog_path.resolve()
+    fixture_category_index_path = fixture_category_index_path.resolve()
+    manifest_path = manifest_path.resolve()
+    data_root = default_data_root()
+    _replace_directory(_snapshot_root(export_id, data_root)[1])
+
+    fixture_catalog_out = output_dir / "wall_fixture_catalog.json"
+    fixture_category_index_out = output_dir / "fixture_category_index.json"
+    manifest_out = output_dir / "fixture_catalog_manifest.json"
+
+    source_records = json.loads(catalog_path.read_text(encoding="utf-8"))
+    validate_wall_fixture_catalog_data(source_records)
+    exported_records, payload_manifest = _materialize_wall_fixture_payload_snapshot(
+        records=source_records,
+        export_id=export_id,
+        data_root=data_root,
+    )
+    validate_wall_fixture_catalog_data(exported_records)
+    fixture_catalog_out.write_text(
+        json.dumps(exported_records, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    fixture_category_index = build_wall_fixture_category_index(fixture_catalog_out)
+    fixture_category_index["catalog_path"] = "wall_fixture_catalog.json"
+    fixture_category_index_out.write_text(
+        json.dumps(fixture_category_index, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    manifest = build_wall_fixture_catalog_manifest(
+        fixture_catalog_out, catalog_id=export_id
+    )
+    manifest["catalog_files"][0]["path"] = "wall_fixture_catalog.json"
+    manifest_out.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    metadata = {
+        "export_id": export_id,
+        "consumer": "vgm-scene-engine",
+        "source_catalog_id": source_catalog_id,
+        "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "producer": {
+            "repo": "vgm-assets",
+            "version": "0.1.0-dev",
+            "commit": "working_tree",
+        },
+        "source_artifacts": {
+            "wall_fixture_catalog": {
+                "path": _repo_relative_or_absolute(catalog_path),
+                "sha256": _sha256(catalog_path),
+            },
+            "fixture_category_index": {
+                "path": _repo_relative_or_absolute(fixture_category_index_path),
+                "sha256": _sha256(fixture_category_index_path),
+            },
+            "fixture_catalog_manifest": {
+                "path": _repo_relative_or_absolute(manifest_path),
+                "sha256": _sha256(manifest_path),
+            },
+        },
+        "files": {
+            "wall_fixture_catalog": {
+                "path": "wall_fixture_catalog.json",
+                "sha256": _sha256(fixture_catalog_out),
+            },
+            "fixture_category_index": {
+                "path": "fixture_category_index.json",
+                "sha256": _sha256(fixture_category_index_out),
+            },
+            "fixture_catalog_manifest": {
+                "path": "fixture_catalog_manifest.json",
+                "sha256": _sha256(manifest_out),
+            },
+        },
+        "data_snapshot": payload_manifest,
+        "contract": {
+            "schema_path": "schemas/local/wall_fixture_catalog_v0.schema.json",
+            "consumer_note": "docs/architecture/wall_fixture_catalog_v0.md",
+        },
+        "notes": notes or "",
+    }
+
+    metadata_path = output_dir / "export_metadata.json"
+    metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+
+    return {
+        "export_id": export_id,
+        "output_dir": str(output_dir.resolve()),
+        "wall_fixture_catalog": str(fixture_catalog_out.resolve()),
+        "fixture_category_index": str(fixture_category_index_out.resolve()),
+        "fixture_catalog_manifest": str(manifest_out.resolve()),
         "export_metadata": str(metadata_path.resolve()),
         "data_snapshot_root": str(
             (data_root / payload_manifest["data_snapshot_root"]).resolve()

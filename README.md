@@ -52,6 +52,7 @@ See:
 - `docs/architecture/ceiling_fixture_catalog_v0.md`
 - `docs/architecture/ceiling_light_fixtures_scene_engine_consumer_v0.md`
 - `docs/architecture/wall_fixture_catalog_v0.md`
+- `docs/architecture/manual_wall_fixture_download_runbook_v0.md`
 - `docs/architecture/objaverse_furniture_ingestion_v0.md`
 - `docs/architecture/objaverse_furniture_metadata_harvest_v0.md`
 - `docs/architecture/objaverse_furniture_narrowing_v0.md`

@@ -47,6 +47,10 @@ with:
 ./scripts/sources/organize_manual_wall_fixtures_v0.sh
 ```
 
+The full browser-download and staging runbook is:
+
+- `docs/architecture/manual_wall_fixture_download_runbook_v0.md`
+
 That writes normalized bundles under:
 
 - `DATA_ROOT/fixtures/wall/manual/wall_fixtures_v0/`

@@ -4,11 +4,9 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from jsonschema.validators import validator_for
-
 from .catalog import _file_ref_for
 from .paths import default_data_root
-from .protocol import load_json, repo_root
+from .protocol import load_json, repo_root, validator_class_for_schema
 
 DEFAULT_PRODUCER = {
     "repo": "vgm-assets",
@@ -47,7 +45,7 @@ def room_surface_material_catalog_schema_path() -> Path:
 def validate_room_surface_material_catalog_data(payload: object) -> list[dict]:
     schema_path = room_surface_material_catalog_schema_path()
     schema = load_json(schema_path)
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)

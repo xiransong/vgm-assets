@@ -6,11 +6,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from jsonschema.validators import validator_for
-
 from .catalog import write_catalog_manifest
 from .paths import default_raw_data_root, resolve_under
-from .protocol import load_json
+from .protocol import load_json, validator_class_for_schema
 from .sampling import write_category_index
 from .support_surfaces import (
     load_support_surface_annotation_set,
@@ -64,7 +62,7 @@ def load_support_clutter_prop_annotation_set(path: Path) -> dict:
 
 def validate_support_clutter_prop_annotation_set_data(payload: object) -> dict:
     schema = load_json(support_clutter_prop_annotation_set_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)
@@ -88,7 +86,7 @@ def load_support_clutter_compatibility(path: Path) -> dict:
 
 def validate_support_clutter_compatibility_data(payload: object) -> dict:
     schema = load_json(support_clutter_compatibility_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)

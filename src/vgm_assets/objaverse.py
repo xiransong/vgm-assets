@@ -5,10 +5,8 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-from jsonschema.validators import validator_for
-
 from .paths import default_raw_data_root, resolve_under
-from .protocol import load_json, repo_root
+from .protocol import load_json, repo_root, validator_class_for_schema
 
 OBJAVERSE_FURNITURE_METADATA_HARVEST_SCHEMA = (
     Path("schemas") / "local" / "objaverse_furniture_metadata_harvest_v0.schema.json"
@@ -159,7 +157,7 @@ def _license_rule(record: dict, policy: dict) -> tuple[bool, str]:
 
 def validate_objaverse_furniture_metadata_harvest_data(payload: object) -> dict:
     schema = load_json(objaverse_furniture_metadata_harvest_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)
@@ -176,7 +174,7 @@ def validate_objaverse_furniture_metadata_harvest(path: Path) -> dict:
 
 def validate_objaverse_furniture_review_queue_data(payload: object) -> dict:
     schema = load_json(objaverse_furniture_review_queue_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)
@@ -193,7 +191,7 @@ def validate_objaverse_furniture_review_queue(path: Path) -> dict:
 
 def validate_objaverse_selective_geometry_data(payload: object) -> dict:
     schema = load_json(objaverse_selective_geometry_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)
@@ -210,7 +208,7 @@ def validate_objaverse_selective_geometry(path: Path) -> dict:
 
 def validate_objaverse_selective_geometry_manifest_data(payload: object) -> dict:
     schema = load_json(objaverse_selective_geometry_manifest_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)

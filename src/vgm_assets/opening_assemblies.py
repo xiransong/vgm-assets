@@ -4,10 +4,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from jsonschema.validators import validator_for
-
 from .catalog import _file_ref_for
-from .protocol import load_json
+from .protocol import load_json, validator_class_for_schema
 
 DEFAULT_PRODUCER = {
     "repo": "vgm-assets",
@@ -57,7 +55,7 @@ def load_opening_assembly_catalog(catalog_path: Path) -> list[dict]:
 
 def validate_opening_assembly_catalog_data(payload: object) -> list[dict]:
     schema = load_json(opening_assembly_catalog_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)

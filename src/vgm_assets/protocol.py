@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 from jsonschema.validators import validator_for
@@ -11,6 +12,17 @@ try:
 except ImportError:  # pragma: no cover - exercised only in older fallback envs
     Registry = None
     Resource = None
+
+try:
+    from jsonschema.validators import Draft202012Validator
+except ImportError:  # pragma: no cover - exercised only in unsupported fallback envs
+    Draft202012Validator = None
+
+
+DRAFT202012_SCHEMA_URIS = {
+    "https://json-schema.org/draft/2020-12/schema",
+    "http://json-schema.org/draft/2020-12/schema",
+}
 
 
 def repo_root() -> Path:
@@ -36,6 +48,25 @@ def load_schema(schema_rel_path: str, protocol_root: Path | None = None) -> dict
     if not isinstance(schema, dict):
         raise TypeError(f"Schema at {schema_path} is not a JSON object")
     return schema
+
+
+def _installed_jsonschema_version() -> str:
+    try:
+        return version("jsonschema")
+    except PackageNotFoundError:  # pragma: no cover - package should exist when imported
+        return "unknown"
+
+
+def validator_class_for_schema(schema: dict):
+    schema_uri = schema.get("$schema")
+    if schema_uri in DRAFT202012_SCHEMA_URIS:
+        if Draft202012Validator is None:
+            raise RuntimeError(
+                "Draft 2020-12 schema validation requires jsonschema>=4.23; "
+                f"found {_installed_jsonschema_version()}. Use the supported vgm-assets env."
+            )
+        return Draft202012Validator
+    return validator_for(schema)
 
 
 def build_store(protocol_root: Path | None = None) -> dict[str, dict]:
@@ -70,7 +101,7 @@ def validate_instance(
 ) -> None:
     schema = load_schema(schema_rel_path, protocol_root)
     store = build_store(protocol_root)
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     registry = build_registry(protocol_root)
     if registry is not None:

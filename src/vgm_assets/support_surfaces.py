@@ -5,9 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from jsonschema.validators import validator_for
-
-from .protocol import load_json
+from .protocol import load_json, validator_class_for_schema
 
 SUPPORT_SURFACE_ANNOTATION_SET_SCHEMA = (
     Path("schemas") / "local" / "support_surface_annotation_set_v1.schema.json"
@@ -31,7 +29,7 @@ def load_support_surface_annotation_set(path: Path) -> dict:
 
 def validate_support_surface_annotation_set_data(payload: object) -> dict:
     schema = load_json(support_surface_annotation_set_schema_path())
-    validator_cls = validator_for(schema)
+    validator_cls = validator_class_for_schema(schema)
     validator_cls.check_schema(schema)
     validator = validator_cls(schema)
     validator.validate(payload)

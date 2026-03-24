@@ -635,30 +635,18 @@ function makeReviewMaterial(color) {
 }
 
 function cloneReviewMeshObject(sourceObject, color) {
-  const root = new THREE.Group();
+  const clone = sourceObject.clone(true);
   let added = 0;
-  sourceObject.traverse((child) => {
+  clone.traverse((child) => {
     if (!child.isMesh || !child.geometry) {
       return;
     }
-    const mesh = new THREE.Mesh(child.geometry.clone(), makeReviewMaterial(color));
-    mesh.castShadow = false;
-    mesh.receiveShadow = false;
-    mesh.position.copy(child.position);
-    mesh.quaternion.copy(child.quaternion);
-    mesh.scale.copy(child.scale);
-    root.add(mesh);
+    child.material = makeReviewMaterial(color);
+    child.castShadow = false;
+    child.receiveShadow = false;
     added += 1;
   });
-  if (added === 0 && sourceObject.isMesh && sourceObject.geometry) {
-    const mesh = new THREE.Mesh(sourceObject.geometry.clone(), makeReviewMaterial(color));
-    mesh.position.copy(sourceObject.position);
-    mesh.quaternion.copy(sourceObject.quaternion);
-    mesh.scale.copy(sourceObject.scale);
-    root.add(mesh);
-    added += 1;
-  }
-  return added > 0 ? root : null;
+  return added > 0 ? clone : null;
 }
 
 function normalizeMeshNodeName(name) {
@@ -695,16 +683,30 @@ function alignReviewMeshToProxy(group, bounds) {
   }
   const rawSize = new THREE.Vector3();
   rawBox.getSize(rawSize);
-  const ratios = [
-    bounds.width_m / rawSize.x,
-    bounds.height_m / rawSize.y,
-    bounds.depth_m / rawSize.z,
-  ].filter((value) => Number.isFinite(value) && value > 0);
+  const widthRatio = bounds.width_m / rawSize.x;
+  const heightRatio = bounds.height_m / rawSize.y;
+  const depthRatio = bounds.depth_m / rawSize.z;
+  const ratios = [widthRatio, heightRatio, depthRatio].filter(
+    (value) => Number.isFinite(value) && value > 0,
+  );
   if (!ratios.length) {
     return;
   }
-  ratios.sort((a, b) => a - b);
-  const uniformScale = ratios[Math.floor(ratios.length / 2)];
+  let uniformScale = null;
+  const horizontalRatios = [widthRatio, depthRatio].filter(
+    (value) => Number.isFinite(value) && value > 0,
+  );
+  if (horizontalRatios.length === 2) {
+    const horizontalSpread =
+      Math.max(...horizontalRatios) / Math.min(...horizontalRatios);
+    if (horizontalSpread <= 1.15) {
+      uniformScale = (horizontalRatios[0] + horizontalRatios[1]) / 2;
+    }
+  }
+  if (!uniformScale) {
+    ratios.sort((a, b) => a - b);
+    uniformScale = ratios[Math.floor(ratios.length / 2)];
+  }
   group.scale.multiplyScalar(uniformScale);
 
   const fittedBox = new THREE.Box3().setFromObject(group);
@@ -713,8 +715,16 @@ function alignReviewMeshToProxy(group, bounds) {
   group.position.add(
     new THREE.Vector3(
       bounds.center_m.x - fittedCenter.x,
-      bounds.center_m.y - fittedCenter.y,
+      0,
       bounds.center_m.z - fittedCenter.z,
+    ),
+  );
+  const alignedBox = new THREE.Box3().setFromObject(group);
+  group.position.add(
+    new THREE.Vector3(
+      0,
+      bounds.min_corner_m.y - alignedBox.min.y,
+      0,
     ),
   );
 }

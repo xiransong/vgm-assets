@@ -7,6 +7,10 @@ from pathlib import Path
 import re
 from typing import Any
 
+from .ai2thor_review_workspace import (
+    ai2thor_object_semantics_candidate_path,
+    ai2thor_object_semantics_reviewed_path,
+)
 from .ai2thor_object_semantics import _measure_parent_prefab_bounds
 from .object_semantics import (
     load_object_semantics_annotation_set,
@@ -59,9 +63,17 @@ def default_object_semantics_explorer_config(
     frontend_dist_path: Path | None = None,
 ) -> ObjectSemanticsExplorerConfig:
     root = repo_root()
+    processed_candidate_path = ai2thor_object_semantics_candidate_path()
+    processed_reviewed_path = ai2thor_object_semantics_reviewed_path()
+    default_candidate_path = (
+        processed_candidate_path if processed_candidate_path.exists() else (root / DEFAULT_CANDIDATE_ANNOTATIONS)
+    )
+    default_reviewed_path = (
+        processed_reviewed_path if processed_candidate_path.exists() else (root / DEFAULT_REVIEWED_ANNOTATIONS)
+    )
     return ObjectSemanticsExplorerConfig(
-        candidate_path=(candidate_path or (root / DEFAULT_CANDIDATE_ANNOTATIONS)).resolve(),
-        reviewed_path=(reviewed_path or (root / DEFAULT_REVIEWED_ANNOTATIONS)).resolve(),
+        candidate_path=(candidate_path or default_candidate_path).resolve(),
+        reviewed_path=(reviewed_path or default_reviewed_path).resolve(),
         selection_path=(selection_path or (root / DEFAULT_SELECTION_PATH)).resolve(),
         source_repo_root=(source_repo_root or _default_ai2thor_repo_root()).resolve(),
         frontend_dist_path=(frontend_dist_path or (root / DEFAULT_FRONTEND_DIST)).resolve(),

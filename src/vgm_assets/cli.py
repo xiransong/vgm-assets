@@ -15,6 +15,7 @@ from .ceiling_fixtures import (
     validate_ceiling_light_fixture_catalog,
 )
 from .ai2thor_object_semantics import write_ai2thor_object_semantics_candidates
+from .ai2thor_review_workspace import refresh_ai2thor_object_semantics_review_workspace
 from .wall_fixtures import (
     refresh_wall_fixture_catalog,
     validate_wall_fixture_catalog,
@@ -421,6 +422,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--selection-id", action="append", dest="selection_ids"
     )
     write_ai2thor_object_semantics_candidates_parser.add_argument("--created-at")
+
+    refresh_ai2thor_object_semantics_review_workspace_parser = subparsers.add_parser(
+        "refresh-ai2thor-object-semantics-review-workspace",
+        help="Refresh the AI2-THOR object-semantics processed review workspace under DATA_ROOT/review",
+    )
+    refresh_ai2thor_object_semantics_review_workspace_parser.add_argument("selection", type=Path)
+    refresh_ai2thor_object_semantics_review_workspace_parser.add_argument("--data-root", type=Path)
+    refresh_ai2thor_object_semantics_review_workspace_parser.add_argument("--source-repo-root", type=Path)
+    refresh_ai2thor_object_semantics_review_workspace_parser.add_argument("--created-at")
 
     write_support_clutter_prop_annotations_parser = subparsers.add_parser(
         "write-support-clutter-prop-annotations",
@@ -1150,6 +1160,16 @@ def main() -> int:
             output_path=args.output,
             source_repo_root=args.source_repo_root,
             selection_ids=args.selection_ids,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "refresh-ai2thor-object-semantics-review-workspace":
+        summary = refresh_ai2thor_object_semantics_review_workspace(
+            args.selection,
+            data_root=args.data_root,
+            source_repo_root=args.source_repo_root,
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))

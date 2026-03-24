@@ -39,6 +39,12 @@ The object-semantics benchmark slice can be staged with:
 ./scripts/sources/stage_ai2thor_object_semantics_v0.sh
 ```
 
+Its processed review workspace can be refreshed with:
+
+```bash
+./scripts/review/refresh_ai2thor_object_semantics_workspace_v0.sh
+```
+
 ## Local Upstream Repo
 
 Current expected local source checkout:

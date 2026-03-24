@@ -174,6 +174,13 @@ Run the Object Semantics Explorer v0 backend on EC2:
 ./scripts/explorer/run_object_semantics_explorer_v0.sh
 ```
 
+Refresh the AI2-THOR object-semantics processed review workspace in
+`DATA_ROOT/review`:
+
+```bash
+./scripts/review/refresh_ai2thor_object_semantics_workspace_v0.sh
+```
+
 Stage the AI2-THOR object-semantics benchmark slice into `RAW_DATA_ROOT`:
 
 ```bash
@@ -197,10 +204,13 @@ PATH=/home/ubuntu/scratch/bin:$PATH \
 ```
 
 The backend serves the reviewed/candidate API on port `8000`. The Vite dev
-server runs on port `4173` and proxies `/api` back to the backend. `Explorer
-v0` currently renders prefab-derived proxy bounds and semantic overlays
-directly; exact per-asset AI2-THOR mesh extraction is intentionally left for a
-later pass because the nearby source FBX files are grouped model packs.
+server runs on port `4173` and proxies `/api` back to the backend. When the
+processed AI2-THOR object-semantics review workspace exists under
+`DATA_ROOT/review/object_semantics/ai2thor/object_semantics_v0/`, the explorer
+uses that processed candidate/reviewed workspace by default. `Explorer v0`
+currently renders prefab-derived proxy bounds and semantic overlays directly;
+exact per-asset AI2-THOR mesh extraction is intentionally left for a later
+pass because the nearby source FBX files are grouped model packs.
 
 Run the full Kenney `living_room_v0` refresh pipeline in one command:
 

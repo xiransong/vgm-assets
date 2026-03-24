@@ -256,6 +256,7 @@ function renderViewer() {
           return;
         }
         if (group) {
+          alignReviewMeshToProxy(group, proxy);
           overlayRoot.add(group);
           elements.viewerStatus.textContent =
             "Showing the real review mesh together with support and bottom-plane overlays.";
@@ -320,6 +321,40 @@ function cloneReviewMeshObject(sourceObject, color) {
     added += 1;
   }
   return added > 0 ? root : null;
+}
+
+function alignReviewMeshToProxy(group, proxy) {
+  if (!proxy) {
+    return;
+  }
+  const rawBox = new THREE.Box3().setFromObject(group);
+  if (rawBox.isEmpty()) {
+    return;
+  }
+  const rawSize = new THREE.Vector3();
+  rawBox.getSize(rawSize);
+  const ratios = [
+    proxy.width_m / rawSize.x,
+    proxy.height_m / rawSize.y,
+    proxy.depth_m / rawSize.z,
+  ].filter((value) => Number.isFinite(value) && value > 0);
+  if (!ratios.length) {
+    return;
+  }
+  ratios.sort((a, b) => a - b);
+  const uniformScale = ratios[Math.floor(ratios.length / 2)];
+  group.scale.multiplyScalar(uniformScale);
+
+  const fittedBox = new THREE.Box3().setFromObject(group);
+  const fittedCenter = new THREE.Vector3();
+  fittedBox.getCenter(fittedCenter);
+  group.position.add(
+    new THREE.Vector3(
+      proxy.center_m.x - fittedCenter.x,
+      proxy.center_m.y - fittedCenter.y,
+      proxy.center_m.z - fittedCenter.z,
+    ),
+  );
 }
 
 async function loadReviewMeshGroup(reviewMesh) {

@@ -62,6 +62,18 @@
       "type": "string",
       "enum": ["auto", "reviewed", "uncertain", "rejected"]
     },
+    "reviewTargetV0": {
+      "type": "string",
+      "enum": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ]
+    },
     "surfaceType": {
       "type": "string",
       "enum": [
@@ -288,6 +300,21 @@
         },
         "review_notes": {
           "type": "string"
+        },
+        "review_scope_v0": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reviewTargetV0"
+          }
+        },
+        "needs_fix_targets_v0": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reviewTargetV0"
+          }
         },
         "supports_objects": {
           "type": "boolean"

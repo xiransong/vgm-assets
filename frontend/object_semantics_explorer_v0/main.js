@@ -5,6 +5,44 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 const AXIS_OPTIONS = ["+x", "-x", "+y", "-y", "+z", "-z"];
 const REVIEW_STATUS_OPTIONS = ["auto", "reviewed", "uncertain", "rejected"];
+const REVIEW_SCOPE_ITEMS_V0 = [
+  {
+    id: "asset_role",
+    label: "Role",
+    description: "Whether the asset is reviewed as a parent_object or child_object.",
+  },
+  {
+    id: "category",
+    label: "Category",
+    description: "The semantic object category such as coffee_table, mug, or bowl.",
+  },
+  {
+    id: "front_axis",
+    label: "Front axis",
+    description: "The object-local facing direction used for orientation-sensitive placement.",
+  },
+  {
+    id: "up_axis",
+    label: "Up axis",
+    description: "The upright object-local axis used to interpret the mesh and support logic.",
+  },
+  {
+    id: "bottom_support_surface",
+    label: "Bottom support surface",
+    description: "The reviewed base footprint that should contact a supporting surface.",
+  },
+  {
+    id: "support_surfaces_v1",
+    label: "Support surfaces",
+    description: "The reviewed top or shelf support rectangles used for placing child objects.",
+  },
+  {
+    id: "canonical_bounds",
+    label: "Canonical bounds",
+    description: "The reviewed metric size used as the canonical object bounds in the explorer.",
+  },
+];
+const REVIEW_SCOPE_TARGET_IDS_V0 = REVIEW_SCOPE_ITEMS_V0.map((item) => item.id);
 
 const state = {
   assets: [],
@@ -31,6 +69,7 @@ const elements = {
   toggleLiftButton: document.getElementById("toggle-lift-button"),
   quickReviewNotes: document.getElementById("quick-review-notes"),
   reviewBadge: document.getElementById("review-badge"),
+  reviewScopeList: document.getElementById("review-scope-list"),
   toggleAdvancedButton: document.getElementById("toggle-advanced-button"),
   viewerStatus: document.getElementById("viewer-status"),
   canvas: document.getElementById("viewer-canvas"),
@@ -262,6 +301,95 @@ function addObjectAxisOverlays(proxy, asset) {
   });
 }
 
+function addLineSegment(points, color, opacity = 0.9) {
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const material = new THREE.LineBasicMaterial({
+    color,
+    transparent: opacity < 1,
+    opacity,
+  });
+  const line = new THREE.LineSegments(geometry, material);
+  overlayRoot.add(line);
+}
+
+function addDimensionOverlay({
+  start,
+  end,
+  outwardAxis,
+  color,
+  label,
+  labelWidth = 0.28,
+  labelHeight = 0.06,
+}) {
+  const direction = end.clone().sub(start);
+  if (direction.lengthSq() < 1e-8) {
+    return;
+  }
+  const outward = outwardAxis.clone().normalize();
+  const tickLength = Math.max(direction.length() * 0.05, 0.03);
+  const tickOffset = outward.clone().multiplyScalar(tickLength * 0.5);
+
+  addLineSegment([start, end], color);
+  addLineSegment([start.clone().sub(tickOffset), start.clone().add(tickOffset)], color, 0.8);
+  addLineSegment([end.clone().sub(tickOffset), end.clone().add(tickOffset)], color, 0.8);
+
+  const labelSprite = makeTextSprite(label, color, labelWidth, labelHeight);
+  labelSprite.position.copy(
+    start
+      .clone()
+      .add(end)
+      .multiplyScalar(0.5)
+      .add(outward.clone().multiplyScalar(tickLength * 1.6)),
+  );
+  overlayRoot.add(labelSprite);
+}
+
+function addBoundsDimensionOverlays(bounds) {
+  if (!bounds) {
+    return;
+  }
+  const minX = bounds.min_corner_m.x;
+  const maxX = bounds.max_corner_m.x;
+  const minY = bounds.min_corner_m.y;
+  const maxY = bounds.max_corner_m.y;
+  const minZ = bounds.min_corner_m.z;
+  const maxZ = bounds.max_corner_m.z;
+  const maxExtent = Math.max(bounds.width_m, bounds.height_m, bounds.depth_m);
+  const gap = Math.max(maxExtent * 0.1, 0.06);
+  const labelWidth = Math.min(Math.max(maxExtent * 0.22, 0.16), 0.3);
+  const labelHeight = Math.min(Math.max(maxExtent * 0.05, 0.038), 0.065);
+
+  addDimensionOverlay({
+    start: new THREE.Vector3(minX, minY - gap, maxZ + gap),
+    end: new THREE.Vector3(maxX, minY - gap, maxZ + gap),
+    outwardAxis: new THREE.Vector3(0, -1, 0),
+    color: 0x4b5563,
+    label: `${bounds.width_m.toFixed(3)} m`,
+    labelWidth,
+    labelHeight,
+  });
+
+  addDimensionOverlay({
+    start: new THREE.Vector3(maxX + gap, minY, maxZ + gap),
+    end: new THREE.Vector3(maxX + gap, maxY, maxZ + gap),
+    outwardAxis: new THREE.Vector3(1, 0, 0),
+    color: 0x1d4ed8,
+    label: `${bounds.height_m.toFixed(3)} m`,
+    labelWidth,
+    labelHeight,
+  });
+
+  addDimensionOverlay({
+    start: new THREE.Vector3(maxX + gap, minY - gap * 0.35, minZ),
+    end: new THREE.Vector3(maxX + gap, minY - gap * 0.35, maxZ),
+    outwardAxis: new THREE.Vector3(1, 0, 0),
+    color: 0x7c3aed,
+    label: `${bounds.depth_m.toFixed(3)} m`,
+    labelWidth,
+    labelHeight,
+  });
+}
+
 function updateViewerToggleLabels() {
   elements.toggleXRayButton.textContent = `Surface X-ray: ${state.surfaceXRay ? "On" : "Off"}`;
   elements.toggleLiftButton.textContent = `Visual Lift: ${state.visualLift ? "On" : "Off"}`;
@@ -301,6 +429,7 @@ function renderViewer() {
     proxyEdges.position.copy(proxyBox.position);
     overlayRoot.add(proxyEdges);
     addObjectAxisOverlays(bounds, state.workingAsset);
+    addBoundsDimensionOverlays(bounds);
   }
 
   const bottom = state.workingAsset.bottom_support_plane;
@@ -385,15 +514,79 @@ function updateQuickReviewBadge() {
     return;
   }
   const status = state.workingAsset.review_status || "auto";
+  const needsFixCount = Array.isArray(state.workingAsset.needs_fix_targets_v0)
+    ? state.workingAsset.needs_fix_targets_v0.length
+    : 0;
   const label =
     status === "reviewed"
       ? "Accepted"
       : status === "rejected"
         ? "Rejected"
         : status === "uncertain"
-          ? "Needs Fix"
+          ? needsFixCount > 0
+            ? `Needs Fix · ${needsFixCount}`
+            : "Needs Fix"
           : "Auto";
   elements.reviewBadge.textContent = label;
+}
+
+function ensureReviewScopeFields(asset) {
+  if (!asset || typeof asset !== "object") {
+    return;
+  }
+  asset.review_scope_v0 = [...REVIEW_SCOPE_TARGET_IDS_V0];
+  if (!Array.isArray(asset.needs_fix_targets_v0)) {
+    asset.needs_fix_targets_v0 = [];
+  } else {
+    asset.needs_fix_targets_v0 = asset.needs_fix_targets_v0.filter((target) =>
+      REVIEW_SCOPE_TARGET_IDS_V0.includes(target),
+    );
+  }
+}
+
+function selectedNeedsFixTargetsFromUI() {
+  return Array.from(
+    elements.reviewScopeList.querySelectorAll('input[data-review-target]:checked'),
+  ).map((input) => input.getAttribute("data-review-target"));
+}
+
+function syncReviewScopeFieldsFromUI() {
+  if (!state.workingAsset) {
+    return;
+  }
+  ensureReviewScopeFields(state.workingAsset);
+  state.workingAsset.needs_fix_targets_v0 = selectedNeedsFixTargetsFromUI();
+}
+
+function renderReviewScope() {
+  if (!state.workingAsset) {
+    elements.reviewScopeList.innerHTML = "<p class=\"asset-subtext\">Select an asset to review its scope.</p>";
+    return;
+  }
+  ensureReviewScopeFields(state.workingAsset);
+  const selectedTargets = new Set(state.workingAsset.needs_fix_targets_v0);
+  elements.reviewScopeList.innerHTML = REVIEW_SCOPE_ITEMS_V0.map(
+    (item) => `
+      <label class="review-scope-item">
+        <input
+          type="checkbox"
+          data-review-target="${item.id}"
+          ${selectedTargets.has(item.id) ? "checked" : ""}
+        />
+        <div>
+          <strong>${item.label}</strong>
+          <span>${item.description}</span>
+        </div>
+      </label>
+    `,
+  ).join("");
+
+  elements.reviewScopeList.querySelectorAll("input[data-review-target]").forEach((input) => {
+    input.addEventListener("change", () => {
+      syncReviewScopeFieldsFromUI();
+      updateQuickReviewBadge();
+    });
+  });
 }
 
 function loadReviewMeshAsset(url) {
@@ -574,7 +767,9 @@ function renderDetailMeta() {
   elements.detailMeta.innerHTML = `
     <div>
       <strong>${sourceRecord.display_name || asset.asset_id}</strong>
-      <p>${asset.asset_role} · ${asset.category} · current source: ${currentSource}</p>
+      <p><strong>Role:</strong> ${asset.asset_role}</p>
+      <p><strong>Category:</strong> ${asset.category}</p>
+      <p><strong>Current source:</strong> ${currentSource}</p>
     </div>
     <div class="inline-note">
       <p><strong>Prefab:</strong> <a href="${refs.prefab.url}" target="_blank" rel="noreferrer">source prefab</a></p>
@@ -593,15 +788,18 @@ function renderForm() {
     elements.needsFixButton.disabled = true;
     elements.rejectButton.disabled = true;
     elements.quickReviewNotes.value = "";
+    renderReviewScope();
     updateQuickReviewBadge();
     return;
   }
 
   const asset = state.workingAsset;
+  ensureReviewScopeFields(asset);
   elements.acceptButton.disabled = false;
   elements.needsFixButton.disabled = false;
   elements.rejectButton.disabled = false;
   elements.quickReviewNotes.value = asset.review_notes || "";
+  renderReviewScope();
   updateQuickReviewBadge();
   elements.toggleAdvancedButton.textContent = state.advancedVisible
     ? "Hide Advanced Edits"
@@ -736,6 +934,7 @@ function updateAssetFromForm() {
     return;
   }
   const asset = state.workingAsset;
+  ensureReviewScopeFields(asset);
   asset.category = document.getElementById("category").value.trim();
   asset.placement_class = document.getElementById("placement-class").value.trim();
   asset.front_axis = document.getElementById("front-axis").value;
@@ -793,6 +992,11 @@ function updateAssetFromForm() {
       document.getElementById("child-stable-support").value === "true";
   }
 
+  syncReviewScopeFieldsFromUI();
+  if (asset.review_status !== "uncertain") {
+    asset.needs_fix_targets_v0 = [];
+  }
+
   renderViewer();
   updateQuickReviewBadge();
 }
@@ -835,17 +1039,25 @@ async function applyQuickReview(status) {
   if (!state.workingAsset) {
     return;
   }
+  ensureReviewScopeFields(state.workingAsset);
   if (state.advancedVisible) {
     updateAssetFromForm();
   } else {
     state.workingAsset.review_notes = elements.quickReviewNotes.value;
+    syncReviewScopeFieldsFromUI();
   }
   if (status === "reviewed") {
     setNestedReviewStatus("reviewed");
+    state.workingAsset.needs_fix_targets_v0 = [];
   } else if (status === "uncertain") {
+    if (state.workingAsset.needs_fix_targets_v0.length === 0) {
+      window.alert("Select at least one review-scope item before marking this asset as Needs Fix.");
+      return;
+    }
     state.workingAsset.review_status = "uncertain";
   } else if (status === "rejected") {
     state.workingAsset.review_status = "rejected";
+    state.workingAsset.needs_fix_targets_v0 = [];
   }
   updateQuickReviewBadge();
   const button =
@@ -941,6 +1153,13 @@ elements.saveButton.addEventListener("click", async () => {
     return;
   }
   updateAssetFromForm();
+  if (
+    state.workingAsset.review_status === "uncertain" &&
+    state.workingAsset.needs_fix_targets_v0.length === 0
+  ) {
+    window.alert("Select at least one review-scope item before saving an asset marked Needs Fix.");
+    return;
+  }
   elements.saveButton.disabled = true;
   elements.saveButton.textContent = "Saving...";
   try {

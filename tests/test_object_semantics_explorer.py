@@ -54,16 +54,28 @@ def test_explorer_api_saves_reviewed_asset_without_touching_candidate(tmp_path: 
     detail = get_object_semantics_asset_detail(config, "ai2thor_coffee_table_01")
     detail["asset"]["review_status"] = "reviewed"
     detail["asset"]["review_notes"] = "confirmed by reviewer"
+    detail["asset"]["review_scope_v0"] = [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds",
+    ]
+    detail["asset"]["needs_fix_targets_v0"] = []
 
     response = client.post("/api/object-semantics/assets/ai2thor_coffee_table_01", json=detail["asset"])
     assert response.status_code == 200
     saved = response.json()
     assert saved["asset"]["review_status"] == "reviewed"
     assert saved["current_source"] == "reviewed"
+    assert saved["asset"]["review_scope_v0"][-1] == "canonical_bounds"
 
     reviewed_payload = json.loads(config.reviewed_path.read_text(encoding="utf-8"))
     reviewed_assets = {asset["asset_id"]: asset for asset in reviewed_payload["assets"]}
     assert reviewed_assets["ai2thor_coffee_table_01"]["review_notes"] == "confirmed by reviewer"
+    assert reviewed_assets["ai2thor_coffee_table_01"]["review_scope_v0"][0] == "asset_role"
     assert reviewed_assets["ai2thor_mug_01"]["review_status"] == "auto"
 
     candidate_payload = json.loads(config.candidate_path.read_text(encoding="utf-8"))

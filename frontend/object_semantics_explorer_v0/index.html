@@ -24,9 +24,6 @@
             <div class="review-actions">
               <button id="toggle-xray-button" class="secondary-button review-toggle" type="button">Surface X-ray: Off</button>
               <button id="toggle-lift-button" class="secondary-button review-toggle" type="button">Visual Lift: Off</button>
-              <button id="accept-button" class="review-button accept" disabled>Accept</button>
-              <button id="needs-fix-button" class="review-button needs-fix" disabled>Needs Fix</button>
-              <button id="reject-button" class="review-button reject" disabled>Reject</button>
             </div>
           </div>
           <div class="viewer-stack">
@@ -40,13 +37,25 @@
             <div class="review-panel-header">
               <div>
                 <strong>Review Decision</strong>
-                <p>AI2-THOR assets should usually be accepted or rejected quickly.</p>
+                <p>Accept confirms the full review scope below. Needs Fix records exactly which items need correction.</p>
               </div>
               <div id="review-badge" class="status-chip">Not reviewed</div>
             </div>
+            <section class="review-scope">
+              <div class="review-scope-header">
+                <strong>Review Scope</strong>
+                <p>Mark one or more items only when choosing Needs Fix.</p>
+              </div>
+              <div id="review-scope-list" class="review-scope-list"></div>
+            </section>
             <div class="field">
               <label for="quick-review-notes">Reviewer Notes</label>
               <textarea id="quick-review-notes" placeholder="Optional short note about the decision."></textarea>
+            </div>
+            <div class="review-decision-actions">
+              <button id="accept-button" class="review-button accept" disabled>Accept</button>
+              <button id="needs-fix-button" class="review-button needs-fix" disabled>Needs Fix</button>
+              <button id="reject-button" class="review-button reject" disabled>Reject</button>
             </div>
             <div class="advanced-toggle-row">
               <button id="toggle-advanced-button" class="secondary-button" type="button">Show Advanced Edits</button>

@@ -141,6 +141,13 @@ textarea {
   justify-content: flex-end;
 }
 
+.review-decision-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 .review-toggle {
   white-space: nowrap;
 }
@@ -187,6 +194,50 @@ textarea {
   gap: 14px;
   padding: 18px;
   border-bottom: 1px solid var(--border);
+}
+
+.review-scope {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.review-scope-header p {
+  margin: 4px 0 0;
+}
+
+.review-scope-list {
+  display: grid;
+  gap: 8px;
+}
+
+.review-scope-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 208, 198, 0.85);
+  background: rgba(248, 246, 238, 0.85);
+}
+
+.review-scope-item input {
+  margin-top: 2px;
+}
+
+.review-scope-item strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.review-scope-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
 }
 
 .review-panel-header {

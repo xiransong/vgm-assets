@@ -11,6 +11,7 @@
         <div class="panel-header">
           <h1>Object Semantics Explorer</h1>
           <p>AI2-THOR benchmark slice review</p>
+          <p class="shortcut-hint">Shortcuts: <code>J</code>/<code>K</code> or arrow keys to move between assets.</p>
         </div>
         <div id="asset-list" class="asset-list"></div>
       </aside>
@@ -34,6 +35,12 @@
         <section class="editor-shell">
           <div id="detail-meta" class="detail-meta"></div>
           <div class="review-panel">
+            <div class="review-decision-actions">
+              <button id="reset-auto-button" class="secondary-button" disabled>Reset to Auto</button>
+              <button id="accept-button" class="review-button accept" disabled>Accept</button>
+              <button id="needs-fix-button" class="review-button needs-fix" disabled>Needs Fix</button>
+              <button id="reject-button" class="review-button reject" disabled>Reject</button>
+            </div>
             <div class="review-panel-header">
               <div>
                 <strong>Review Decision</strong>
@@ -51,11 +58,6 @@
             <div class="field">
               <label for="quick-review-notes">Reviewer Notes</label>
               <textarea id="quick-review-notes" placeholder="Optional short note about the decision."></textarea>
-            </div>
-            <div class="review-decision-actions">
-              <button id="accept-button" class="review-button accept" disabled>Accept</button>
-              <button id="needs-fix-button" class="review-button needs-fix" disabled>Needs Fix</button>
-              <button id="reject-button" class="review-button reject" disabled>Reject</button>
             </div>
             <div class="advanced-toggle-row">
               <button id="toggle-advanced-button" class="secondary-button" type="button">Show Advanced Edits</button>

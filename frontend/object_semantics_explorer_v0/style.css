@@ -63,6 +63,21 @@ textarea {
   color: var(--muted);
 }
 
+.shortcut-hint {
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.shortcut-hint code {
+  font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+  font-size: 0.85em;
+  padding: 1px 5px;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 208, 198, 0.85);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+}
+
 .asset-list {
   display: grid;
   gap: 10px;
@@ -76,7 +91,30 @@ textarea {
   padding: 12px;
   text-align: left;
   cursor: pointer;
+  color: var(--ink);
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.asset-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.asset-card--reviewed {
+  border-color: rgba(29, 124, 82, 0.45);
+  background: linear-gradient(180deg, rgba(29, 124, 82, 0.08), rgba(248, 246, 238, 0.96));
+}
+
+.asset-card--uncertain {
+  border-color: rgba(183, 119, 31, 0.4);
+  background: linear-gradient(180deg, rgba(183, 119, 31, 0.08), rgba(248, 246, 238, 0.96));
+}
+
+.asset-card--rejected {
+  border-color: rgba(143, 59, 46, 0.38);
+  background: linear-gradient(180deg, rgba(143, 59, 46, 0.08), rgba(248, 246, 238, 0.96));
 }
 
 .asset-card:hover,
@@ -86,9 +124,52 @@ textarea {
   background: var(--accent-soft);
 }
 
+.asset-card.active.asset-card--reviewed,
+.asset-card:hover.asset-card--reviewed {
+  background: linear-gradient(180deg, rgba(29, 124, 82, 0.16), rgba(213, 235, 232, 0.96));
+}
+
+.asset-card.active.asset-card--uncertain,
+.asset-card:hover.asset-card--uncertain {
+  background: linear-gradient(180deg, rgba(183, 119, 31, 0.16), rgba(213, 235, 232, 0.96));
+}
+
+.asset-card.active.asset-card--rejected,
+.asset-card:hover.asset-card--rejected {
+  background: linear-gradient(180deg, rgba(143, 59, 46, 0.16), rgba(213, 235, 232, 0.96));
+}
+
 .asset-card strong,
 .detail-meta strong {
   display: block;
+}
+
+.asset-card strong,
+.asset-card .asset-subtext,
+.asset-card .status-chip {
+  color: var(--ink);
+}
+
+.asset-card-mark {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #165e3e;
+  background: rgba(29, 124, 82, 0.14);
+  white-space: nowrap;
+}
+
+.asset-card-mark--needs-fix {
+  color: #8f5d19;
+  background: rgba(183, 119, 31, 0.14);
+}
+
+.asset-card-mark--rejected {
+  color: #7b3024;
+  background: rgba(143, 59, 46, 0.14);
 }
 
 .status-chip {

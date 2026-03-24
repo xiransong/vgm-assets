@@ -62,6 +62,7 @@ const elements = {
   detailMeta: document.getElementById("detail-meta"),
   editorForm: document.getElementById("editor-form"),
   saveButton: document.getElementById("save-button"),
+  resetAutoButton: document.getElementById("reset-auto-button"),
   acceptButton: document.getElementById("accept-button"),
   needsFixButton: document.getElementById("needs-fix-button"),
   rejectButton: document.getElementById("reject-button"),
@@ -510,24 +511,27 @@ function renderViewer() {
 
 function updateQuickReviewBadge() {
   if (!state.workingAsset) {
-    elements.reviewBadge.textContent = "Not reviewed";
+    elements.reviewBadge.textContent = "Auto / Unreviewed";
     return;
   }
-  const status = state.workingAsset.review_status || "auto";
-  const needsFixCount = Array.isArray(state.workingAsset.needs_fix_targets_v0)
-    ? state.workingAsset.needs_fix_targets_v0.length
+  elements.reviewBadge.textContent = reviewStatusLabel(state.workingAsset);
+}
+
+function reviewStatusLabel(asset) {
+  const status = asset?.review_status || "auto";
+  const needsFixCount = Array.isArray(asset?.needs_fix_targets_v0)
+    ? asset.needs_fix_targets_v0.length
     : 0;
-  const label =
-    status === "reviewed"
-      ? "Accepted"
-      : status === "rejected"
-        ? "Rejected"
-        : status === "uncertain"
-          ? needsFixCount > 0
-            ? `Needs Fix · ${needsFixCount}`
-            : "Needs Fix"
-          : "Auto";
-  elements.reviewBadge.textContent = label;
+  if (status === "reviewed") {
+    return "Accepted";
+  }
+  if (status === "rejected") {
+    return "Rejected";
+  }
+  if (status === "uncertain") {
+    return needsFixCount > 0 ? `Needs Fix · ${needsFixCount}` : "Needs Fix";
+  }
+  return "Auto / Unreviewed";
 }
 
 function ensureReviewScopeFields(asset) {
@@ -784,6 +788,7 @@ function renderForm() {
   if (!state.workingAsset) {
     elements.editorForm.innerHTML = "";
     elements.saveButton.disabled = true;
+    elements.resetAutoButton.disabled = true;
     elements.acceptButton.disabled = true;
     elements.needsFixButton.disabled = true;
     elements.rejectButton.disabled = true;
@@ -798,6 +803,7 @@ function renderForm() {
   elements.acceptButton.disabled = false;
   elements.needsFixButton.disabled = false;
   elements.rejectButton.disabled = false;
+  elements.resetAutoButton.disabled = false;
   elements.quickReviewNotes.value = asset.review_notes || "";
   renderReviewScope();
   updateQuickReviewBadge();
@@ -1058,10 +1064,15 @@ async function applyQuickReview(status) {
   } else if (status === "rejected") {
     state.workingAsset.review_status = "rejected";
     state.workingAsset.needs_fix_targets_v0 = [];
+  } else if (status === "auto") {
+    setNestedReviewStatus("auto");
+    state.workingAsset.needs_fix_targets_v0 = [];
   }
   updateQuickReviewBadge();
   const button =
-    status === "reviewed"
+    status === "auto"
+      ? elements.resetAutoButton
+      : status === "reviewed"
       ? elements.acceptButton
       : status === "uncertain"
         ? elements.needsFixButton
@@ -1083,10 +1094,21 @@ function renderAssetList() {
   elements.assetList.innerHTML = state.assets
     .map(
       (asset) => `
-        <button class="asset-card ${asset.asset_id === state.currentAssetId ? "active" : ""}" data-asset-id="${asset.asset_id}">
-          <strong>${asset.display_name}</strong>
+        <button class="asset-card asset-card--${asset.review_status} ${asset.asset_id === state.currentAssetId ? "active" : ""}" data-asset-id="${asset.asset_id}">
+          <div class="asset-card-header">
+            <strong>${asset.display_name}</strong>
+            ${
+              asset.review_status === "reviewed"
+                ? '<span class="asset-card-mark" aria-label="Reviewed">Accepted</span>'
+                : asset.review_status === "uncertain"
+                  ? '<span class="asset-card-mark asset-card-mark--needs-fix" aria-label="Needs Fix">Needs Fix</span>'
+                  : asset.review_status === "rejected"
+                    ? '<span class="asset-card-mark asset-card-mark--rejected" aria-label="Rejected">Rejected</span>'
+                    : ""
+            }
+          </div>
           <div class="asset-subtext">${asset.asset_role} · ${asset.category}</div>
-          <div class="status-chip">${asset.review_status}${asset.has_reviewed_override ? " · reviewed copy" : ""}</div>
+          <div class="status-chip">${reviewStatusLabel(asset)}${asset.has_reviewed_override ? " · reviewed copy" : ""}</div>
         </button>
       `,
     )
@@ -1121,6 +1143,34 @@ async function loadAsset(assetId) {
   elements.assetSubtitle.textContent = `${detail.asset.asset_role} · ${detail.asset.category} · ${detail.current_source}`;
 }
 
+function navigateAssetByOffset(offset) {
+  if (!state.assets.length || !state.currentAssetId) {
+    return;
+  }
+  const currentIndex = state.assets.findIndex((asset) => asset.asset_id === state.currentAssetId);
+  if (currentIndex < 0) {
+    return;
+  }
+  const nextIndex = currentIndex + offset;
+  if (nextIndex < 0 || nextIndex >= state.assets.length) {
+    return;
+  }
+  loadAsset(state.assets[nextIndex].asset_id);
+}
+
+function isTypingTarget(target) {
+  if (!target || !(target instanceof HTMLElement)) {
+    return false;
+  }
+  const tagName = target.tagName.toLowerCase();
+  return (
+    tagName === "input" ||
+    tagName === "textarea" ||
+    tagName === "select" ||
+    target.isContentEditable
+  );
+}
+
 elements.editorForm.addEventListener("input", updateAssetFromForm);
 elements.quickReviewNotes.addEventListener("input", () => {
   if (state.workingAsset) {
@@ -1141,6 +1191,9 @@ elements.toggleLiftButton.addEventListener("click", () => {
 });
 elements.acceptButton.addEventListener("click", async () => {
   await applyQuickReview("reviewed");
+});
+elements.resetAutoButton.addEventListener("click", async () => {
+  await applyQuickReview("auto");
 });
 elements.needsFixButton.addEventListener("click", async () => {
   await applyQuickReview("uncertain");
@@ -1169,6 +1222,23 @@ elements.saveButton.addEventListener("click", async () => {
   } finally {
     elements.saveButton.disabled = false;
     elements.saveButton.textContent = "Save Advanced Edits";
+  }
+});
+window.addEventListener("keydown", (event) => {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) {
+    return;
+  }
+  if (isTypingTarget(event.target)) {
+    return;
+  }
+  if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === "j" || event.key === "J") {
+    event.preventDefault();
+    navigateAssetByOffset(1);
+    return;
+  }
+  if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "k" || event.key === "K") {
+    event.preventDefault();
+    navigateAssetByOffset(-1);
   }
 });
 

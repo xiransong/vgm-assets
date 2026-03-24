@@ -84,6 +84,55 @@ textarea {
   margin-top: 20px;
 }
 
+.queue-summary {
+  margin-top: 18px;
+}
+
+.queue-summary-card {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.queue-summary-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.queue-summary-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+
+.asset-batch {
+  display: grid;
+  gap: 8px;
+}
+
+.asset-batch-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.asset-batch-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.asset-batch-list {
+  display: grid;
+  gap: 10px;
+}
+
 .asset-card {
   border: 1px solid var(--border);
   background: var(--panel);

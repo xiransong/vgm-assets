@@ -9,7 +9,9 @@ from typing import Any
 
 from .ai2thor_review_workspace import (
     ai2thor_object_semantics_candidate_path,
+    ai2thor_object_semantics_review_queue_path,
     ai2thor_object_semantics_reviewed_path,
+    refresh_ai2thor_object_semantics_review_queue,
 )
 from .ai2thor_object_semantics import _measure_parent_prefab_bounds
 from .object_semantics import (
@@ -18,6 +20,7 @@ from .object_semantics import (
     validate_object_semantics_asset_record_data,
     write_object_semantics_annotation_set,
 )
+from .object_semantics_review_queue import validate_object_semantics_review_queue
 from .protocol import load_json, repo_root
 from .sources import _default_ai2thor_repo_root, load_selection_list
 from .support_clutter import (
@@ -34,6 +37,7 @@ DEFAULT_CANDIDATE_ANNOTATIONS = (
 DEFAULT_REVIEWED_ANNOTATIONS = (
     Path("catalogs") / "object_semantics_v0" / "ai2thor_reviewed_annotations_v0.json"
 )
+DEFAULT_REVIEW_QUEUE = Path("catalogs") / "object_semantics_v0" / "ai2thor_review_queue_v0.json"
 DEFAULT_SELECTION_PATH = Path("sources") / "ai2thor" / "object_semantics_selection_v0.json"
 DEFAULT_FRONTEND_DIST = Path("frontend_dist") / "object_semantics_explorer_v0"
 
@@ -49,6 +53,7 @@ _VECTOR4_RE = re.compile(
 class ObjectSemanticsExplorerConfig:
     candidate_path: Path
     reviewed_path: Path
+    review_queue_path: Path | None
     selection_path: Path
     source_repo_root: Path
     frontend_dist_path: Path
@@ -58,6 +63,7 @@ def default_object_semantics_explorer_config(
     *,
     candidate_path: Path | None = None,
     reviewed_path: Path | None = None,
+    review_queue_path: Path | None = None,
     selection_path: Path | None = None,
     source_repo_root: Path | None = None,
     frontend_dist_path: Path | None = None,
@@ -65,15 +71,20 @@ def default_object_semantics_explorer_config(
     root = repo_root()
     processed_candidate_path = ai2thor_object_semantics_candidate_path()
     processed_reviewed_path = ai2thor_object_semantics_reviewed_path()
+    processed_review_queue_path = ai2thor_object_semantics_review_queue_path()
     default_candidate_path = (
         processed_candidate_path if processed_candidate_path.exists() else (root / DEFAULT_CANDIDATE_ANNOTATIONS)
     )
     default_reviewed_path = (
         processed_reviewed_path if processed_candidate_path.exists() else (root / DEFAULT_REVIEWED_ANNOTATIONS)
     )
+    default_review_queue_path = (
+        processed_review_queue_path if processed_candidate_path.exists() else (root / DEFAULT_REVIEW_QUEUE)
+    )
     return ObjectSemanticsExplorerConfig(
         candidate_path=(candidate_path or default_candidate_path).resolve(),
         reviewed_path=(reviewed_path or default_reviewed_path).resolve(),
+        review_queue_path=(review_queue_path or default_review_queue_path).resolve(),
         selection_path=(selection_path or (root / DEFAULT_SELECTION_PATH)).resolve(),
         source_repo_root=(source_repo_root or _default_ai2thor_repo_root()).resolve(),
         frontend_dist_path=(frontend_dist_path or (root / DEFAULT_FRONTEND_DIST)).resolve(),
@@ -109,6 +120,12 @@ def _reviewed_payload(config: ObjectSemanticsExplorerConfig) -> dict | None:
     return validate_object_semantics_annotation_set(config.reviewed_path)
 
 
+def _review_queue_payload(config: ObjectSemanticsExplorerConfig) -> dict | None:
+    if config.review_queue_path is None or not config.review_queue_path.exists():
+        return None
+    return validate_object_semantics_review_queue(config.review_queue_path)
+
+
 def _initial_reviewed_payload(candidate_payload: dict) -> dict:
     reviewed = deepcopy(candidate_payload)
     reviewed["annotation_set_id"] = f"{candidate_payload['annotation_set_id']}_reviewed"
@@ -122,6 +139,76 @@ def _initial_reviewed_payload(candidate_payload: dict) -> dict:
 
 def _asset_ids_in_order(candidate_payload: dict) -> list[str]:
     return [str(asset["asset_id"]) for asset in candidate_payload.get("assets", [])]
+
+
+def _review_queue_batches_by_asset(queue_payload: dict | None) -> tuple[dict[str, dict[str, Any]], list[str], list[dict[str, Any]]]:
+    if queue_payload is None:
+        return {}, [], []
+    entries_by_asset: dict[str, dict[str, Any]] = {}
+    ordered_asset_ids: list[str] = []
+    batch_summaries: list[dict[str, Any]] = []
+    for batch_index, batch in enumerate(queue_payload.get("batches", [])):
+        if not isinstance(batch, dict):
+            continue
+        entries = batch.get("entries", [])
+        reviewed_count = 0
+        needs_fix_count = 0
+        rejected_count = 0
+        pending_count = 0
+        for queue_index, entry in enumerate(entries):
+            if not isinstance(entry, dict) or not isinstance(entry.get("asset_id"), str):
+                continue
+            asset_id = str(entry["asset_id"])
+            ordered_asset_ids.append(asset_id)
+            queue_status = str(entry.get("queue_status", "pending"))
+            if queue_status == "reviewed":
+                reviewed_count += 1
+            elif queue_status == "needs_fix":
+                needs_fix_count += 1
+            elif queue_status == "rejected":
+                rejected_count += 1
+            else:
+                pending_count += 1
+            entries_by_asset[asset_id] = {
+                "batch_id": str(batch.get("batch_id", "")),
+                "batch_title": str(batch.get("title", "")),
+                "batch_status": str(batch.get("status", "")),
+                "batch_index": batch_index,
+                "queue_index": queue_index,
+                "queue_status": queue_status,
+                "recommended_session_asset_count": batch.get("recommended_session_asset_count"),
+            }
+        batch_summaries.append(
+            {
+                "batch_id": str(batch.get("batch_id", "")),
+                "title": str(batch.get("title", "")),
+                "status": str(batch.get("status", "")),
+                "asset_count": len(entries),
+                "reviewed_count": reviewed_count,
+                "needs_fix_count": needs_fix_count,
+                "rejected_count": rejected_count,
+                "pending_count": pending_count,
+                "recommended_session_asset_count": batch.get("recommended_session_asset_count"),
+            }
+        )
+    return entries_by_asset, ordered_asset_ids, batch_summaries
+
+
+def get_object_semantics_review_queue(config: ObjectSemanticsExplorerConfig) -> dict[str, Any] | None:
+    queue_payload = _review_queue_payload(config)
+    if queue_payload is None:
+        return None
+    _, _, batch_summaries = _review_queue_batches_by_asset(queue_payload)
+    return {
+        "queue_id": queue_payload["queue_id"],
+        "version": queue_payload["version"],
+        "source_id": queue_payload["source_id"],
+        "created_at": queue_payload["created_at"],
+        "review_scope_v0": list(queue_payload.get("review_scope_v0", [])),
+        "item_count": queue_payload["item_count"],
+        "batch_count": queue_payload["batch_count"],
+        "batches": batch_summaries,
+    }
 
 
 def _source_prefab_path(selection_entry: dict[str, Any], source_repo_root: Path) -> Path:
@@ -440,12 +527,15 @@ def _source_refs_for_selection_entry(
 def list_object_semantics_assets(config: ObjectSemanticsExplorerConfig) -> list[dict[str, Any]]:
     candidate_payload = _candidate_payload(config)
     reviewed_payload = _reviewed_payload(config)
+    queue_payload = _review_queue_payload(config)
     candidate_map = _load_asset_map(candidate_payload)
     reviewed_map = _load_asset_map(reviewed_payload) if reviewed_payload is not None else {}
     selection_map = _load_selection_map(config.selection_path)
+    queue_entries_by_asset, ordered_asset_ids, _ = _review_queue_batches_by_asset(queue_payload)
+    asset_ids = ordered_asset_ids or _asset_ids_in_order(candidate_payload)
 
     summaries: list[dict[str, Any]] = []
-    for asset_id in _asset_ids_in_order(candidate_payload):
+    for asset_id in asset_ids:
         candidate_asset = candidate_map[asset_id]
         current_asset = reviewed_map.get(asset_id, candidate_asset)
         selection_entry = selection_map.get(asset_id, {})
@@ -454,6 +544,7 @@ def list_object_semantics_assets(config: ObjectSemanticsExplorerConfig) -> list[
             selection_entry=selection_entry,
             source_repo_root=config.source_repo_root,
         )
+        queue_entry = queue_entries_by_asset.get(asset_id, {})
         summaries.append(
             {
                 "asset_id": asset_id,
@@ -465,6 +556,12 @@ def list_object_semantics_assets(config: ObjectSemanticsExplorerConfig) -> list[
                 "has_preview": source_refs["preview"] is not None,
                 "has_model_pack": source_refs["model_pack"] is not None,
                 "has_review_mesh": source_refs["review_mesh"] is not None,
+                "queue_status": queue_entry.get("queue_status", "pending"),
+                "batch_id": queue_entry.get("batch_id"),
+                "batch_title": queue_entry.get("batch_title"),
+                "batch_status": queue_entry.get("batch_status"),
+                "batch_index": queue_entry.get("batch_index"),
+                "queue_index": queue_entry.get("queue_index"),
             }
         )
     return summaries
@@ -476,9 +573,11 @@ def get_object_semantics_asset_detail(
 ) -> dict[str, Any]:
     candidate_payload = _candidate_payload(config)
     reviewed_payload = _reviewed_payload(config)
+    queue_payload = _review_queue_payload(config)
     candidate_map = _load_asset_map(candidate_payload)
     reviewed_map = _load_asset_map(reviewed_payload) if reviewed_payload is not None else {}
     selection_map = _load_selection_map(config.selection_path)
+    queue_entries_by_asset, _, batch_summaries = _review_queue_batches_by_asset(queue_payload)
 
     if asset_id not in candidate_map:
         raise KeyError(f"Unknown object-semantics asset_id: {asset_id}")
@@ -494,6 +593,16 @@ def get_object_semantics_asset_detail(
         "asset": current_asset,
         "candidate_asset": candidate_asset,
         "current_source": "reviewed" if asset_id in reviewed_map else "candidate",
+        "queue_entry": queue_entries_by_asset.get(asset_id),
+        "review_queue": get_object_semantics_review_queue(config),
+        "batch_summary": next(
+            (
+                batch
+                for batch in batch_summaries
+                if batch["batch_id"] == queue_entries_by_asset.get(asset_id, {}).get("batch_id")
+            ),
+            None,
+        ),
         "source_record": selection_entry,
         "source_refs": _source_refs_for_selection_entry(
             asset_id=asset_id,
@@ -550,6 +659,13 @@ def save_reviewed_object_semantics_asset(
 
     reviewed_payload["assets"] = ordered_assets
     write_object_semantics_annotation_set(reviewed_payload, config.reviewed_path)
+    if config.review_queue_path is not None:
+        refresh_ai2thor_object_semantics_review_queue(
+            candidate_path=config.candidate_path,
+            reviewed_path=config.reviewed_path,
+            queue_path=config.review_queue_path,
+            data_root=None,
+        )
     return get_object_semantics_asset_detail(config, asset_id)
 
 

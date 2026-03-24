@@ -46,6 +46,7 @@ const REVIEW_SCOPE_TARGET_IDS_V0 = REVIEW_SCOPE_ITEMS_V0.map((item) => item.id);
 
 const state = {
   assets: [],
+  reviewQueue: null,
   currentAssetId: null,
   currentDetail: null,
   workingAsset: null,
@@ -57,6 +58,7 @@ const state = {
 
 const elements = {
   assetList: document.getElementById("asset-list"),
+  queueSummary: document.getElementById("queue-summary"),
   assetTitle: document.getElementById("asset-title"),
   assetSubtitle: document.getElementById("asset-subtitle"),
   detailMeta: document.getElementById("detail-meta"),
@@ -517,6 +519,26 @@ function updateQuickReviewBadge() {
   elements.reviewBadge.textContent = reviewStatusLabel(state.workingAsset);
 }
 
+function queueStatusLabel(asset) {
+  const status = asset?.queue_status || "pending";
+  if (status === "reviewed") {
+    return "Queued: Accepted";
+  }
+  if (status === "needs_fix") {
+    return "Queued: Needs Fix";
+  }
+  if (status === "rejected") {
+    return "Queued: Rejected";
+  }
+  if (status === "in_progress") {
+    return "Queued: In Progress";
+  }
+  if (status === "deferred") {
+    return "Queued: Deferred";
+  }
+  return "Queued: Pending";
+}
+
 function reviewStatusLabel(asset) {
   const status = asset?.review_status || "auto";
   const needsFixCount = Array.isArray(asset?.needs_fix_targets_v0)
@@ -757,6 +779,8 @@ function renderDetailMeta() {
     source_record: sourceRecord,
     current_source: currentSource,
     source_refs: refs,
+    queue_entry: queueEntry,
+    batch_summary: batchSummary,
     canonical_bounds: canonicalBounds,
     proxy_bounds: proxy,
   } =
@@ -774,12 +798,22 @@ function renderDetailMeta() {
       <p><strong>Role:</strong> ${asset.asset_role}</p>
       <p><strong>Category:</strong> ${asset.category}</p>
       <p><strong>Current source:</strong> ${currentSource}</p>
+      ${
+        queueEntry
+          ? `<p><strong>Review batch:</strong> ${queueEntry.batch_title || queueEntry.batch_id}</p>`
+          : ""
+      }
     </div>
     <div class="inline-note">
       <p><strong>Prefab:</strong> <a href="${refs.prefab.url}" target="_blank" rel="noreferrer">source prefab</a></p>
       ${modelPackNote}
       <p><strong>${boundsLabel}:</strong> ${bounds.width_m.toFixed(3)} × ${bounds.height_m.toFixed(3)} × ${bounds.depth_m.toFixed(3)} m</p>
       <p><strong>Bounds source:</strong> ${boundsSource}</p>
+      ${
+        batchSummary
+          ? `<p><strong>Batch progress:</strong> ${batchSummary.reviewed_count} accepted, ${batchSummary.needs_fix_count} needs fix, ${batchSummary.rejected_count} rejected, ${batchSummary.pending_count} pending</p>`
+          : ""
+      }
     </div>
   `;
 }
@@ -1029,6 +1063,7 @@ async function saveCurrentAsset() {
   if (!state.currentAssetId || !state.workingAsset) {
     return;
   }
+  const savedAssetId = state.currentAssetId;
   const detail = await fetchJson(`/api/object-semantics/assets/${state.currentAssetId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -1036,9 +1071,9 @@ async function saveCurrentAsset() {
   });
   state.currentDetail = detail;
   state.workingAsset = structuredClone(detail.asset);
-  elements.assetSubtitle.textContent = `${detail.asset.asset_role} · ${detail.asset.category} · ${detail.current_source}`;
-  await loadAssets();
-  await loadAsset(state.currentAssetId);
+  elements.assetSubtitle.textContent = buildAssetSubtitle(detail);
+  await loadAssets({ preserveSelection: false });
+  return savedAssetId;
 }
 
 async function applyQuickReview(status) {
@@ -1069,6 +1104,7 @@ async function applyQuickReview(status) {
     state.workingAsset.needs_fix_targets_v0 = [];
   }
   updateQuickReviewBadge();
+  const nextAssetId = nextReviewTargetIdAfter(state.currentAssetId);
   const button =
     status === "auto"
       ? elements.resetAutoButton
@@ -1082,6 +1118,11 @@ async function applyQuickReview(status) {
   button.textContent = "Saving...";
   try {
     await saveCurrentAsset();
+    if (nextAssetId && nextAssetId !== state.currentAssetId) {
+      await loadAsset(nextAssetId);
+    } else if (state.currentAssetId) {
+      await loadAsset(state.currentAssetId);
+    }
   } catch (error) {
     window.alert(`Save failed: ${error.message}`);
   } finally {
@@ -1090,29 +1131,79 @@ async function applyQuickReview(status) {
   }
 }
 
+function renderQueueSummary() {
+  if (!state.reviewQueue || !Array.isArray(state.reviewQueue.batches)) {
+    elements.queueSummary.innerHTML = "";
+    return;
+  }
+  const reviewedCount = state.reviewQueue.batches.reduce((sum, batch) => sum + (batch.reviewed_count || 0), 0);
+  const needsFixCount = state.reviewQueue.batches.reduce((sum, batch) => sum + (batch.needs_fix_count || 0), 0);
+  const rejectedCount = state.reviewQueue.batches.reduce((sum, batch) => sum + (batch.rejected_count || 0), 0);
+  const pendingCount = state.reviewQueue.batches.reduce((sum, batch) => sum + (batch.pending_count || 0), 0);
+  elements.queueSummary.innerHTML = `
+    <div class="queue-summary-card">
+      <strong>Review Queue</strong>
+      <p>${state.reviewQueue.batch_count} batches · ${state.reviewQueue.item_count} assets</p>
+      <div class="queue-summary-metrics">
+        <span>Accepted ${reviewedCount}</span>
+        <span>Needs Fix ${needsFixCount}</span>
+        <span>Rejected ${rejectedCount}</span>
+        <span>Pending ${pendingCount}</span>
+      </div>
+    </div>
+  `;
+}
+
 function renderAssetList() {
-  elements.assetList.innerHTML = state.assets
-    .map(
-      (asset) => `
-        <button class="asset-card asset-card--${asset.review_status} ${asset.asset_id === state.currentAssetId ? "active" : ""}" data-asset-id="${asset.asset_id}">
-          <div class="asset-card-header">
-            <strong>${asset.display_name}</strong>
-            ${
-              asset.review_status === "reviewed"
-                ? '<span class="asset-card-mark" aria-label="Reviewed">Accepted</span>'
-                : asset.review_status === "uncertain"
-                  ? '<span class="asset-card-mark asset-card-mark--needs-fix" aria-label="Needs Fix">Needs Fix</span>'
-                  : asset.review_status === "rejected"
-                    ? '<span class="asset-card-mark asset-card-mark--rejected" aria-label="Rejected">Rejected</span>'
-                    : ""
-            }
+  const groupedAssets = new Map();
+  state.assets.forEach((asset) => {
+    const key = asset.batch_id || "__ungrouped__";
+    if (!groupedAssets.has(key)) {
+      groupedAssets.set(key, []);
+    }
+    groupedAssets.get(key).push(asset);
+  });
+
+  const batchById = new Map((state.reviewQueue?.batches || []).map((batch) => [batch.batch_id, batch]));
+  const sections = [];
+  groupedAssets.forEach((assets, batchId) => {
+    const batch = batchById.get(batchId);
+    const header = batch
+      ? `
+        <div class="asset-batch-header">
+          <div>
+            <strong>${batch.title}</strong>
+            <p>${batch.asset_count} assets · session target ${batch.recommended_session_asset_count}</p>
           </div>
-          <div class="asset-subtext">${asset.asset_role} · ${asset.category}</div>
-          <div class="status-chip">${reviewStatusLabel(asset)}${asset.has_reviewed_override ? " · reviewed copy" : ""}</div>
-        </button>
-      `,
-    )
-    .join("");
+          <div class="status-chip">Accepted ${batch.reviewed_count} · Pending ${batch.pending_count}</div>
+        </div>
+      `
+      : "";
+    const cards = assets
+      .map(
+        (asset) => `
+          <button class="asset-card asset-card--${asset.review_status} ${asset.asset_id === state.currentAssetId ? "active" : ""}" data-asset-id="${asset.asset_id}">
+            <div class="asset-card-header">
+              <strong>${asset.display_name}</strong>
+              ${
+                asset.review_status === "reviewed"
+                  ? '<span class="asset-card-mark" aria-label="Reviewed">Accepted</span>'
+                  : asset.review_status === "uncertain"
+                    ? '<span class="asset-card-mark asset-card-mark--needs-fix" aria-label="Needs Fix">Needs Fix</span>'
+                    : asset.review_status === "rejected"
+                      ? '<span class="asset-card-mark asset-card-mark--rejected" aria-label="Rejected">Rejected</span>'
+                      : ""
+              }
+            </div>
+            <div class="asset-subtext">${asset.asset_role} · ${asset.category}</div>
+            <div class="status-chip">${queueStatusLabel(asset)}${asset.has_reviewed_override ? " · reviewed copy" : ""}</div>
+          </button>
+        `,
+      )
+      .join("");
+    sections.push(`<section class="asset-batch">${header}<div class="asset-batch-list">${cards}</div></section>`);
+  });
+  elements.assetList.innerHTML = sections.join("");
 
   elements.assetList.querySelectorAll("[data-asset-id]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1121,10 +1212,27 @@ function renderAssetList() {
   });
 }
 
-async function loadAssets() {
+function buildAssetSubtitle(detail) {
+  const parts = [
+    `${detail.asset.asset_role}`,
+    `${detail.asset.category}`,
+    `${detail.current_source}`,
+  ];
+  if (detail.queue_entry?.batch_title) {
+    parts.push(detail.queue_entry.batch_title);
+  }
+  return parts.join(" · ");
+}
+
+async function loadAssets({ preserveSelection = true } = {}) {
   const payload = await fetchJson("/api/object-semantics/assets");
   state.assets = payload.assets;
+  state.reviewQueue = payload.review_queue || null;
+  renderQueueSummary();
   renderAssetList();
+  if (!preserveSelection) {
+    return;
+  }
   if (state.assets.length && !state.currentAssetId) {
     await loadAsset(state.assets[0].asset_id);
   }
@@ -1140,7 +1248,7 @@ async function loadAsset(assetId) {
   renderForm();
   renderViewer();
   elements.assetTitle.textContent = detail.source_record.display_name || assetId;
-  elements.assetSubtitle.textContent = `${detail.asset.asset_role} · ${detail.asset.category} · ${detail.current_source}`;
+  elements.assetSubtitle.textContent = buildAssetSubtitle(detail);
 }
 
 function navigateAssetByOffset(offset) {
@@ -1156,6 +1264,34 @@ function navigateAssetByOffset(offset) {
     return;
   }
   loadAsset(state.assets[nextIndex].asset_id);
+}
+
+function nextReviewTargetIdAfter(assetId) {
+  if (!state.assets.length || !assetId) {
+    return null;
+  }
+  const currentIndex = state.assets.findIndex((asset) => asset.asset_id === assetId);
+  if (currentIndex < 0) {
+    return null;
+  }
+  const currentAsset = state.assets[currentIndex];
+  const currentBatchId = currentAsset.batch_id;
+  for (let index = currentIndex + 1; index < state.assets.length; index += 1) {
+    const asset = state.assets[index];
+    if (asset.batch_id === currentBatchId && asset.queue_status === "pending") {
+      return asset.asset_id;
+    }
+  }
+  for (let index = currentIndex + 1; index < state.assets.length; index += 1) {
+    const asset = state.assets[index];
+    if (asset.queue_status === "pending" || asset.queue_status === "needs_fix") {
+      return asset.asset_id;
+    }
+  }
+  if (currentIndex + 1 < state.assets.length) {
+    return state.assets[currentIndex + 1].asset_id;
+  }
+  return assetId;
 }
 
 function isTypingTarget(target) {
@@ -1217,6 +1353,7 @@ elements.saveButton.addEventListener("click", async () => {
   elements.saveButton.textContent = "Saving...";
   try {
     await saveCurrentAsset();
+    await loadAsset(state.currentAssetId);
   } catch (error) {
     window.alert(`Save failed: ${error.message}`);
   } finally {

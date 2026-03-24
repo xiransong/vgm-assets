@@ -11,14 +11,21 @@ from vgm_assets.object_semantics_explorer import (
     get_object_semantics_asset_detail,
 )
 from vgm_assets.object_semantics_explorer_app import create_app
+from vgm_assets.object_semantics_review_queue import validate_object_semantics_review_queue
 
 
 def _explorer_fixture(tmp_path: Path) -> ObjectSemanticsExplorerConfig:
     default = default_object_semantics_explorer_config()
     reviewed_path = tmp_path / "ai2thor_reviewed_annotations_v0.json"
+    review_queue_path = tmp_path / "ai2thor_review_queue_v0.json"
+    review_queue_path.write_text(
+        default.review_queue_path.read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
     return ObjectSemanticsExplorerConfig(
         candidate_path=default.candidate_path,
         reviewed_path=reviewed_path,
+        review_queue_path=review_queue_path,
         selection_path=default.selection_path,
         source_repo_root=default.source_repo_root,
         frontend_dist_path=tmp_path / "frontend_dist",
@@ -33,6 +40,7 @@ def test_explorer_api_lists_assets_and_resolves_model_pack(tmp_path: Path) -> No
     response = client.get("/api/object-semantics/assets")
     assert response.status_code == 200
     payload = response.json()
+    assert payload["review_queue"]["batch_count"] == 2
     assert [asset["asset_id"] for asset in payload["assets"]] == [
         "ai2thor_coffee_table_01",
         "ai2thor_side_table_01",
@@ -77,6 +85,13 @@ def test_explorer_api_saves_reviewed_asset_without_touching_candidate(tmp_path: 
     assert reviewed_assets["ai2thor_coffee_table_01"]["review_notes"] == "confirmed by reviewer"
     assert reviewed_assets["ai2thor_coffee_table_01"]["review_scope_v0"][0] == "asset_role"
     assert reviewed_assets["ai2thor_mug_01"]["review_status"] == "auto"
+    queue_payload = validate_object_semantics_review_queue(config.review_queue_path)
+    queue_entries = {
+        entry["asset_id"]: entry
+        for batch in queue_payload["batches"]
+        for entry in batch["entries"]
+    }
+    assert queue_entries["ai2thor_coffee_table_01"]["queue_status"] == "reviewed"
 
     candidate_payload = json.loads(config.candidate_path.read_text(encoding="utf-8"))
     candidate_assets = {asset["asset_id"]: asset for asset in candidate_payload["assets"]}

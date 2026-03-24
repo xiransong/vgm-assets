@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 from typing import Any
@@ -8,9 +9,10 @@ from typing import Any
 from .ai2thor_object_semantics import write_ai2thor_object_semantics_candidates
 from .object_semantics import validate_object_semantics_annotation_set
 from .object_semantics_review_queue import (
+    validate_object_semantics_review_queue,
     write_object_semantics_review_queue,
 )
-from .paths import data_root_relative_or_absolute, default_data_root
+from .paths import data_root_relative_or_absolute, default_data_root, repo_relative_or_absolute
 from .sources import _default_ai2thor_repo_root
 
 AI2THOR_OBJECT_SEMANTICS_REVIEW_ROOT = (
@@ -43,6 +45,16 @@ def ai2thor_object_semantics_review_queue_path(data_root: Path | None = None) ->
     return ai2thor_object_semantics_review_workspace_root(data_root) / "review_queue_v0.json"
 
 
+def _queue_path_ref(path: Path, data_root: Path | None = None) -> str:
+    resolved = path.resolve()
+    if data_root is not None:
+        return data_root_relative_or_absolute(resolved, data_root)
+    data_root_ref = data_root_relative_or_absolute(resolved)
+    if data_root_ref != str(resolved):
+        return data_root_ref
+    return repo_relative_or_absolute(resolved)
+
+
 def _review_status_to_queue_status(review_status: str) -> str:
     if review_status == "reviewed":
         return "reviewed"
@@ -68,7 +80,8 @@ def build_ai2thor_object_semantics_review_queue_data(
     *,
     candidate_payload: dict,
     reviewed_payload: dict | None,
-    selection_path: Path,
+    candidate_annotation_path: Path,
+    reviewed_annotation_path: Path,
     data_root: Path | None = None,
     created_at: str,
 ) -> dict:
@@ -134,14 +147,8 @@ def build_ai2thor_object_semantics_review_queue_data(
         "queue_id": "ai2thor_object_semantics_review_queue_v0",
         "version": "object_semantics_review_queue_v0",
         "source_id": "ai2thor_object_semantics_v0",
-        "candidate_annotation_set_ref": data_root_relative_or_absolute(
-            ai2thor_object_semantics_candidate_path(data_root),
-            data_root,
-        ),
-        "reviewed_annotation_set_ref": data_root_relative_or_absolute(
-            ai2thor_object_semantics_reviewed_path(data_root),
-            data_root,
-        ),
+        "candidate_annotation_set_ref": _queue_path_ref(candidate_annotation_path, data_root),
+        "reviewed_annotation_set_ref": _queue_path_ref(reviewed_annotation_path, data_root),
         "created_at": created_at,
         "review_scope_v0": list(
             candidate_payload.get("assets", [{}])[0].get("review_scope_v0", REVIEW_SCOPE_V0)
@@ -156,6 +163,58 @@ def build_ai2thor_object_semantics_review_queue_data(
         ),
         "batches": batches,
     }
+
+
+def write_ai2thor_object_semantics_review_queue(
+    *,
+    candidate_payload: dict,
+    reviewed_payload: dict | None,
+    queue_path: Path,
+    candidate_annotation_path: Path,
+    reviewed_annotation_path: Path,
+    data_root: Path | None = None,
+    created_at: str,
+) -> dict:
+    queue_payload = build_ai2thor_object_semantics_review_queue_data(
+        candidate_payload=candidate_payload,
+        reviewed_payload=reviewed_payload,
+        candidate_annotation_path=candidate_annotation_path,
+        reviewed_annotation_path=reviewed_annotation_path,
+        data_root=data_root,
+        created_at=created_at,
+    )
+    return write_object_semantics_review_queue(queue_payload, queue_path)
+
+
+def refresh_ai2thor_object_semantics_review_queue(
+    *,
+    candidate_path: Path,
+    reviewed_path: Path,
+    queue_path: Path,
+    data_root: Path | None = None,
+    created_at: str | None = None,
+) -> dict:
+    candidate_payload = validate_object_semantics_annotation_set(candidate_path)
+    reviewed_payload = (
+        validate_object_semantics_annotation_set(reviewed_path) if reviewed_path.exists() else None
+    )
+    existing_queue = (
+        validate_object_semantics_review_queue(queue_path) if queue_path.exists() else None
+    )
+    created_at = (
+        str(existing_queue["created_at"])
+        if existing_queue is not None and isinstance(existing_queue.get("created_at"), str)
+        else (created_at or datetime.now(timezone.utc).isoformat())
+    )
+    return write_ai2thor_object_semantics_review_queue(
+        candidate_payload=candidate_payload,
+        reviewed_payload=reviewed_payload,
+        queue_path=queue_path,
+        candidate_annotation_path=candidate_path,
+        reviewed_annotation_path=reviewed_path,
+        data_root=data_root,
+        created_at=created_at,
+    )
 
 
 def refresh_ai2thor_object_semantics_review_workspace(
@@ -183,14 +242,15 @@ def refresh_ai2thor_object_semantics_review_workspace(
     )
 
     queue_path = ai2thor_object_semantics_review_queue_path(data_root)
-    queue_payload = build_ai2thor_object_semantics_review_queue_data(
+    write_ai2thor_object_semantics_review_queue(
         candidate_payload=candidate_payload,
         reviewed_payload=reviewed_payload,
-        selection_path=selection_path,
+        queue_path=queue_path,
+        candidate_annotation_path=candidate_path,
+        reviewed_annotation_path=reviewed_path,
         data_root=data_root,
         created_at=str(candidate_summary["created_at"]),
     )
-    write_object_semantics_review_queue(queue_payload, queue_path)
 
     return {
         "workspace_root": str(workspace_root),

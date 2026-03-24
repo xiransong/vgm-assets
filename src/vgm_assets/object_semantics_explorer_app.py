@@ -13,6 +13,7 @@ from .object_semantics_explorer import (
     ObjectSemanticsExplorerConfig,
     default_object_semantics_explorer_config,
     get_object_semantics_asset_detail,
+    get_object_semantics_review_queue,
     list_object_semantics_assets,
     load_object_semantics_schema,
     save_reviewed_object_semantics_asset,
@@ -33,7 +34,10 @@ def create_app(config: ObjectSemanticsExplorerConfig | None = None) -> FastAPI:
 
     @app.get("/api/object-semantics/assets")
     def list_assets() -> dict[str, Any]:
-        return {"assets": list_object_semantics_assets(explorer_config)}
+        return {
+            "assets": list_object_semantics_assets(explorer_config),
+            "review_queue": get_object_semantics_review_queue(explorer_config),
+        }
 
     @app.get("/api/object-semantics/assets/{asset_id}")
     def get_asset(asset_id: str) -> dict[str, Any]:

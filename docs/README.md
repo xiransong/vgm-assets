@@ -72,3 +72,4 @@ notes for `vgm-assets`.
 - `plans/support_clutter_v0_plan.md`
 - `plans/maintained_asset_export_alignment_v0_plan.md`
 - `plans/wall_fixtures_v0_plan.md`
+- `plans/object_semantics_review_pipeline_v0_plan.md`

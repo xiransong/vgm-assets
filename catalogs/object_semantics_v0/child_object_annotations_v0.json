@@ -1,0 +1,114 @@
+{
+  "annotation_set_id": "object_semantics_v0_child_examples",
+  "version": "object_semantics_annotation_set_v0",
+  "notes": "Small reviewed child-object object-semantics example slice for Phase 1 of the review pipeline plan.",
+  "assets": [
+    {
+      "asset_id": "ai2thor_mug_01",
+      "asset_role": "child_object",
+      "category": "mug",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.144491,
+        "depth_m": 0.144491,
+        "local_center_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "normal_axis": "+y",
+        "review_status": "auto"
+      },
+      "placement_class": "mug",
+      "review_status": "auto",
+      "review_notes": "First child-object example seeded from the AI2-THOR support-clutter measurements.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.144491,
+        "base_depth_m": 0.144491,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "coffee_table_top",
+          "side_table_top"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      }
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "asset_role": "child_object",
+      "category": "book",
+      "front_axis": "+x",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.44489,
+        "depth_m": 0.342402,
+        "local_center_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "normal_axis": "+y",
+        "review_status": "auto"
+      },
+      "placement_class": "book",
+      "review_status": "auto",
+      "review_notes": "Flat-lying book example with shelf and tabletop compatibility for the first benchmark slice.",
+      "child_placement": {
+        "base_shape": "rectangle",
+        "base_width_m": 0.44489,
+        "base_depth_m": 0.342402,
+        "support_margin_m": 0.01,
+        "allowed_surface_types": [
+          "coffee_table_top",
+          "side_table_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "grid_like"
+      }
+    },
+    {
+      "asset_id": "ai2thor_bowl_01",
+      "asset_role": "child_object",
+      "category": "bowl",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.19,
+        "depth_m": 0.19,
+        "local_center_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "normal_axis": "+y",
+        "review_status": "uncertain"
+      },
+      "placement_class": "bowl",
+      "review_status": "uncertain",
+      "review_notes": "Illustrative bowl example included so the first contract covers the benchmark child categories before AI2-THOR preprocessing lands.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.19,
+        "base_depth_m": 0.19,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "coffee_table_top",
+          "side_table_top",
+          "tv_stand_top"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      }
+    }
+  ]
+}

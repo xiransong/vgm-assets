@@ -83,6 +83,7 @@ See:
 - `docs/plans/support_clutter_v0_plan.md`
 - `docs/plans/maintained_asset_export_alignment_v0_plan.md`
 - `docs/plans/wall_fixtures_v0_plan.md`
+- `docs/plans/object_semantics_review_pipeline_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`

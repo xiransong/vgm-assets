@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/object_semantics_annotation_set_v0.schema.json",
+  "title": "Object Semantics Annotation Set v0",
+  "description": "Local vgm-assets schema for reviewed object-semantics annotations shared by parent furniture-like assets and child tabletop-scale props.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["annotation_set_id", "version", "assets"],
+  "properties": {
+    "annotation_set_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "version": {
+      "type": "string",
+      "const": "object_semantics_annotation_set_v0"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/objectSemanticsAnnotation"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "axisName": {
+      "type": "string",
+      "enum": ["+x", "-x", "+y", "-y", "+z", "-z"]
+    },
+    "positiveFloat": {
+      "type": "number",
+      "exclusiveMinimum": 0.0
+    },
+    "nonNegativeFloat": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "point3d": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": {"type": "number"},
+        "y": {"type": "number"},
+        "z": {"type": "number"}
+      }
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": ["auto", "reviewed", "uncertain", "rejected"]
+    },
+    "surfaceType": {
+      "type": "string",
+      "enum": [
+        "coffee_table_top",
+        "side_table_top",
+        "bookshelf_shelf",
+        "tv_stand_top",
+        "desk_top",
+        "counter_top"
+      ]
+    },
+    "supportSurfaceClass": {
+      "type": "string",
+      "enum": [
+        "table_top",
+        "desk_top",
+        "side_table_top",
+        "tv_stand_top",
+        "bookshelf_shelf",
+        "shelf",
+        "counter_top",
+        "seat"
+      ]
+    },
+    "placementClass": {
+      "type": "string",
+      "enum": [
+        "coffee_table",
+        "side_table",
+        "bookshelf",
+        "tv_stand",
+        "mug",
+        "book",
+        "bowl",
+        "small_tabletop",
+        "decoration"
+      ]
+    },
+    "bottomSupportPlane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shape",
+        "width_m",
+        "depth_m",
+        "local_center_m",
+        "normal_axis"
+      ],
+      "properties": {
+        "shape": {
+          "type": "string",
+          "enum": ["rectangle", "circle"]
+        },
+        "width_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "depth_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "local_center_m": {
+          "$ref": "#/$defs/point3d"
+        },
+        "normal_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "review_status": {
+          "$ref": "#/$defs/reviewStatus"
+        }
+      }
+    },
+    "supportSurfaceV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface_id",
+        "surface_type",
+        "surface_class",
+        "shape",
+        "width_m",
+        "depth_m",
+        "height_m",
+        "local_center_m",
+        "normal_axis",
+        "front_axis",
+        "usable_margin_m",
+        "review_status"
+      ],
+      "properties": {
+        "surface_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "surface_type": {
+          "$ref": "#/$defs/surfaceType"
+        },
+        "surface_class": {
+          "$ref": "#/$defs/supportSurfaceClass"
+        },
+        "shape": {
+          "type": "string",
+          "enum": ["rectangle"]
+        },
+        "width_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "depth_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "height_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "local_center_m": {
+          "$ref": "#/$defs/point3d"
+        },
+        "normal_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "front_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "usable_margin_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "supports_categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "placement_style": {
+          "type": "string",
+          "enum": ["scattered", "centered", "aligned_front", "grid_like"]
+        },
+        "is_enclosed": {
+          "type": "boolean"
+        },
+        "review_status": {
+          "$ref": "#/$defs/reviewStatus"
+        }
+      }
+    },
+    "childPlacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_shape",
+        "base_width_m",
+        "base_depth_m",
+        "support_margin_m",
+        "allowed_surface_types",
+        "upright_axis",
+        "stable_support_required"
+      ],
+      "properties": {
+        "base_shape": {
+          "type": "string",
+          "enum": ["rectangle", "circle"]
+        },
+        "base_width_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "base_depth_m": {
+          "$ref": "#/$defs/positiveFloat"
+        },
+        "support_margin_m": {
+          "$ref": "#/$defs/nonNegativeFloat"
+        },
+        "allowed_surface_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/surfaceType"
+          }
+        },
+        "upright_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "stable_support_required": {
+          "type": "boolean"
+        },
+        "placement_style": {
+          "type": "string",
+          "enum": ["scattered", "aligned_front", "grid_like"]
+        }
+      }
+    },
+    "objectSemanticsAnnotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_plane",
+        "placement_class",
+        "review_status"
+      ],
+      "properties": {
+        "asset_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asset_role": {
+          "type": "string",
+          "enum": ["parent_object", "child_object"]
+        },
+        "category": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "front_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "up_axis": {
+          "$ref": "#/$defs/axisName"
+        },
+        "bottom_support_plane": {
+          "$ref": "#/$defs/bottomSupportPlane"
+        },
+        "placement_class": {
+          "$ref": "#/$defs/placementClass"
+        },
+        "review_status": {
+          "$ref": "#/$defs/reviewStatus"
+        },
+        "review_notes": {
+          "type": "string"
+        },
+        "supports_objects": {
+          "type": "boolean"
+        },
+        "support_surfaces_v1": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/supportSurfaceV1"
+          }
+        },
+        "child_placement": {
+          "$ref": "#/$defs/childPlacement"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "asset_role": {
+                "const": "parent_object"
+              }
+            },
+            "required": ["asset_role"]
+          },
+          "then": {
+            "required": ["supports_objects", "support_surfaces_v1"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "asset_role": {
+                "const": "child_object"
+              }
+            },
+            "required": ["asset_role"]
+          },
+          "then": {
+            "required": ["child_placement"]
+          }
+        }
+      ]
+    }
+  }
+}

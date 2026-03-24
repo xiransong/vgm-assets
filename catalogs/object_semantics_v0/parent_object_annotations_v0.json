@@ -1,0 +1,128 @@
+{
+  "annotation_set_id": "object_semantics_v0_parent_examples",
+  "version": "object_semantics_annotation_set_v0",
+  "notes": "Small reviewed parent-object object-semantics example slice for Phase 1 of the review pipeline plan.",
+  "assets": [
+    {
+      "asset_id": "kenney_table_coffee_01",
+      "asset_role": "parent_object",
+      "category": "coffee_table",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.94,
+        "depth_m": 0.5,
+        "local_center_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "coffee_table",
+      "review_status": "reviewed",
+      "review_notes": "Coffee table example aligned with the existing Kenney support-surface slice.",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "coffee_table_top",
+          "surface_class": "table_top",
+          "shape": "rectangle",
+          "width_m": 0.94,
+          "depth_m": 0.5,
+          "height_m": 0.45,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.45,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "mug",
+            "book",
+            "bowl"
+          ],
+          "placement_style": "scattered",
+          "review_status": "reviewed"
+        }
+      ]
+    },
+    {
+      "asset_id": "kenney_bookcase_closed_wide_01",
+      "asset_role": "parent_object",
+      "category": "bookshelf",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.9,
+        "depth_m": 0.27,
+        "local_center_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "bookshelf",
+      "review_status": "reviewed",
+      "review_notes": "Bookshelf example carrying two reviewed shelf rectangles for early support-surface exploration.",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "shelf_0",
+          "surface_type": "bookshelf_shelf",
+          "surface_class": "bookshelf_shelf",
+          "shape": "rectangle",
+          "width_m": 0.86,
+          "depth_m": 0.25,
+          "height_m": 0.52,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.52,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "book",
+            "bowl"
+          ],
+          "placement_style": "grid_like",
+          "is_enclosed": false,
+          "review_status": "reviewed"
+        },
+        {
+          "surface_id": "shelf_1",
+          "surface_type": "bookshelf_shelf",
+          "surface_class": "bookshelf_shelf",
+          "shape": "rectangle",
+          "width_m": 0.86,
+          "depth_m": 0.25,
+          "height_m": 0.89,
+          "local_center_m": {
+            "x": 0.0,
+            "y": 0.89,
+            "z": 0.0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.025,
+          "supports_categories": [
+            "book"
+          ],
+          "placement_style": "grid_like",
+          "is_enclosed": false,
+          "review_status": "reviewed"
+        }
+      ]
+    }
+  ]
+}

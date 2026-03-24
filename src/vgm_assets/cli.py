@@ -43,6 +43,7 @@ from .objaverse import (
     write_objaverse_furniture_review_queue,
     write_stub_objaverse_furniture_review_queue,
 )
+from .object_semantics import validate_object_semantics_annotation_set
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
     refresh_room_surface_material_catalog,
@@ -372,6 +373,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate a local support-surface annotation set against the vgm-assets v1 schema",
     )
     validate_support_surface_annotation_set_parser.add_argument("annotations", type=Path)
+
+    validate_object_semantics_annotation_set_parser = subparsers.add_parser(
+        "validate-object-semantics-annotation-set",
+        help="Validate a local object-semantics annotation set against the vgm-assets v0 schema",
+    )
+    validate_object_semantics_annotation_set_parser.add_argument("annotations", type=Path)
 
     validate_support_clutter_prop_annotation_set_parser = subparsers.add_parser(
         "validate-support-clutter-prop-annotation-set",
@@ -1062,6 +1069,14 @@ def main() -> int:
         payload = validate_support_surface_annotation_set(args.annotations)
         print(
             f"Validated support-surface annotation set {payload['annotation_set_id']} "
+            f"with {len(payload['assets'])} assets in {args.annotations}"
+        )
+        return 0
+
+    if args.command == "validate-object-semantics-annotation-set":
+        payload = validate_object_semantics_annotation_set(args.annotations)
+        print(
+            f"Validated object-semantics annotation set {payload['annotation_set_id']} "
             f"with {len(payload['assets'])} assets in {args.annotations}"
         )
         return 0

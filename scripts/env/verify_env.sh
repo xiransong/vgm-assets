@@ -11,6 +11,8 @@ from importlib.metadata import version
 
 import jsonschema
 import trimesh
+import fastapi
+import uvicorn
 
 jsonschema_version = version("jsonschema")
 major, minor, *_ = [int(part) for part in jsonschema_version.split(".")]
@@ -20,6 +22,8 @@ if (major, minor) < (4, 23):
     )
 
 print("python stack ok")
+print("fastapi", fastapi.__version__)
 print("trimesh", trimesh.__version__)
+print("uvicorn", uvicorn.__version__)
 print("jsonschema", jsonschema_version)
 PY

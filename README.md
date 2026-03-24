@@ -59,6 +59,7 @@ See:
 - `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `docs/architecture/objaverse_furniture_review_queue_v0.md`
 - `docs/architecture/support_surface_semantics_v1.md`
+- `docs/architecture/object_semantics_explorer_v0.md`
 - `docs/architecture/support_clutter_prop_metadata_v0.md`
 - `docs/architecture/support_clutter_prop_source_selection_v0.md`
 - `docs/architecture/support_clutter_scene_engine_consumer_v0.md`
@@ -490,11 +491,30 @@ Create the env:
 ./scripts/env/create_env.sh vgm-assets
 ```
 
+Update the existing env after Python dependency changes:
+
+```bash
+./scripts/env/update_env.sh vgm-assets
+```
+
 Verify the env:
 
 ```bash
 ./scripts/env/verify_env.sh vgm-assets
 ```
+
+Install the minimal Explorer frontend dependencies:
+
+```bash
+/home/ubuntu/scratch/bin/npm ci
+```
+
+Recommended EC2 pattern:
+
+- keep the micromamba env under `~/scratch/micromamba`
+- run `create_env.sh` once per new env name
+- run `update_env.sh` when `env/environment.yml` changes
+- run `npm ci` when `package-lock.json` changes
 
 ## Status Markers
 

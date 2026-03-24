@@ -12,20 +12,26 @@ from vgm_assets.object_semantics_explorer import (
 )
 from vgm_assets.object_semantics_explorer_app import create_app
 from vgm_assets.object_semantics_review_queue import validate_object_semantics_review_queue
+from vgm_assets.ai2thor_review_workspace import (
+    ai2thor_object_semantics_candidate_path,
+    ai2thor_object_semantics_review_queue_path,
+    ai2thor_object_semantics_reviewed_path,
+    refresh_ai2thor_object_semantics_review_workspace,
+)
 
 
 def _explorer_fixture(tmp_path: Path) -> ObjectSemanticsExplorerConfig:
     default = default_object_semantics_explorer_config()
-    reviewed_path = tmp_path / "ai2thor_reviewed_annotations_v0.json"
-    review_queue_path = tmp_path / "ai2thor_review_queue_v0.json"
-    review_queue_path.write_text(
-        default.review_queue_path.read_text(encoding="utf-8"),
-        encoding="utf-8",
+    data_root = tmp_path / "processed"
+    refresh_ai2thor_object_semantics_review_workspace(
+        default.selection_path,
+        data_root=data_root,
+        source_repo_root=default.source_repo_root,
     )
     return ObjectSemanticsExplorerConfig(
-        candidate_path=default.candidate_path,
-        reviewed_path=reviewed_path,
-        review_queue_path=review_queue_path,
+        candidate_path=ai2thor_object_semantics_candidate_path(data_root),
+        reviewed_path=ai2thor_object_semantics_reviewed_path(data_root),
+        review_queue_path=ai2thor_object_semantics_review_queue_path(data_root),
         selection_path=default.selection_path,
         source_repo_root=default.source_repo_root,
         frontend_dist_path=tmp_path / "frontend_dist",
@@ -40,11 +46,14 @@ def test_explorer_api_lists_assets_and_resolves_model_pack(tmp_path: Path) -> No
     response = client.get("/api/object-semantics/assets")
     assert response.status_code == 200
     payload = response.json()
-    assert payload["review_queue"]["batch_count"] == 2
+    assert payload["review_queue"]["batch_count"] == 3
     assert [asset["asset_id"] for asset in payload["assets"]] == [
         "ai2thor_coffee_table_01",
         "ai2thor_side_table_01",
         "ai2thor_bookshelf_01",
+        "ai2thor_tv_stand_01",
+        "ai2thor_sofa_01",
+        "ai2thor_floor_lamp_01",
         "ai2thor_mug_01",
         "ai2thor_book_01",
         "ai2thor_bowl_01",

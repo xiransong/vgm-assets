@@ -91,7 +91,8 @@ def build_ai2thor_object_semantics_review_queue_data(
         if isinstance(asset, dict) and isinstance(asset.get("asset_id"), str)
     } if reviewed_payload is not None else {}
 
-    parent_entries: list[dict[str, Any]] = []
+    support_parent_entries: list[dict[str, Any]] = []
+    living_room_anchor_entries: list[dict[str, Any]] = []
     child_entries: list[dict[str, Any]] = []
 
     for sort_key, candidate_asset in enumerate(candidate_payload.get("assets", [])):
@@ -119,18 +120,30 @@ def build_ai2thor_object_semantics_review_queue_data(
             queue_entry["needs_fix_targets_v0"] = needs_fix_targets
 
         if asset_role == "parent_object":
-            parent_entries.append(queue_entry)
+            if category in {"tv_stand", "sofa", "floor_lamp"}:
+                living_room_anchor_entries.append(queue_entry)
+            else:
+                support_parent_entries.append(queue_entry)
         else:
             child_entries.append(queue_entry)
 
-    parent_batch = {
+    support_parent_batch = {
         "batch_id": "ai2thor_supporting_parents_v0",
         "title": "Supporting Parents",
-        "status": _batch_status(parent_entries),
-        "recommended_session_asset_count": max(len(parent_entries), 1),
-        "asset_count": len(parent_entries),
+        "status": _batch_status(support_parent_entries),
+        "recommended_session_asset_count": max(len(support_parent_entries), 1),
+        "asset_count": len(support_parent_entries),
         "notes": "Review furniture-like supporting parents together so support-surface judgments stay consistent across the batch.",
-        "entries": parent_entries,
+        "entries": support_parent_entries,
+    }
+    living_room_anchor_batch = {
+        "batch_id": "ai2thor_living_room_anchors_v0",
+        "title": "Living Room Anchors",
+        "status": _batch_status(living_room_anchor_entries),
+        "recommended_session_asset_count": max(len(living_room_anchor_entries), 1),
+        "asset_count": len(living_room_anchor_entries),
+        "notes": "Review larger living-room anchors together so sofa, TV-stand, and lighting judgments stay coherent across the wave.",
+        "entries": living_room_anchor_entries,
     }
     child_batch = {
         "batch_id": "ai2thor_tabletop_children_v0",
@@ -141,7 +154,11 @@ def build_ai2thor_object_semantics_review_queue_data(
         "notes": "Review tabletop child props together so upright-axis and base-support judgments remain coherent.",
         "entries": child_entries,
     }
-    batches = [batch for batch in (parent_batch, child_batch) if batch["asset_count"] > 0]
+    batches = [
+        batch
+        for batch in (support_parent_batch, living_room_anchor_batch, child_batch)
+        if batch["asset_count"] > 0
+    ]
 
     return {
         "queue_id": "ai2thor_object_semantics_review_queue_v0",
@@ -155,7 +172,7 @@ def build_ai2thor_object_semantics_review_queue_data(
         )
         if candidate_payload.get("assets")
         else list(REVIEW_SCOPE_V0),
-        "item_count": len(parent_entries) + len(child_entries),
+        "item_count": len(support_parent_entries) + len(living_room_anchor_entries) + len(child_entries),
         "batch_count": len(batches),
         "notes": (
             "Generated from the AI2-THOR object-semantics candidate artifact and the current "

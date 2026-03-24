@@ -30,6 +30,36 @@
     "notes": "First benchmark shelf-like parent candidate, mapped into the local bookshelf placement class."
   },
   {
+    "selection_id": "ai2thor_object_semantics_tv_stand_201_master_v0",
+    "asset_role": "parent_object",
+    "category": "tv_stand",
+    "object_type": "TVStand",
+    "asset_id": "ai2thor_tv_stand_01",
+    "display_name": "AI2-THOR TV Stand 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Living Room Objects/TVStand/Prefabs/TV_Stand_Master_Prefabs/TV_Stand_201_Master.prefab",
+    "notes": "First benchmark TV-stand parent candidate using the authored master prefab."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_sofa_201_master_v0",
+    "asset_role": "parent_object",
+    "category": "sofa",
+    "object_type": "Sofa",
+    "asset_id": "ai2thor_sofa_01",
+    "display_name": "AI2-THOR Sofa 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Living Room Objects/Sofas/Prefabs/Sofa_Master_Prefabs/Sofa_201_Master.prefab",
+    "notes": "First benchmark sofa candidate using a master prefab with a usable bounding-box collider."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_floor_lamp_01_v0",
+    "asset_role": "parent_object",
+    "category": "floor_lamp",
+    "object_type": "FloorLamp",
+    "asset_id": "ai2thor_floor_lamp_01",
+    "display_name": "AI2-THOR Floor Lamp 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Living Room Objects/FloorLamp/Prefabs/Floor_Lamp_1.prefab",
+    "notes": "First benchmark floor-lamp candidate with collider-derived canonical bounds and no support-surface semantics."
+  },
+  {
     "selection_id": "ai2thor_object_semantics_mug_01_v0",
     "asset_role": "child_object",
     "category": "mug",

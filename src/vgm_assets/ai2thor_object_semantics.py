@@ -60,6 +60,8 @@ _PLACEMENT_STYLE_BY_CATEGORY = {
     "side_table": "scattered",
     "bookshelf": "grid_like",
     "tv_stand": "aligned_front",
+    "sofa": "centered",
+    "floor_lamp": "centered",
     "desk": "aligned_front",
     "mug": "scattered",
     "bowl": "scattered",
@@ -203,6 +205,8 @@ def _parent_surfaces_from_prefab(
     category: str,
     supported_categories: list[str],
 ) -> list[dict[str, Any]]:
+    if category not in _SURFACE_TYPE_BY_CATEGORY:
+        return []
     surface_type = _SURFACE_TYPE_BY_CATEGORY[category]
     surface_class = _SURFACE_CLASS_BY_CATEGORY[category]
     candidates = _surface_candidates_from_prefab(prefab_path)
@@ -453,6 +457,8 @@ def _measure_refined_parent_prefab_bounds(
 ) -> dict[str, Any]:
     measurement = _clamp_parent_measurement_floor_contact(_measure_parent_prefab_bounds(prefab_path))
     surface_candidates = _surface_candidates_from_prefab(prefab_path)
+    if category not in _SURFACE_TYPE_BY_CATEGORY:
+        return measurement
     if _parent_measurement_is_implausibly_small(measurement, surface_candidates):
         return _fallback_parent_measurement_from_surfaces(
             category=category,
@@ -480,7 +486,13 @@ def _parent_annotation_from_selection_entry(
     )
     review_status = "auto"
     bottom_support_plane = _parent_bottom_support_plane_from_measurement(measurement)
-    review_suffix = "Support surfaces were derived from horizontal trigger colliders."
+    if not surfaces:
+        review_suffix = (
+            "No horizontal receptacle trigger colliders were used for this asset, so the candidate "
+            "review focuses on orientation, bottom support, and canonical bounds."
+        )
+    else:
+        review_suffix = "Support surfaces were derived from horizontal trigger colliders."
     if measurement["measurement_source"] == "support_surface_fallback":
         bottom_support_plane["review_status"] = "uncertain"
         review_status = "uncertain"

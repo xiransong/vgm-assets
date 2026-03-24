@@ -26,9 +26,9 @@ def test_write_ai2thor_object_semantics_candidates_generates_valid_benchmark_sli
         output_path=output_path,
     )
 
-    assert summary["asset_count"] == 6
+    assert summary["asset_count"] == 9
     payload = validate_object_semantics_annotation_set(output_path)
-    assert len(payload["assets"]) == 6
+    assert len(payload["assets"]) == 9
 
     by_asset_id = {asset["asset_id"]: asset for asset in payload["assets"]}
     coffee_table = by_asset_id["ai2thor_coffee_table_01"]
@@ -46,6 +46,23 @@ def test_write_ai2thor_object_semantics_candidates_generates_valid_benchmark_sli
     assert bookshelf["support_surfaces_v1"][0]["surface_type"] == "bookshelf_shelf"
     assert bookshelf["bottom_support_plane"]["width_m"] == 1.0
     assert bookshelf["bottom_support_plane"]["depth_m"] == 1.0
+
+    tv_stand = by_asset_id["ai2thor_tv_stand_01"]
+    assert tv_stand["asset_role"] == "parent_object"
+    assert tv_stand["support_surfaces_v1"][0]["surface_type"] == "tv_stand_top"
+    assert tv_stand["supports_objects"] is True
+
+    sofa = by_asset_id["ai2thor_sofa_01"]
+    assert sofa["asset_role"] == "parent_object"
+    assert sofa["supports_objects"] is False
+    assert sofa["support_surfaces_v1"] == []
+    assert sofa["placement_class"] == "sofa"
+
+    floor_lamp = by_asset_id["ai2thor_floor_lamp_01"]
+    assert floor_lamp["asset_role"] == "parent_object"
+    assert floor_lamp["supports_objects"] is False
+    assert floor_lamp["support_surfaces_v1"] == []
+    assert floor_lamp["placement_class"] == "floor_lamp"
 
     mug = by_asset_id["ai2thor_mug_01"]
     assert mug["asset_role"] == "child_object"

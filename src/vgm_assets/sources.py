@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import hashlib
 import gzip
+from functools import lru_cache
 from importlib.metadata import PackageNotFoundError, version
 import json
 import os
+import re
 import subprocess
 import shutil
 import tempfile
@@ -24,6 +26,12 @@ from .objaverse import (
 )
 from .paths import default_data_root, default_raw_data_root, resolve_under
 from .protocol import load_json, repo_root
+from .support_clutter import _parse_unity_prefab_documents
+
+
+_MESH_REF_RE = re.compile(
+    r"^\s*m_Mesh:\s+\{fileID:\s*(?P<file_id>-?\d+),\s*guid:\s*(?P<guid>[0-9a-f]{32}),\s*type:\s*(?P<type>\d+)\}\s*$"
+)
 
 
 def _sha256(path: Path) -> str:
@@ -62,6 +70,84 @@ def _git_commit_or_none(repo_dir: Path) -> str | None:
         return None
     commit = result.stdout.strip()
     return commit or None
+
+
+@lru_cache(maxsize=4)
+def _meta_path_by_guid(source_repo_root: Path) -> dict[str, Path]:
+    mapping: dict[str, Path] = {}
+    for meta_path in source_repo_root.rglob("*.meta"):
+        try:
+            with meta_path.open("r", encoding="utf-8") as handle:
+                first_lines = [next(handle).rstrip("\n") for _ in range(6)]
+        except (OSError, StopIteration):
+            try:
+                text = meta_path.read_text(encoding="utf-8")
+            except OSError:
+                continue
+            first_lines = text.splitlines()[:6]
+        for line in first_lines:
+            if not line.startswith("guid: "):
+                continue
+            guid = line.split(":", 1)[1].strip()
+            if len(guid) == 32 and guid not in mapping:
+                mapping[guid] = meta_path.resolve()
+            break
+    return mapping
+
+
+def _parse_mesh_ref(lines: list[str]) -> dict[str, str] | None:
+    for line in lines:
+        match = _MESH_REF_RE.match(line)
+        if match is not None:
+            return {
+                "file_id": match.group("file_id"),
+                "guid": match.group("guid"),
+                "type": match.group("type"),
+            }
+    return None
+
+
+def _model_pack_paths_for_prefab(prefab_path: Path, source_repo_root: Path) -> list[Path]:
+    guid_to_meta_path = _meta_path_by_guid(source_repo_root)
+    resolved_paths: list[Path] = []
+    seen: set[Path] = set()
+    for document in _parse_unity_prefab_documents(prefab_path):
+        if document["type_id"] != 33:
+            continue
+        mesh_ref = _parse_mesh_ref(document["lines"])
+        if mesh_ref is None:
+            continue
+        meta_path = guid_to_meta_path.get(mesh_ref["guid"])
+        if meta_path is None:
+            continue
+        pack_path = meta_path.with_suffix("")
+        if not pack_path.exists():
+            continue
+        resolved = pack_path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        resolved_paths.append(resolved)
+
+    if resolved_paths:
+        return resolved_paths
+
+    for ancestor in prefab_path.parents:
+        models_dir = ancestor / "Models"
+        if not models_dir.is_dir():
+            continue
+        fbx_files = sorted(models_dir.glob("*.fbx"))
+        if fbx_files:
+            return [fbx_files[0].resolve()]
+    return []
+
+
+def _materials_dir_for_prefab(prefab_path: Path) -> Path | None:
+    for ancestor in prefab_path.parents:
+        materials_dir = ancestor / "Materials"
+        if materials_dir.is_dir():
+            return materials_dir.resolve()
+    return None
 
 
 def load_source_spec(spec_path: Path) -> dict:
@@ -2463,6 +2549,124 @@ def register_ai2thor_support_clutter_selection(
 
     selection_manifest = {
         "selection_id": "ai2thor_support_clutter_v0",
+        "source_pack": "ai2thor",
+        "source_repo_root": str(source_root),
+        "source_commit": source_commit,
+        "asset_count": len(manifest_assets),
+        "assets": manifest_assets,
+    }
+    with (slice_root / "selection_manifest.json").open("w", encoding="utf-8") as handle:
+        json.dump(selection_manifest, handle, indent=2)
+        handle.write("\n")
+
+    return {
+        "selection_id": selection_manifest["selection_id"],
+        "asset_count": len(manifest_assets),
+        "slice_root": str(slice_root),
+        "selected_ids": [entry["selection_id"] for entry in selected_payload],
+    }
+
+
+def register_ai2thor_object_semantics_selection(
+    selection_path: Path,
+    *,
+    source_repo_root: Path | None = None,
+    selection_ids: list[str] | None = None,
+    raw_data_root: Path | None = None,
+    acquired_by: str | None = None,
+    acquired_at: str | None = None,
+    notes: str | None = None,
+) -> dict:
+    source_root = (source_repo_root or _default_ai2thor_repo_root()).resolve()
+    raw_root = raw_data_root or default_raw_data_root()
+    payload = load_selection_list(selection_path)
+    selected_payload = _select_entries(
+        payload,
+        selection_ids=selection_ids,
+        label="AI2-THOR object semantics",
+        selection_path=selection_path,
+    )
+
+    source_commit = _git_commit_or_none(source_root)
+    slice_root_rel = Path("sources") / "ai2thor" / "object_semantics_v0"
+    slice_root = resolve_under(raw_root, slice_root_rel)
+    slice_root.mkdir(parents=True, exist_ok=True)
+
+    manifest_assets = []
+    for entry in selected_payload:
+        asset_role = str(_require_entry(entry, "asset_role"))
+        category = str(_require_entry(entry, "category"))
+        asset_id = str(_require_entry(entry, "asset_id"))
+        prefab_rel = Path(str(_require_entry(entry, "source_prefab_rel")))
+        prefab_src = (source_root / prefab_rel).resolve()
+        if not prefab_src.exists():
+            raise FileNotFoundError(f"Missing AI2-THOR prefab file: {prefab_src}")
+
+        model_pack_paths = _model_pack_paths_for_prefab(prefab_src, source_root)
+        if len(model_pack_paths) != 1:
+            raise ValueError(
+                f"Expected exactly one AI2-THOR model pack for {asset_id} from {prefab_src}, "
+                f"found {len(model_pack_paths)}"
+            )
+        model_src = model_pack_paths[0]
+        if not model_src.exists():
+            raise FileNotFoundError(f"Missing AI2-THOR model pack for {asset_id}: {model_src}")
+
+        materials_src = _materials_dir_for_prefab(prefab_src)
+
+        raw_dir_rel = slice_root_rel / category / asset_id / "raw"
+        raw_dir = resolve_under(raw_root, raw_dir_rel)
+        raw_dir.mkdir(parents=True, exist_ok=True)
+
+        prefab_dst = raw_dir / "source_prefab.prefab"
+        model_dst = raw_dir / f"source_model{model_src.suffix}"
+        shutil.copy2(prefab_src, prefab_dst)
+        shutil.copy2(model_src, model_dst)
+
+        copied_materials: list[str] = []
+        if materials_src is not None:
+            copied_materials = _copy_tree_without_meta(materials_src, raw_dir / "materials")
+
+        source_manifest = {
+            "selection_id": _require_entry(entry, "selection_id"),
+            "asset_id": asset_id,
+            "asset_role": asset_role,
+            "category": category,
+            "object_type": _require_entry(entry, "object_type"),
+            "display_name": _require_entry(entry, "display_name"),
+            "source_repo": "ai2thor",
+            "source_repo_root": str(source_root),
+            "source_commit": source_commit,
+            "source_url": "https://github.com/allenai/ai2thor",
+            "source_prefab_rel": prefab_rel.as_posix(),
+            "source_model_rel": model_src.relative_to(source_root).as_posix(),
+            "license": "Apache-2.0",
+            "registered_at": _timestamp(acquired_at),
+            "acquired_by": acquired_by or "unknown",
+            "notes": notes or entry.get("notes", ""),
+            "raw_files": {
+                "prefab": _file_ref(prefab_dst, raw_root),
+                "model": _file_ref(model_dst, raw_root),
+            },
+            "raw_material_files": copied_materials,
+        }
+        with (raw_dir / "source_manifest.json").open("w", encoding="utf-8") as handle:
+            json.dump(source_manifest, handle, indent=2)
+            handle.write("\n")
+
+        manifest_assets.append(
+            {
+                "asset_role": asset_role,
+                "category": category,
+                "asset_id": asset_id,
+                "selection_id": entry["selection_id"],
+                "display_name": entry["display_name"],
+                "raw_dir": raw_dir_rel.relative_to(slice_root_rel).as_posix(),
+            }
+        )
+
+    selection_manifest = {
+        "selection_id": "ai2thor_object_semantics_v0",
         "source_pack": "ai2thor",
         "source_repo_root": str(source_root),
         "source_commit": source_commit,

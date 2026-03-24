@@ -174,6 +174,12 @@ Run the Object Semantics Explorer v0 backend on EC2:
 ./scripts/explorer/run_object_semantics_explorer_v0.sh
 ```
 
+Stage the AI2-THOR object-semantics benchmark slice into `RAW_DATA_ROOT`:
+
+```bash
+./scripts/sources/stage_ai2thor_object_semantics_v0.sh
+```
+
 Build the Object Semantics Explorer v0 frontend bundle:
 
 ```bash

@@ -71,11 +71,14 @@ def test_explorer_api_saves_reviewed_asset_without_touching_candidate(tmp_path: 
     assert candidate_assets["ai2thor_coffee_table_01"]["review_status"] == "auto"
 
 
-def test_explorer_detail_exposes_proxy_bounds_and_source_refs(tmp_path: Path) -> None:
+def test_explorer_detail_exposes_canonical_bounds_and_source_refs(tmp_path: Path) -> None:
     config = _explorer_fixture(tmp_path)
     detail = get_object_semantics_asset_detail(config, "ai2thor_mug_01")
 
     assert detail["source_refs"]["prefab"]["exists"] is True
     assert detail["source_refs"]["model_pack"]["format"] == "fbx"
     assert detail["source_refs"]["review_mesh"]["mesh_instances"][0]["mesh_name"] == "mug_1"
+    assert detail["canonical_bounds"]["normalization_source"] == "ai2thor_prefab_collider"
+    assert detail["canonical_bounds"]["measurement_source"] == "bounding_box_collider"
     assert detail["proxy_bounds"]["measurement_source"] == "bounding_box_collider"
+    assert detail["canonical_bounds"]["width_m"] == detail["proxy_bounds"]["width_m"]

@@ -14,7 +14,7 @@ const state = {
   renderToken: 0,
   advancedVisible: false,
   surfaceXRay: false,
-  visualLift: true,
+  visualLift: false,
 };
 
 const elements = {
@@ -276,26 +276,31 @@ function renderViewer() {
     return;
   }
 
-  const proxy = state.currentDetail.proxy_bounds;
-  if (proxy) {
+  const bounds = state.currentDetail.canonical_bounds || state.currentDetail.proxy_bounds;
+  if (bounds) {
     const proxyBox = new THREE.Mesh(
-      new THREE.BoxGeometry(proxy.width_m, proxy.height_m, proxy.depth_m),
+      new THREE.BoxGeometry(bounds.width_m, bounds.height_m, bounds.depth_m),
       new THREE.MeshStandardMaterial({
         color: 0xb7c9c4,
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.0,
+        depthWrite: false,
         roughness: 0.9,
       }),
     );
-    proxyBox.position.set(proxy.center_m.x, proxy.center_m.y, proxy.center_m.z);
+    proxyBox.position.set(bounds.center_m.x, bounds.center_m.y, bounds.center_m.z);
     overlayRoot.add(proxyBox);
     const proxyEdges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.BoxGeometry(proxy.width_m, proxy.height_m, proxy.depth_m)),
-      new THREE.LineBasicMaterial({ color: 0x5a7e79 }),
+      new THREE.EdgesGeometry(new THREE.BoxGeometry(bounds.width_m, bounds.height_m, bounds.depth_m)),
+      new THREE.LineBasicMaterial({
+        color: 0x8aa39f,
+        transparent: true,
+        opacity: 0.35,
+      }),
     );
     proxyEdges.position.copy(proxyBox.position);
     overlayRoot.add(proxyEdges);
-    addObjectAxisOverlays(proxy, state.workingAsset);
+    addObjectAxisOverlays(bounds, state.workingAsset);
   }
 
   const bottom = state.workingAsset.bottom_support_plane;
@@ -333,9 +338,9 @@ function renderViewer() {
     });
   });
 
-  const width = proxy?.width_m || 1.0;
-  const height = proxy?.height_m || 1.0;
-  const depth = proxy?.depth_m || 1.0;
+  const width = bounds?.width_m || 1.0;
+  const height = bounds?.height_m || 1.0;
+  const depth = bounds?.depth_m || 1.0;
   const radius = Math.max(width, height, depth) * 1.8;
   camera.position.set(radius, height + radius * 0.3, radius);
   controls.target.set(0, height * 0.45, 0);
@@ -350,7 +355,7 @@ function renderViewer() {
           return;
         }
         if (group) {
-          alignReviewMeshToProxy(group, proxy);
+          alignReviewMeshToProxy(group, bounds);
           overlayRoot.add(group);
           elements.viewerStatus.textContent =
             "Showing the real review mesh together with support and bottom-plane overlays.";
@@ -437,8 +442,8 @@ function cloneReviewMeshObject(sourceObject, color) {
   return added > 0 ? root : null;
 }
 
-function alignReviewMeshToProxy(group, proxy) {
-  if (!proxy) {
+function alignReviewMeshToProxy(group, bounds) {
+  if (!bounds) {
     return;
   }
   const rawBox = new THREE.Box3().setFromObject(group);
@@ -448,9 +453,9 @@ function alignReviewMeshToProxy(group, proxy) {
   const rawSize = new THREE.Vector3();
   rawBox.getSize(rawSize);
   const ratios = [
-    proxy.width_m / rawSize.x,
-    proxy.height_m / rawSize.y,
-    proxy.depth_m / rawSize.z,
+    bounds.width_m / rawSize.x,
+    bounds.height_m / rawSize.y,
+    bounds.depth_m / rawSize.z,
   ].filter((value) => Number.isFinite(value) && value > 0);
   if (!ratios.length) {
     return;
@@ -464,9 +469,9 @@ function alignReviewMeshToProxy(group, proxy) {
   fittedBox.getCenter(fittedCenter);
   group.position.add(
     new THREE.Vector3(
-      proxy.center_m.x - fittedCenter.x,
-      proxy.center_m.y - fittedCenter.y,
-      proxy.center_m.z - fittedCenter.z,
+      bounds.center_m.x - fittedCenter.x,
+      bounds.center_m.y - fittedCenter.y,
+      bounds.center_m.z - fittedCenter.z,
     ),
   );
 }
@@ -550,11 +555,21 @@ function renderDetailMeta() {
     return;
   }
 
-  const { asset, source_record: sourceRecord, current_source: currentSource, source_refs: refs, proxy_bounds: proxy } =
+  const {
+    asset,
+    source_record: sourceRecord,
+    current_source: currentSource,
+    source_refs: refs,
+    canonical_bounds: canonicalBounds,
+    proxy_bounds: proxy,
+  } =
     state.currentDetail;
+  const bounds = canonicalBounds || proxy;
   const modelPackNote = refs.model_pack
     ? `<p><strong>Model pack:</strong> <a href="${refs.model_pack.url}" target="_blank" rel="noreferrer">${refs.model_pack.format}</a></p>`
     : "<p><strong>Model pack:</strong> unresolved</p>";
+  const boundsSource = bounds.normalization_source || bounds.measurement_source || "unknown";
+  const boundsLabel = canonicalBounds ? "Canonical bounds" : "Proxy bounds";
 
   elements.detailMeta.innerHTML = `
     <div>
@@ -564,7 +579,8 @@ function renderDetailMeta() {
     <div class="inline-note">
       <p><strong>Prefab:</strong> <a href="${refs.prefab.url}" target="_blank" rel="noreferrer">source prefab</a></p>
       ${modelPackNote}
-      <p><strong>Proxy bounds:</strong> ${proxy.width_m.toFixed(3)} × ${proxy.height_m.toFixed(3)} × ${proxy.depth_m.toFixed(3)} m</p>
+      <p><strong>${boundsLabel}:</strong> ${bounds.width_m.toFixed(3)} × ${bounds.height_m.toFixed(3)} × ${bounds.depth_m.toFixed(3)} m</p>
+      <p><strong>Bounds source:</strong> ${boundsSource}</p>
     </div>
   `;
 }

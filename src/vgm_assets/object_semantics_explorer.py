@@ -360,6 +360,26 @@ def _proxy_bounds_for_selection_entry(
     raise ValueError(f"Unsupported asset_role {asset_role!r} for {selection_entry.get('asset_id')}")
 
 
+def _canonical_bounds_for_selection_entry(
+    *,
+    selection_entry: dict[str, Any],
+    prefab_path: Path,
+) -> dict[str, Any]:
+    bounds = deepcopy(
+        _proxy_bounds_for_selection_entry(
+            selection_entry=selection_entry,
+            prefab_path=prefab_path,
+        )
+    )
+    bounds["normalization_source"] = "ai2thor_prefab_collider"
+    bounds["review_display_source"] = "canonical"
+    bounds["notes"] = (
+        "Explorer v0 treats AI2-THOR prefab collider bounds as the canonical metric size for "
+        "review and review-mesh fitting."
+    )
+    return bounds
+
+
 def _source_refs_for_selection_entry(
     *,
     asset_id: str,
@@ -467,6 +487,10 @@ def get_object_semantics_asset_detail(
             asset_id=asset_id,
             selection_entry=selection_entry,
             source_repo_root=config.source_repo_root,
+        ),
+        "canonical_bounds": _canonical_bounds_for_selection_entry(
+            selection_entry=selection_entry,
+            prefab_path=prefab_path,
         ),
         "proxy_bounds": _proxy_bounds_for_selection_entry(
             selection_entry=selection_entry,

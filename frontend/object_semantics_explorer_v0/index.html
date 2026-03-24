@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Object Semantics Explorer v0</title>
+  </head>
+  <body>
+    <div id="app">
+      <aside class="sidebar">
+        <div class="panel-header">
+          <h1>Object Semantics Explorer</h1>
+          <p>AI2-THOR benchmark slice review</p>
+        </div>
+        <div id="asset-list" class="asset-list"></div>
+      </aside>
+      <main class="workspace">
+        <section class="viewer-shell">
+          <div class="viewer-toolbar">
+            <div>
+              <strong id="asset-title">Select an asset</strong>
+              <p id="asset-subtitle">Candidate and reviewed metadata stay separate.</p>
+            </div>
+            <button id="save-button" disabled>Save Reviewed Copy</button>
+          </div>
+          <div class="viewer-stack">
+            <canvas id="viewer-canvas"></canvas>
+            <div id="viewer-status" class="viewer-status"></div>
+          </div>
+        </section>
+        <section class="editor-shell">
+          <div id="detail-meta" class="detail-meta"></div>
+          <form id="editor-form" class="editor-form"></form>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+  </html>

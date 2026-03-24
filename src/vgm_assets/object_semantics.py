@@ -40,6 +40,17 @@ def validate_object_semantics_annotation_set(path: Path) -> dict:
     return validate_object_semantics_annotation_set_data(load_object_semantics_annotation_set(path))
 
 
+def validate_object_semantics_asset_record_data(payload: object) -> dict:
+    validated = validate_object_semantics_annotation_set_data(
+        {
+            "annotation_set_id": "object_semantics_record_validation",
+            "version": "object_semantics_annotation_set_v0",
+            "assets": [payload],
+        }
+    )
+    return validated["assets"][0]
+
+
 def write_object_semantics_annotation_set(payload: dict, output_path: Path) -> dict:
     validated = validate_object_semantics_annotation_set_data(payload)
     output_path.parent.mkdir(parents=True, exist_ok=True)

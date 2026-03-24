@@ -5,9 +5,9 @@
   "description": "Explorer v0 frontend scaffold for vgm-assets",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vite --config vite.object_semantics_explorer_v0.config.mjs",
+    "build": "vite build --config vite.object_semantics_explorer_v0.config.mjs",
+    "preview": "vite preview --config vite.object_semantics_explorer_v0.config.mjs"
   },
   "dependencies": {
     "three": "^0.179.1"

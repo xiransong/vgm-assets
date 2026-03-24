@@ -165,6 +165,34 @@ Refresh the Kenney catalog measurement report and manifest in one command:
 ./scripts/catalogs/refresh_living_room_kenney_v0.sh
 ```
 
+Run the Object Semantics Explorer v0 backend on EC2:
+
+```bash
+./scripts/explorer/run_object_semantics_explorer_v0.sh
+```
+
+Build the Object Semantics Explorer v0 frontend bundle:
+
+```bash
+PATH=/home/ubuntu/scratch/bin:$PATH \
+  npm_config_script_shell=/bin/bash \
+  npm run build
+```
+
+Run the Object Semantics Explorer v0 frontend in dev mode:
+
+```bash
+PATH=/home/ubuntu/scratch/bin:$PATH \
+  npm_config_script_shell=/bin/bash \
+  npm run dev
+```
+
+The backend serves the reviewed/candidate API on port `8000`. The Vite dev
+server runs on port `4173` and proxies `/api` back to the backend. `Explorer
+v0` currently renders prefab-derived proxy bounds and semantic overlays
+directly; exact per-asset AI2-THOR mesh extraction is intentionally left for a
+later pass because the nearby source FBX files are grouped model packs.
+
 Run the full Kenney `living_room_v0` refresh pipeline in one command:
 
 ```bash

@@ -60,6 +60,16 @@
     "notes": "First benchmark floor-lamp candidate with collider-derived canonical bounds and no support-surface semantics."
   },
   {
+    "selection_id": "ai2thor_object_semantics_armchair_201_master_v0",
+    "asset_role": "parent_object",
+    "category": "armchair",
+    "object_type": "Armchair",
+    "asset_id": "ai2thor_armchair_01",
+    "display_name": "AI2-THOR Armchair 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Living Room Objects/Armchair/Prefabs/Armchair_Master_Prefabs/Armchair_201_Master.prefab",
+    "notes": "First benchmark armchair candidate using a living-room master prefab with a usable bounding-box collider."
+  },
+  {
     "selection_id": "ai2thor_object_semantics_mug_01_v0",
     "asset_role": "child_object",
     "category": "mug",

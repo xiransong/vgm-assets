@@ -60,6 +60,7 @@ _PLACEMENT_STYLE_BY_CATEGORY = {
     "side_table": "scattered",
     "bookshelf": "grid_like",
     "tv_stand": "aligned_front",
+    "armchair": "centered",
     "sofa": "centered",
     "floor_lamp": "centered",
     "desk": "aligned_front",

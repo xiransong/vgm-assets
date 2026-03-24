@@ -120,7 +120,7 @@ def build_ai2thor_object_semantics_review_queue_data(
             queue_entry["needs_fix_targets_v0"] = needs_fix_targets
 
         if asset_role == "parent_object":
-            if category in {"tv_stand", "sofa", "floor_lamp"}:
+            if category in {"tv_stand", "sofa", "floor_lamp", "armchair"}:
                 living_room_anchor_entries.append(queue_entry)
             else:
                 support_parent_entries.append(queue_entry)
@@ -142,7 +142,7 @@ def build_ai2thor_object_semantics_review_queue_data(
         "status": _batch_status(living_room_anchor_entries),
         "recommended_session_asset_count": max(len(living_room_anchor_entries), 1),
         "asset_count": len(living_room_anchor_entries),
-        "notes": "Review larger living-room anchors together so sofa, TV-stand, and lighting judgments stay coherent across the wave.",
+        "notes": "Review larger living-room anchors together so sofa, armchair, TV-stand, and lighting judgments stay coherent across the wave.",
         "entries": living_room_anchor_entries,
     }
     child_batch = {

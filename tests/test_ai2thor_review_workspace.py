@@ -34,13 +34,14 @@ def test_refresh_ai2thor_object_semantics_review_workspace_writes_processed_arti
     assert queue_path.exists()
 
     candidate_payload = validate_object_semantics_annotation_set(candidate_path)
-    assert len(candidate_payload["assets"]) == 9
+    assert len(candidate_payload["assets"]) == 10
 
     queue_payload = validate_object_semantics_review_queue(queue_path)
-    assert queue_payload["item_count"] == 9
+    assert queue_payload["item_count"] == 10
     assert queue_payload["batch_count"] == 3
     assert queue_payload["batches"][0]["entries"][0]["asset_id"] == "ai2thor_coffee_table_01"
     assert queue_payload["batches"][1]["entries"][0]["asset_id"] == "ai2thor_tv_stand_01"
+    assert queue_payload["batches"][1]["entries"][-1]["asset_id"] == "ai2thor_armchair_01"
 
     monkeypatch.setenv("VGM_ASSETS_DATA_ROOT", str(data_root))
     config = default_object_semantics_explorer_config()

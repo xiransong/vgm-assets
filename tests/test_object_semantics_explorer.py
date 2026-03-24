@@ -54,6 +54,7 @@ def test_explorer_api_lists_assets_and_resolves_model_pack(tmp_path: Path) -> No
         "ai2thor_tv_stand_01",
         "ai2thor_sofa_01",
         "ai2thor_floor_lamp_01",
+        "ai2thor_armchair_01",
         "ai2thor_mug_01",
         "ai2thor_book_01",
         "ai2thor_bowl_01",

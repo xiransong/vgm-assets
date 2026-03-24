@@ -130,6 +130,17 @@ textarea {
   margin: 4px 0 0;
 }
 
+.viewer-heading {
+  min-width: 0;
+}
+
+.review-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .viewer-stack {
   position: relative;
   min-height: 620px;
@@ -161,6 +172,35 @@ textarea {
   padding: 18px;
   max-height: calc(100vh - 110px);
   overflow-y: auto;
+}
+
+.editor-form.is-hidden {
+  display: none;
+}
+
+.review-panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.review-panel-header p {
+  margin: 4px 0 0;
+}
+
+.advanced-toggle-row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .field-group {
@@ -216,6 +256,23 @@ button {
   cursor: pointer;
 }
 
+.review-button.accept {
+  background: #1d7c52;
+}
+
+.review-button.needs-fix {
+  background: #b7771f;
+}
+
+.review-button.reject {
+  background: var(--danger);
+}
+
+.secondary-button {
+  background: var(--panel-strong);
+  color: var(--ink);
+}
+
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -251,5 +308,11 @@ button:disabled {
   #viewer-canvas {
     min-height: 420px;
     height: 420px;
+  }
+
+  .review-actions,
+  .review-panel-header,
+  .advanced-toggle-row {
+    justify-content: flex-start;
   }
 }

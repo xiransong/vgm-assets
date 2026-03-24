@@ -12,6 +12,7 @@ const state = {
   currentDetail: null,
   workingAsset: null,
   renderToken: 0,
+  advancedVisible: false,
 };
 
 const elements = {
@@ -21,6 +22,12 @@ const elements = {
   detailMeta: document.getElementById("detail-meta"),
   editorForm: document.getElementById("editor-form"),
   saveButton: document.getElementById("save-button"),
+  acceptButton: document.getElementById("accept-button"),
+  needsFixButton: document.getElementById("needs-fix-button"),
+  rejectButton: document.getElementById("reject-button"),
+  quickReviewNotes: document.getElementById("quick-review-notes"),
+  reviewBadge: document.getElementById("review-badge"),
+  toggleAdvancedButton: document.getElementById("toggle-advanced-button"),
   viewerStatus: document.getElementById("viewer-status"),
   canvas: document.getElementById("viewer-canvas"),
 };
@@ -280,6 +287,23 @@ function renderViewer() {
     : "Explorer v0 is showing prefab-derived proxy geometry and overlays.";
 }
 
+function updateQuickReviewBadge() {
+  if (!state.workingAsset) {
+    elements.reviewBadge.textContent = "Not reviewed";
+    return;
+  }
+  const status = state.workingAsset.review_status || "auto";
+  const label =
+    status === "reviewed"
+      ? "Accepted"
+      : status === "rejected"
+        ? "Rejected"
+        : status === "uncertain"
+          ? "Needs Fix"
+          : "Auto";
+  elements.reviewBadge.textContent = label;
+}
+
 function loadReviewMeshAsset(url) {
   if (!reviewMeshCache.has(url)) {
     reviewMeshCache.set(url, fbxLoader.loadAsync(url));
@@ -459,10 +483,24 @@ function renderForm() {
   if (!state.workingAsset) {
     elements.editorForm.innerHTML = "";
     elements.saveButton.disabled = true;
+    elements.acceptButton.disabled = true;
+    elements.needsFixButton.disabled = true;
+    elements.rejectButton.disabled = true;
+    elements.quickReviewNotes.value = "";
+    updateQuickReviewBadge();
     return;
   }
 
   const asset = state.workingAsset;
+  elements.acceptButton.disabled = false;
+  elements.needsFixButton.disabled = false;
+  elements.rejectButton.disabled = false;
+  elements.quickReviewNotes.value = asset.review_notes || "";
+  updateQuickReviewBadge();
+  elements.toggleAdvancedButton.textContent = state.advancedVisible
+    ? "Hide Advanced Edits"
+    : "Show Advanced Edits";
+  elements.editorForm.classList.toggle("is-hidden", !state.advancedVisible);
   const bottom = asset.bottom_support_plane;
   const supportsSurfaceGroups = (asset.support_surfaces_v1 || [])
     .map(
@@ -539,10 +577,6 @@ function renderForm() {
         ${selectField("front-axis", "Front Axis", asset.front_axis, AXIS_OPTIONS)}
         ${selectField("up-axis", "Up Axis", asset.up_axis, AXIS_OPTIONS)}
         ${selectField("review-status", "Review Status", asset.review_status, REVIEW_STATUS_OPTIONS)}
-        <div class="field full">
-          <label for="review-notes">Review Notes</label>
-          <textarea id="review-notes">${asset.review_notes || ""}</textarea>
-        </div>
       </div>
     </section>
     <section class="field-group">
@@ -601,7 +635,7 @@ function updateAssetFromForm() {
   asset.front_axis = document.getElementById("front-axis").value;
   asset.up_axis = document.getElementById("up-axis").value;
   asset.review_status = document.getElementById("review-status").value;
-  asset.review_notes = document.getElementById("review-notes").value;
+  asset.review_notes = elements.quickReviewNotes.value;
 
   asset.bottom_support_plane.shape = document.getElementById("bottom-shape").value.trim();
   asset.bottom_support_plane.normal_axis = document.getElementById("bottom-normal-axis").value;
@@ -654,6 +688,77 @@ function updateAssetFromForm() {
   }
 
   renderViewer();
+  updateQuickReviewBadge();
+}
+
+function setNestedReviewStatus(value, node = state.workingAsset) {
+  if (!node || typeof node !== "object") {
+    return;
+  }
+  if (Object.prototype.hasOwnProperty.call(node, "review_status")) {
+    node.review_status = value;
+  }
+  if (Array.isArray(node)) {
+    node.forEach((item) => setNestedReviewStatus(value, item));
+    return;
+  }
+  Object.values(node).forEach((child) => {
+    if (child && typeof child === "object") {
+      setNestedReviewStatus(value, child);
+    }
+  });
+}
+
+async function saveCurrentAsset() {
+  if (!state.currentAssetId || !state.workingAsset) {
+    return;
+  }
+  const detail = await fetchJson(`/api/object-semantics/assets/${state.currentAssetId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(state.workingAsset),
+  });
+  state.currentDetail = detail;
+  state.workingAsset = structuredClone(detail.asset);
+  elements.assetSubtitle.textContent = `${detail.asset.asset_role} · ${detail.asset.category} · ${detail.current_source}`;
+  await loadAssets();
+  await loadAsset(state.currentAssetId);
+}
+
+async function applyQuickReview(status) {
+  if (!state.workingAsset) {
+    return;
+  }
+  if (state.advancedVisible) {
+    updateAssetFromForm();
+  } else {
+    state.workingAsset.review_notes = elements.quickReviewNotes.value;
+  }
+  if (status === "reviewed") {
+    setNestedReviewStatus("reviewed");
+  } else if (status === "uncertain") {
+    state.workingAsset.review_status = "uncertain";
+  } else if (status === "rejected") {
+    state.workingAsset.review_status = "rejected";
+  }
+  updateQuickReviewBadge();
+  const button =
+    status === "reviewed"
+      ? elements.acceptButton
+      : status === "uncertain"
+        ? elements.needsFixButton
+        : elements.rejectButton;
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = "Saving...";
+  try {
+    await saveCurrentAsset();
+  } catch (error) {
+    window.alert(`Save failed: ${error.message}`);
+  } finally {
+    button.disabled = false;
+    button.textContent = originalLabel;
+  }
 }
 
 function renderAssetList() {
@@ -699,6 +804,24 @@ async function loadAsset(assetId) {
 }
 
 elements.editorForm.addEventListener("input", updateAssetFromForm);
+elements.quickReviewNotes.addEventListener("input", () => {
+  if (state.workingAsset) {
+    state.workingAsset.review_notes = elements.quickReviewNotes.value;
+  }
+});
+elements.toggleAdvancedButton.addEventListener("click", () => {
+  state.advancedVisible = !state.advancedVisible;
+  renderForm();
+});
+elements.acceptButton.addEventListener("click", async () => {
+  await applyQuickReview("reviewed");
+});
+elements.needsFixButton.addEventListener("click", async () => {
+  await applyQuickReview("uncertain");
+});
+elements.rejectButton.addEventListener("click", async () => {
+  await applyQuickReview("rejected");
+});
 elements.saveButton.addEventListener("click", async () => {
   if (!state.currentAssetId || !state.workingAsset) {
     return;
@@ -707,21 +830,12 @@ elements.saveButton.addEventListener("click", async () => {
   elements.saveButton.disabled = true;
   elements.saveButton.textContent = "Saving...";
   try {
-    const detail = await fetchJson(`/api/object-semantics/assets/${state.currentAssetId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state.workingAsset),
-    });
-    state.currentDetail = detail;
-    state.workingAsset = structuredClone(detail.asset);
-    elements.assetSubtitle.textContent = `${detail.asset.asset_role} · ${detail.asset.category} · ${detail.current_source}`;
-    await loadAssets();
-    await loadAsset(state.currentAssetId);
+    await saveCurrentAsset();
   } catch (error) {
     window.alert(`Save failed: ${error.message}`);
   } finally {
     elements.saveButton.disabled = false;
-    elements.saveButton.textContent = "Save Reviewed Copy";
+    elements.saveButton.textContent = "Save Advanced Edits";
   }
 });
 

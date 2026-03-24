@@ -17,11 +17,15 @@
       <main class="workspace">
         <section class="viewer-shell">
           <div class="viewer-toolbar">
-            <div>
+            <div class="viewer-heading">
               <strong id="asset-title">Select an asset</strong>
               <p id="asset-subtitle">Candidate and reviewed metadata stay separate.</p>
             </div>
-            <button id="save-button" disabled>Save Reviewed Copy</button>
+            <div class="review-actions">
+              <button id="accept-button" class="review-button accept" disabled>Accept</button>
+              <button id="needs-fix-button" class="review-button needs-fix" disabled>Needs Fix</button>
+              <button id="reject-button" class="review-button reject" disabled>Reject</button>
+            </div>
           </div>
           <div class="viewer-stack">
             <canvas id="viewer-canvas"></canvas>
@@ -30,7 +34,24 @@
         </section>
         <section class="editor-shell">
           <div id="detail-meta" class="detail-meta"></div>
-          <form id="editor-form" class="editor-form"></form>
+          <div class="review-panel">
+            <div class="review-panel-header">
+              <div>
+                <strong>Review Decision</strong>
+                <p>AI2-THOR assets should usually be accepted or rejected quickly.</p>
+              </div>
+              <div id="review-badge" class="status-chip">Not reviewed</div>
+            </div>
+            <div class="field">
+              <label for="quick-review-notes">Reviewer Notes</label>
+              <textarea id="quick-review-notes" placeholder="Optional short note about the decision."></textarea>
+            </div>
+            <div class="advanced-toggle-row">
+              <button id="toggle-advanced-button" class="secondary-button" type="button">Show Advanced Edits</button>
+              <button id="save-button" class="secondary-button" type="button" disabled>Save Advanced Edits</button>
+            </div>
+          </div>
+          <form id="editor-form" class="editor-form is-hidden"></form>
         </section>
       </main>
     </div>

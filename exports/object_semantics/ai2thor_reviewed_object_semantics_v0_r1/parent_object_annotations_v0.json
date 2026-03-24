@@ -1,0 +1,66 @@
+{
+  "annotation_set_id": "ai2thor_reviewed_object_semantics_v0_r1_parents",
+  "version": "object_semantics_annotation_set_v0",
+  "notes": "Parent-object subset of the frozen reviewed-only object-semantics slice.",
+  "assets": [
+    {
+      "asset_id": "ai2thor_coffee_table_01",
+      "asset_role": "parent_object",
+      "category": "coffee_table",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.623983,
+        "depth_m": 0.626522,
+        "local_center_m": {
+          "x": 0,
+          "y": -0.001284,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "coffee_table",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Coffee_Table_201_Master.prefab. Support surfaces were derived from horizontal trigger colliders.",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "coffee_table_top",
+          "surface_class": "table_top",
+          "shape": "rectangle",
+          "width_m": 0.628192,
+          "depth_m": 0.626691,
+          "height_m": 0.593322,
+          "local_center_m": {
+            "x": 0,
+            "y": 0.593322,
+            "z": 0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "mug",
+            "book",
+            "bowl"
+          ],
+          "placement_style": "scattered",
+          "review_status": "reviewed"
+        }
+      ],
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    }
+  ]
+}

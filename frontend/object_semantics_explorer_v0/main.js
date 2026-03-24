@@ -661,6 +661,30 @@ function cloneReviewMeshObject(sourceObject, color) {
   return added > 0 ? root : null;
 }
 
+function normalizeMeshNodeName(name) {
+  return String(name || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function findReviewMeshNode(sourceScene, meshName) {
+  const exact = sourceScene.getObjectByName(meshName);
+  if (exact) {
+    return exact;
+  }
+  const normalizedTarget = normalizeMeshNodeName(meshName);
+  let match = null;
+  sourceScene.traverse((node) => {
+    if (match || !node.name) {
+      return;
+    }
+    if (normalizeMeshNodeName(node.name) === normalizedTarget) {
+      match = node;
+    }
+  });
+  return match;
+}
+
 function alignReviewMeshToProxy(group, bounds) {
   if (!bounds) {
     return;
@@ -700,7 +724,7 @@ async function loadReviewMeshGroup(reviewMesh) {
   const group = new THREE.Group();
   let added = 0;
   reviewMesh.mesh_instances.forEach((instance, index) => {
-    const sourceNode = sourceScene.getObjectByName(instance.mesh_name);
+    const sourceNode = findReviewMeshNode(sourceScene, instance.mesh_name);
     if (!sourceNode) {
       return;
     }

@@ -13,7 +13,7 @@ from .ai2thor_review_workspace import (
     ai2thor_object_semantics_reviewed_path,
     refresh_ai2thor_object_semantics_review_queue,
 )
-from .ai2thor_object_semantics import _measure_parent_prefab_bounds
+from .ai2thor_object_semantics import _measure_refined_parent_prefab_bounds
 from .object_semantics import (
     load_object_semantics_annotation_set,
     validate_object_semantics_annotation_set,
@@ -453,7 +453,10 @@ def _proxy_bounds_for_selection_entry(
 ) -> dict[str, Any]:
     asset_role = selection_entry.get("asset_role")
     if asset_role == "parent_object":
-        return _measure_parent_prefab_bounds(prefab_path)
+        return _measure_refined_parent_prefab_bounds(
+            prefab_path=prefab_path,
+            category=str(selection_entry["category"]),
+        )
     if asset_role == "child_object":
         return _measure_prefab_bounds(prefab_path)
     raise ValueError(f"Unsupported asset_role {asset_role!r} for {selection_entry.get('asset_id')}")

@@ -304,6 +304,34 @@ def _measure_parent_prefab_bounds(prefab_path: Path) -> dict[str, Any]:
     }
 
 
+def _clamp_parent_measurement_floor_contact(measurement: dict[str, Any]) -> dict[str, Any]:
+    min_y = float(measurement["min_corner_m"]["y"])
+    if min_y >= 0.0 or min_y < -0.02:
+        return measurement
+    height_m = float(measurement["height_m"])
+    min_corner_m = _vector_dict(
+        float(measurement["min_corner_m"]["x"]),
+        0.0,
+        float(measurement["min_corner_m"]["z"]),
+    )
+    max_corner_m = _vector_dict(
+        float(measurement["max_corner_m"]["x"]),
+        round(height_m, 6),
+        float(measurement["max_corner_m"]["z"]),
+    )
+    center_m = _vector_dict(
+        float(measurement["center_m"]["x"]),
+        round(height_m / 2.0, 6),
+        float(measurement["center_m"]["z"]),
+    )
+    corrected = dict(measurement)
+    corrected["center_m"] = center_m
+    corrected["min_corner_m"] = min_corner_m
+    corrected["max_corner_m"] = max_corner_m
+    corrected["floor_contact_clamped"] = True
+    return corrected
+
+
 def _parent_bottom_support_plane_from_measurement(measurement: dict[str, Any]) -> dict[str, Any]:
     width_m = float(measurement["width_m"])
     depth_m = float(measurement["depth_m"])
@@ -385,25 +413,53 @@ def _parent_measurement_is_implausibly_small(
     return width_m < (max_surface_width * 0.2) or depth_m < (max_surface_depth * 0.2)
 
 
-def _fallback_parent_bottom_support_plane_from_surfaces(
+def _fallback_parent_measurement_from_surfaces(
+    *,
+    category: str,
     measurement: dict[str, Any],
     surfaces: list[dict[str, Any]],
 ) -> dict[str, Any]:
     primary_surface = max(surfaces, key=lambda surface: float(surface["width_m"]) * float(surface["depth_m"]))
-    min_corner_m = measurement["min_corner_m"]
-    center_m = primary_surface["local_center_m"]
+    width_m = round(float(primary_surface["width_m"]), 6)
+    depth_m = round(float(primary_surface["depth_m"]), 6)
+    if category == "bookshelf":
+        height_m = round(max(float(primary_surface["height_m"]) * 4.0, 0.8), 6)
+    else:
+        height_m = round(max(float(primary_surface["height_m"]) / 0.75, float(primary_surface["height_m"]) + 0.2), 6)
+    center_x = float(primary_surface["local_center_m"]["x"])
+    center_z = float(primary_surface["local_center_m"]["z"])
+    min_y = 0.0
+    max_y = round(min_y + height_m, 6)
+    center_y = round((min_y + max_y) / 2.0, 6)
     return {
-        "shape": "rectangle",
-        "width_m": round(float(primary_surface["width_m"]), 6),
-        "depth_m": round(float(primary_surface["depth_m"]), 6),
-        "local_center_m": _vector_dict(
-            float(center_m["x"]),
-            float(min_corner_m["y"]),
-            float(center_m["z"]),
-        ),
-        "normal_axis": _normal_axis_for_bottom(),
-        "review_status": "uncertain",
+        "measurement_source": "support_surface_fallback",
+        "fallback_from": str(measurement["measurement_source"]),
+        "collider_count": int(measurement["collider_count"]),
+        "used_collider_count": int(measurement["used_collider_count"]),
+        "width_m": width_m,
+        "height_m": height_m,
+        "depth_m": depth_m,
+        "center_m": _vector_dict(center_x, center_y, center_z),
+        "min_corner_m": _vector_dict(center_x - (width_m / 2.0), min_y, center_z - (depth_m / 2.0)),
+        "max_corner_m": _vector_dict(center_x + (width_m / 2.0), max_y, center_z + (depth_m / 2.0)),
+        "upright_axis": "+y",
     }
+
+
+def _measure_refined_parent_prefab_bounds(
+    *,
+    prefab_path: Path,
+    category: str,
+) -> dict[str, Any]:
+    measurement = _clamp_parent_measurement_floor_contact(_measure_parent_prefab_bounds(prefab_path))
+    surface_candidates = _surface_candidates_from_prefab(prefab_path)
+    if _parent_measurement_is_implausibly_small(measurement, surface_candidates):
+        return _fallback_parent_measurement_from_surfaces(
+            category=category,
+            measurement=measurement,
+            surfaces=surface_candidates,
+        )
+    return measurement
 
 
 def _parent_annotation_from_selection_entry(
@@ -413,7 +469,10 @@ def _parent_annotation_from_selection_entry(
     supported_categories: list[str],
 ) -> dict[str, Any]:
     category = str(_require_entry(entry, "category"))
-    measurement = _measure_parent_prefab_bounds(prefab_path)
+    measurement = _measure_refined_parent_prefab_bounds(
+        prefab_path=prefab_path,
+        category=category,
+    )
     surfaces = _parent_surfaces_from_prefab(
         prefab_path=prefab_path,
         category=category,
@@ -422,16 +481,18 @@ def _parent_annotation_from_selection_entry(
     review_status = "auto"
     bottom_support_plane = _parent_bottom_support_plane_from_measurement(measurement)
     review_suffix = "Support surfaces were derived from horizontal trigger colliders."
-    if _parent_measurement_is_implausibly_small(measurement, surfaces):
-        bottom_support_plane = _fallback_parent_bottom_support_plane_from_surfaces(
-            measurement,
-            surfaces,
-        )
+    if measurement["measurement_source"] == "support_surface_fallback":
+        bottom_support_plane["review_status"] = "uncertain"
         review_status = "uncertain"
         review_suffix = (
-            "Support surfaces were derived from horizontal trigger colliders, and the bottom "
-            "support plane fell back to the largest seeded surface because the non-trigger "
-            "collider bounds looked implausibly small."
+            "Support surfaces were derived from horizontal trigger colliders, and the canonical "
+            "bounds fell back to the strongest seeded support surface because the prefab collider "
+            "bounds looked implausibly small."
+        )
+    elif measurement.get("floor_contact_clamped") is True:
+        review_suffix = (
+            "Support surfaces were derived from horizontal trigger colliders, and a small negative "
+            "floor-contact offset from the prefab collider seed was clamped to zero for review."
         )
     return {
         "asset_id": str(_require_entry(entry, "asset_id")),

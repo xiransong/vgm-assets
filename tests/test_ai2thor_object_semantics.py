@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from vgm_assets.ai2thor_object_semantics import write_ai2thor_object_semantics_candidates
+from vgm_assets.ai2thor_object_semantics import (
+    _measure_refined_parent_prefab_bounds,
+    write_ai2thor_object_semantics_candidates,
+)
 from vgm_assets.object_semantics import validate_object_semantics_annotation_set
 from vgm_assets.sources import _default_ai2thor_repo_root
 
@@ -41,6 +44,8 @@ def test_write_ai2thor_object_semantics_candidates_generates_valid_benchmark_sli
     assert bookshelf["review_status"] == "uncertain"
     assert bookshelf["bottom_support_plane"]["review_status"] == "uncertain"
     assert bookshelf["support_surfaces_v1"][0]["surface_type"] == "bookshelf_shelf"
+    assert bookshelf["bottom_support_plane"]["width_m"] == 1.0
+    assert bookshelf["bottom_support_plane"]["depth_m"] == 1.0
 
     mug = by_asset_id["ai2thor_mug_01"]
     assert mug["asset_role"] == "child_object"
@@ -52,3 +57,25 @@ def test_write_ai2thor_object_semantics_candidates_generates_valid_benchmark_sli
         "counter_top",
         "bookshelf_shelf",
     ]
+
+
+def test_refined_parent_measurement_clamps_side_table_floor_and_fixes_bookshelf_size() -> None:
+    ai2thor_root = _default_ai2thor_repo_root()
+    side_table_measurement = _measure_refined_parent_prefab_bounds(
+        prefab_path=ai2thor_root
+        / "unity/Assets/Physics/SimObjsPhysics/Common Objects/SideTable/Prefabs/Side_Table_Master_Prefabs/Side_Table_202_Master.prefab",
+        category="side_table",
+    )
+    assert side_table_measurement["measurement_source"] == "bounding_box_collider"
+    assert side_table_measurement["floor_contact_clamped"] is True
+    assert side_table_measurement["min_corner_m"]["y"] == 0.0
+
+    bookshelf_measurement = _measure_refined_parent_prefab_bounds(
+        prefab_path=ai2thor_root
+        / "unity/Assets/Physics/SimObjsPhysics/Entryway Objects/Furniture/StandingShelf.prefab",
+        category="bookshelf",
+    )
+    assert bookshelf_measurement["measurement_source"] == "support_surface_fallback"
+    assert bookshelf_measurement["width_m"] == 1.0
+    assert bookshelf_measurement["depth_m"] == 1.0
+    assert bookshelf_measurement["height_m"] >= 0.8

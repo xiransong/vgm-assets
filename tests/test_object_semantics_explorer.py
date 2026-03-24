@@ -109,3 +109,13 @@ def test_explorer_detail_exposes_canonical_bounds_and_source_refs(tmp_path: Path
     assert detail["canonical_bounds"]["measurement_source"] == "bounding_box_collider"
     assert detail["proxy_bounds"]["measurement_source"] == "bounding_box_collider"
     assert detail["canonical_bounds"]["width_m"] == detail["proxy_bounds"]["width_m"]
+
+
+def test_explorer_detail_uses_refined_parent_bounds_for_bookshelf(tmp_path: Path) -> None:
+    config = _explorer_fixture(tmp_path)
+    detail = get_object_semantics_asset_detail(config, "ai2thor_bookshelf_01")
+
+    assert detail["canonical_bounds"]["measurement_source"] == "support_surface_fallback"
+    assert detail["canonical_bounds"]["width_m"] == 1.0
+    assert detail["canonical_bounds"]["depth_m"] == 1.0
+    assert detail["canonical_bounds"]["height_m"] >= 0.8

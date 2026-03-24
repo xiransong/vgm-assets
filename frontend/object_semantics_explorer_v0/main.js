@@ -13,6 +13,8 @@ const state = {
   workingAsset: null,
   renderToken: 0,
   advancedVisible: false,
+  surfaceXRay: false,
+  visualLift: true,
 };
 
 const elements = {
@@ -25,6 +27,8 @@ const elements = {
   acceptButton: document.getElementById("accept-button"),
   needsFixButton: document.getElementById("needs-fix-button"),
   rejectButton: document.getElementById("reject-button"),
+  toggleXRayButton: document.getElementById("toggle-xray-button"),
+  toggleLiftButton: document.getElementById("toggle-lift-button"),
   quickReviewNotes: document.getElementById("quick-review-notes"),
   reviewBadge: document.getElementById("review-badge"),
   toggleAdvancedButton: document.getElementById("toggle-advanced-button"),
@@ -131,7 +135,12 @@ function addPlaneOverlay({
   color,
   opacity = 0.22,
   labelText = null,
+  displayOffsetSign = 1,
 }) {
+  const displayOffset = state.visualLift
+    ? axisVector(normalAxis).normalize().multiplyScalar(Math.max(Math.min(width, depth) * 0.025, 0.012) * displayOffsetSign)
+    : new THREE.Vector3(0, 0, 0);
+  const displayPosition = position.clone().add(displayOffset);
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(width, 0.01, depth),
     new THREE.MeshStandardMaterial({
@@ -142,26 +151,30 @@ function addPlaneOverlay({
       metalness: 0.0,
     }),
   );
-  mesh.position.copy(position);
-  mesh.quaternion.copy(planeQuaternion(normalAxis, frontAxis));
+  mesh.position.copy(displayPosition);
+  const quaternion = planeQuaternion(normalAxis, frontAxis);
+  mesh.quaternion.copy(quaternion);
   overlayRoot.add(mesh);
 
   const edges = new THREE.LineSegments(
     new THREE.EdgesGeometry(new THREE.BoxGeometry(width, 0.01, depth)),
     new THREE.LineBasicMaterial({ color }),
   );
-  edges.position.copy(position);
-  edges.quaternion.copy(mesh.quaternion);
+  edges.position.copy(displayPosition);
+  edges.quaternion.copy(quaternion);
   overlayRoot.add(edges);
 
   if (labelText) {
-    const sprite = makeTextSprite(labelText, color);
-    sprite.position.copy(position.clone().add(new THREE.Vector3(0, 0.05, 0)));
+    const sideDirection = new THREE.Vector3(1, 0, 0).applyQuaternion(quaternion).normalize();
+    const labelOffset = sideDirection.multiplyScalar(width / 2 + 0.08);
+    labelOffset.add(new THREE.Vector3(0, 0.025, 0));
+    const sprite = makeTextSprite(labelText, color, 0.22, 0.055);
+    sprite.position.copy(displayPosition.clone().add(labelOffset));
     overlayRoot.add(sprite);
   }
 }
 
-function makeTextSprite(text, color) {
+function makeTextSprite(text, color, width = 0.45, height = 0.11) {
   const canvas = document.createElement("canvas");
   canvas.width = 512;
   canvas.height = 128;
@@ -179,12 +192,84 @@ function makeTextSprite(text, color) {
   const texture = new THREE.CanvasTexture(canvas);
   const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.set(0.45, 0.11, 1);
+  sprite.scale.set(width, height, 1);
   return sprite;
+}
+
+function axisHalfExtent(axis, proxy) {
+  switch (axis) {
+    case "+x":
+    case "-x":
+      return proxy.width_m / 2;
+    case "+y":
+    case "-y":
+      return proxy.height_m / 2;
+    case "+z":
+    case "-z":
+      return proxy.depth_m / 2;
+    default:
+      return Math.max(proxy.width_m, proxy.height_m, proxy.depth_m) / 2;
+  }
+}
+
+function addAxisArrowOverlay({
+  origin,
+  axis,
+  length,
+  color,
+  label,
+}) {
+  const direction = axisVector(axis).normalize();
+  const arrow = new THREE.ArrowHelper(direction, origin, length, color, length * 0.18, length * 0.1);
+  overlayRoot.add(arrow);
+  const labelSprite = makeTextSprite(label, color, 0.18, 0.05);
+  labelSprite.position.copy(
+    origin.clone().add(direction.multiplyScalar(length + 0.08)),
+  );
+  overlayRoot.add(labelSprite);
+}
+
+function addObjectAxisOverlays(proxy, asset) {
+  if (!proxy) {
+    return;
+  }
+  const center = new THREE.Vector3(proxy.center_m.x, proxy.center_m.y, proxy.center_m.z);
+  const maxExtent = Math.max(proxy.width_m, proxy.height_m, proxy.depth_m);
+  const outwardGap = Math.max(maxExtent * 0.08, 0.03);
+
+  const frontDirection = axisVector(asset.front_axis).normalize();
+  const frontOrigin = center.clone().add(
+    frontDirection.clone().multiplyScalar(axisHalfExtent(asset.front_axis, proxy) + outwardGap),
+  );
+  addAxisArrowOverlay({
+    origin: frontOrigin,
+    axis: asset.front_axis,
+    length: Math.max(maxExtent * 0.3, 0.12),
+    color: 0xdc2626,
+    label: "front",
+  });
+
+  const upDirection = axisVector(asset.up_axis).normalize();
+  const upOrigin = center.clone().add(
+    upDirection.clone().multiplyScalar(axisHalfExtent(asset.up_axis, proxy) + outwardGap),
+  );
+  addAxisArrowOverlay({
+    origin: upOrigin,
+    axis: asset.up_axis,
+    length: Math.max(maxExtent * 0.24, 0.1),
+    color: 0x2563eb,
+    label: "up",
+  });
+}
+
+function updateViewerToggleLabels() {
+  elements.toggleXRayButton.textContent = `Surface X-ray: ${state.surfaceXRay ? "On" : "Off"}`;
+  elements.toggleLiftButton.textContent = `Visual Lift: ${state.visualLift ? "On" : "Off"}`;
 }
 
 function renderViewer() {
   const renderToken = ++state.renderToken;
+  updateViewerToggleLabels();
   clearGroup(overlayRoot);
   if (!state.currentDetail || !state.workingAsset) {
     elements.viewerStatus.textContent = "Select an asset to inspect its candidate semantics.";
@@ -210,6 +295,7 @@ function renderViewer() {
     );
     proxyEdges.position.copy(proxyBox.position);
     overlayRoot.add(proxyEdges);
+    addObjectAxisOverlays(proxy, state.workingAsset);
   }
 
   const bottom = state.workingAsset.bottom_support_plane;
@@ -226,6 +312,7 @@ function renderViewer() {
     color: 0x0c6c66,
     opacity: 0.28,
     labelText: "bottom",
+    displayOffsetSign: -1,
   });
 
   const surfaces = state.workingAsset.support_surfaces_v1 || [];
@@ -314,6 +401,9 @@ function loadReviewMeshAsset(url) {
 function makeReviewMaterial(color) {
   return new THREE.MeshStandardMaterial({
     color,
+    transparent: state.surfaceXRay,
+    opacity: state.surfaceXRay ? 0.28 : 1.0,
+    depthWrite: !state.surfaceXRay,
     roughness: 0.82,
     metalness: 0.05,
     flatShading: false,
@@ -812,6 +902,14 @@ elements.quickReviewNotes.addEventListener("input", () => {
 elements.toggleAdvancedButton.addEventListener("click", () => {
   state.advancedVisible = !state.advancedVisible;
   renderForm();
+});
+elements.toggleXRayButton.addEventListener("click", () => {
+  state.surfaceXRay = !state.surfaceXRay;
+  renderViewer();
+});
+elements.toggleLiftButton.addEventListener("click", () => {
+  state.visualLift = !state.visualLift;
+  renderViewer();
 });
 elements.acceptButton.addEventListener("click", async () => {
   await applyQuickReview("reviewed");

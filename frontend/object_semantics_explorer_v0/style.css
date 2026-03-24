@@ -141,6 +141,10 @@ textarea {
   justify-content: flex-end;
 }
 
+.review-toggle {
+  white-space: nowrap;
+}
+
 .viewer-stack {
   position: relative;
   min-height: 620px;

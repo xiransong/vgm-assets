@@ -1,0 +1,340 @@
+{
+  "annotation_set_id": "ai2thor_reviewed_object_semantics_v0_r2_reviewed",
+  "version": "object_semantics_annotation_set_v0",
+  "notes": "Frozen reviewed-only object-semantics slice promoted from the processed AI2-THOR review workspace. Only assets with annotation review_status=reviewed and queue_status=reviewed are included.",
+  "assets": [
+    {
+      "asset_id": "ai2thor_coffee_table_01",
+      "asset_role": "parent_object",
+      "category": "coffee_table",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.623983,
+        "depth_m": 0.626522,
+        "local_center_m": {
+          "x": 0,
+          "y": -0.001284,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "coffee_table",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Coffee_Table_201_Master.prefab. Support surfaces were derived from horizontal trigger colliders.",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "coffee_table_top",
+          "surface_class": "table_top",
+          "shape": "rectangle",
+          "width_m": 0.628192,
+          "depth_m": 0.626691,
+          "height_m": 0.593322,
+          "local_center_m": {
+            "x": 0,
+            "y": 0.593322,
+            "z": 0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "mug",
+            "book",
+            "bowl"
+          ],
+          "placement_style": "scattered",
+          "review_status": "reviewed"
+        }
+      ],
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_tv_stand_01",
+      "asset_role": "parent_object",
+      "category": "tv_stand",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 1.04314,
+        "depth_m": 0.67819,
+        "local_center_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "tv_stand",
+      "review_status": "reviewed",
+      "review_notes": "adjust the height of the support surface",
+      "supports_objects": true,
+      "support_surfaces_v1": [
+        {
+          "surface_id": "top",
+          "surface_type": "tv_stand_top",
+          "surface_class": "tv_stand_top",
+          "shape": "rectangle",
+          "width_m": 1,
+          "depth_m": 0.658149,
+          "height_m": 0.738,
+          "local_center_m": {
+            "x": 0,
+            "y": 0.738,
+            "z": 0
+          },
+          "normal_axis": "+y",
+          "front_axis": "+z",
+          "usable_margin_m": 0.03,
+          "supports_categories": [
+            "mug",
+            "book",
+            "bowl"
+          ],
+          "placement_style": "aligned_front",
+          "review_status": "reviewed"
+        }
+      ],
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_sofa_01",
+      "asset_role": "parent_object",
+      "category": "sofa",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 2.611518,
+        "depth_m": 1.063452,
+        "local_center_m": {
+          "x": 0,
+          "y": 0,
+          "z": -0.031726
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "sofa",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Sofa_201_Master.prefab. Support surfaces were derived from horizontal trigger colliders, and a small negative floor-contact offset from the prefab collider seed was clamped to zero for review.",
+      "supports_objects": false,
+      "support_surfaces_v1": [],
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_floor_lamp_01",
+      "asset_role": "parent_object",
+      "category": "floor_lamp",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.498811,
+        "depth_m": 0.498824,
+        "local_center_m": {
+          "x": 0.003699,
+          "y": 0,
+          "z": 0.003692
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "floor_lamp",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Floor_Lamp_1.prefab. Support surfaces were derived from horizontal trigger colliders, and a small negative floor-contact offset from the prefab collider seed was clamped to zero for review.",
+      "supports_objects": false,
+      "support_surfaces_v1": [],
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_mug_01",
+      "asset_role": "child_object",
+      "category": "mug",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.144491,
+        "depth_m": 0.144491,
+        "local_center_m": {
+          "x": -0.012402,
+          "y": 0,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "mug",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Mug_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.144491,
+        "base_depth_m": 0.144491,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "asset_role": "child_object",
+      "category": "book",
+      "front_axis": "+x",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.44489,
+        "depth_m": 0.342402,
+        "local_center_m": {
+          "x": -0.003935,
+          "y": -0.00439,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "book",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Book_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "rectangle",
+        "base_width_m": 0.44489,
+        "base_depth_m": 0.342402,
+        "support_margin_m": 0.01,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "grid_like"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_bowl_01",
+      "asset_role": "child_object",
+      "category": "bowl",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.200663,
+        "depth_m": 0.200663,
+        "local_center_m": {
+          "x": 0.000115,
+          "y": -0.00162,
+          "z": 0.000414
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "bowl",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Bowl_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.200663,
+        "base_depth_m": 0.200663,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    }
+  ]
+}

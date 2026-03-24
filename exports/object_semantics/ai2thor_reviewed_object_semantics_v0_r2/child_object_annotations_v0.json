@@ -1,0 +1,154 @@
+{
+  "annotation_set_id": "ai2thor_reviewed_object_semantics_v0_r2_children",
+  "version": "object_semantics_annotation_set_v0",
+  "notes": "Child-object subset of the frozen reviewed-only object-semantics slice.",
+  "assets": [
+    {
+      "asset_id": "ai2thor_mug_01",
+      "asset_role": "child_object",
+      "category": "mug",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.144491,
+        "depth_m": 0.144491,
+        "local_center_m": {
+          "x": -0.012402,
+          "y": 0,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "mug",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Mug_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.144491,
+        "base_depth_m": 0.144491,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_book_01",
+      "asset_role": "child_object",
+      "category": "book",
+      "front_axis": "+x",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "rectangle",
+        "width_m": 0.44489,
+        "depth_m": 0.342402,
+        "local_center_m": {
+          "x": -0.003935,
+          "y": -0.00439,
+          "z": 0
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "book",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Book_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "rectangle",
+        "base_width_m": 0.44489,
+        "base_depth_m": 0.342402,
+        "support_margin_m": 0.01,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "grid_like"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    },
+    {
+      "asset_id": "ai2thor_bowl_01",
+      "asset_role": "child_object",
+      "category": "bowl",
+      "front_axis": "+z",
+      "up_axis": "+y",
+      "bottom_support_plane": {
+        "shape": "circle",
+        "width_m": 0.200663,
+        "depth_m": 0.200663,
+        "local_center_m": {
+          "x": 0.000115,
+          "y": -0.00162,
+          "z": 0.000414
+        },
+        "normal_axis": "+y",
+        "review_status": "reviewed"
+      },
+      "placement_class": "bowl",
+      "review_status": "reviewed",
+      "review_notes": "AI2-THOR candidate annotation seeded from Bowl_1.prefab using bounding_box_collider and PlacementRestrictions.txt.",
+      "child_placement": {
+        "base_shape": "circle",
+        "base_width_m": 0.200663,
+        "base_depth_m": 0.200663,
+        "support_margin_m": 0.015,
+        "allowed_surface_types": [
+          "desk_top",
+          "tv_stand_top",
+          "coffee_table_top",
+          "side_table_top",
+          "counter_top",
+          "bookshelf_shelf"
+        ],
+        "upright_axis": "+y",
+        "stable_support_required": true,
+        "placement_style": "scattered"
+      },
+      "review_scope_v0": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ],
+      "needs_fix_targets_v0": []
+    }
+  ]
+}

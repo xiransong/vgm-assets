@@ -1,6 +1,7 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 const AXIS_OPTIONS = ["+x", "-x", "+y", "-y", "+z", "-z"];
 const REVIEW_STATUS_OPTIONS = ["auto", "reviewed", "uncertain", "rejected"];
@@ -10,6 +11,7 @@ const state = {
   currentAssetId: null,
   currentDetail: null,
   workingAsset: null,
+  renderToken: 0,
 };
 
 const elements = {
@@ -32,6 +34,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 100);
 camera.position.set(1.6, 1.3, 1.8);
+const fbxLoader = new FBXLoader();
+const reviewMeshCache = new Map();
 
 const controls = new OrbitControls(camera, elements.canvas);
 controls.enableDamping = true;
@@ -75,7 +79,7 @@ async function fetchJson(url, options = {}) {
 
 function clearGroup(group) {
   while (group.children.length) {
-    const child = group.children.pop();
+    const child = group.children[group.children.length - 1];
     group.remove(child);
   }
 }
@@ -173,6 +177,7 @@ function makeTextSprite(text, color) {
 }
 
 function renderViewer() {
+  const renderToken = ++state.renderToken;
   clearGroup(overlayRoot);
   if (!state.currentDetail || !state.workingAsset) {
     elements.viewerStatus.textContent = "Select an asset to inspect its candidate semantics.";
@@ -242,10 +247,115 @@ function renderViewer() {
   controls.target.set(0, height * 0.45, 0);
   controls.update();
 
+  const reviewMesh = state.currentDetail.source_refs.review_mesh;
+  if (reviewMesh) {
+    elements.viewerStatus.textContent = "Loading review mesh from the AI2-THOR grouped source asset...";
+    loadReviewMeshGroup(reviewMesh)
+      .then((group) => {
+        if (renderToken !== state.renderToken) {
+          return;
+        }
+        if (group) {
+          overlayRoot.add(group);
+          elements.viewerStatus.textContent =
+            "Showing the real review mesh together with support and bottom-plane overlays.";
+        } else {
+          elements.viewerStatus.textContent =
+            "Review mesh selection could not be resolved, so Explorer v0 is showing proxy geometry and overlays.";
+        }
+      })
+      .catch((error) => {
+        if (renderToken !== state.renderToken) {
+          return;
+        }
+        elements.viewerStatus.textContent = `Review mesh load failed, falling back to proxy geometry: ${error.message}`;
+      });
+    return;
+  }
+
   const modelPack = state.currentDetail.source_refs.model_pack;
   elements.viewerStatus.textContent = modelPack
-    ? "Explorer v0 is showing prefab-derived proxy geometry and overlays. Exact per-asset AI2-THOR mesh extraction is still pending because the nearby FBX files are grouped packs."
+    ? "Explorer v0 is showing prefab-derived proxy geometry because no review-mesh selection was resolved for this asset."
     : "Explorer v0 is showing prefab-derived proxy geometry and overlays.";
+}
+
+function loadReviewMeshAsset(url) {
+  if (!reviewMeshCache.has(url)) {
+    reviewMeshCache.set(url, fbxLoader.loadAsync(url));
+  }
+  return reviewMeshCache.get(url);
+}
+
+function makeReviewMaterial(color) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.82,
+    metalness: 0.05,
+    flatShading: false,
+  });
+}
+
+function cloneReviewMeshObject(sourceObject, color) {
+  const root = new THREE.Group();
+  let added = 0;
+  sourceObject.traverse((child) => {
+    if (!child.isMesh || !child.geometry) {
+      return;
+    }
+    const mesh = new THREE.Mesh(child.geometry.clone(), makeReviewMaterial(color));
+    mesh.castShadow = false;
+    mesh.receiveShadow = false;
+    mesh.position.copy(child.position);
+    mesh.quaternion.copy(child.quaternion);
+    mesh.scale.copy(child.scale);
+    root.add(mesh);
+    added += 1;
+  });
+  if (added === 0 && sourceObject.isMesh && sourceObject.geometry) {
+    const mesh = new THREE.Mesh(sourceObject.geometry.clone(), makeReviewMaterial(color));
+    mesh.position.copy(sourceObject.position);
+    mesh.quaternion.copy(sourceObject.quaternion);
+    mesh.scale.copy(sourceObject.scale);
+    root.add(mesh);
+    added += 1;
+  }
+  return added > 0 ? root : null;
+}
+
+async function loadReviewMeshGroup(reviewMesh) {
+  const sourceScene = await loadReviewMeshAsset(reviewMesh.url);
+  const group = new THREE.Group();
+  let added = 0;
+  reviewMesh.mesh_instances.forEach((instance, index) => {
+    const sourceNode = sourceScene.getObjectByName(instance.mesh_name);
+    if (!sourceNode) {
+      return;
+    }
+    const clone = cloneReviewMeshObject(sourceNode, index % 2 === 0 ? 0xb9a175 : 0x8790a8);
+    if (!clone) {
+      return;
+    }
+    clone.position.set(
+      instance.local_position_m.x,
+      instance.local_position_m.y,
+      instance.local_position_m.z,
+    );
+    clone.quaternion.set(
+      instance.local_rotation_xyzw.x,
+      instance.local_rotation_xyzw.y,
+      instance.local_rotation_xyzw.z,
+      instance.local_rotation_xyzw.w,
+    );
+    clone.scale.set(
+      instance.local_scale.x,
+      instance.local_scale.y,
+      instance.local_scale.z,
+    );
+    clone.name = instance.mesh_name;
+    group.add(clone);
+    added += 1;
+  });
+  return added > 0 ? group : null;
 }
 
 function makeOptionList(options, currentValue) {

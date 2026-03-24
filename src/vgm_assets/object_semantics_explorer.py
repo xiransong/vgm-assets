@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
+import re
 from typing import Any
 
 from .ai2thor_object_semantics import _measure_parent_prefab_bounds
@@ -14,7 +16,13 @@ from .object_semantics import (
 )
 from .protocol import load_json, repo_root
 from .sources import _default_ai2thor_repo_root, load_selection_list
-from .support_clutter import _measure_prefab_bounds
+from .support_clutter import (
+    _parse_game_object_file_id,
+    _parse_scalar,
+    _parse_unity_prefab_documents,
+    _parse_vector3,
+    _measure_prefab_bounds,
+)
 
 DEFAULT_CANDIDATE_ANNOTATIONS = (
     Path("catalogs") / "object_semantics_v0" / "ai2thor_candidate_annotations_v0.json"
@@ -24,6 +32,13 @@ DEFAULT_REVIEWED_ANNOTATIONS = (
 )
 DEFAULT_SELECTION_PATH = Path("sources") / "ai2thor" / "object_semantics_selection_v0.json"
 DEFAULT_FRONTEND_DIST = Path("frontend_dist") / "object_semantics_explorer_v0"
+
+_MESH_REF_RE = re.compile(
+    r"^\s*m_Mesh:\s+\{fileID:\s*(?P<file_id>-?\d+),\s*guid:\s*(?P<guid>[0-9a-f]{32}),\s*type:\s*(?P<type>\d+)\}\s*$"
+)
+_VECTOR4_RE = re.compile(
+    r"^\s*(?P<key>[A-Za-z0-9_]+):\s+\{x:\s*(?P<x>[^,]+),\s*y:\s*(?P<y>[^,]+),\s*z:\s*(?P<z>[^,]+),\s*w:\s*(?P<w>[^}]+)\}\s*$"
+)
 
 
 @dataclass(frozen=True)
@@ -104,6 +119,209 @@ def _source_prefab_path(selection_entry: dict[str, Any], source_repo_root: Path)
     return (source_repo_root / source_prefab_rel).resolve()
 
 
+def _parse_vector4(lines: list[str], key: str) -> tuple[float, float, float, float] | None:
+    prefix = f"{key}:"
+    for index, line in enumerate(lines):
+        if not line.lstrip().startswith(prefix):
+            continue
+        candidate = line
+        if index + 1 < len(lines) and "w:" not in candidate and lines[index + 1].lstrip().startswith("w:"):
+            candidate = f"{candidate.strip()} {lines[index + 1].strip()}"
+        match = _VECTOR4_RE.match(candidate)
+        if match is None:
+            raise ValueError(f"Malformed vector4 line for {key}: {candidate}")
+        return (
+            float(match.group("x")),
+            float(match.group("y")),
+            float(match.group("z")),
+            float(match.group("w")),
+        )
+    return None
+
+
+def _parse_mesh_ref(lines: list[str]) -> dict[str, str] | None:
+    for line in lines:
+        match = _MESH_REF_RE.match(line)
+        if match is not None:
+            return {
+                "file_id": match.group("file_id"),
+                "guid": match.group("guid"),
+                "type": match.group("type"),
+            }
+    return None
+
+
+@lru_cache(maxsize=2)
+def _meta_path_by_guid(source_repo_root: Path) -> dict[str, Path]:
+    mapping: dict[str, Path] = {}
+    for meta_path in source_repo_root.rglob("*.meta"):
+        try:
+            with meta_path.open("r", encoding="utf-8") as handle:
+                first_lines = [next(handle).rstrip("\n") for _ in range(6)]
+        except (OSError, StopIteration):
+            try:
+                text = meta_path.read_text(encoding="utf-8")
+            except OSError:
+                continue
+            first_lines = text.splitlines()[:6]
+        for line in first_lines:
+            if not line.startswith("guid: "):
+                continue
+            guid = line.split(":", 1)[1].strip()
+            if len(guid) == 32 and guid not in mapping:
+                mapping[guid] = meta_path.resolve()
+            break
+    return mapping
+
+
+@lru_cache(maxsize=32)
+def _unity_meta_file_id_name_map(meta_path: Path) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    in_table = False
+    for raw_line in meta_path.read_text(encoding="utf-8").splitlines():
+        if raw_line.startswith("  fileIDToRecycleName:"):
+            in_table = True
+            continue
+        if not in_table:
+            continue
+        if not raw_line.startswith("    "):
+            break
+        line = raw_line.strip()
+        if ":" not in line:
+            continue
+        file_id, name = line.split(":", 1)
+        mapping[file_id.strip()] = name.strip()
+    return mapping
+
+
+def _extract_prefab_mesh_records(prefab_path: Path) -> list[dict[str, Any]]:
+    documents = _parse_unity_prefab_documents(prefab_path)
+    game_objects: dict[str, dict[str, Any]] = {}
+    transforms: dict[str, dict[str, Any]] = {}
+    mesh_filters: list[dict[str, Any]] = []
+
+    for document in documents:
+        lines = document["lines"]
+        type_id = document["type_id"]
+        file_id = document["file_id"]
+        if type_id == 1:
+            game_objects[file_id] = {
+                "name": _parse_scalar(lines, "m_Name") or "",
+                "active": (_parse_scalar(lines, "m_IsActive") or "1") == "1",
+            }
+        elif type_id == 4:
+            game_object_id = _parse_game_object_file_id(lines)
+            if game_object_id is None:
+                continue
+            transforms[game_object_id] = {
+                "local_position": _parse_vector3(lines, "m_LocalPosition") or (0.0, 0.0, 0.0),
+                "local_scale": _parse_vector3(lines, "m_LocalScale") or (1.0, 1.0, 1.0),
+                "local_rotation": _parse_vector4(lines, "m_LocalRotation") or (0.0, 0.0, 0.0, 1.0),
+            }
+        elif type_id == 33:
+            game_object_id = _parse_game_object_file_id(lines)
+            mesh_ref = _parse_mesh_ref(lines)
+            if game_object_id is None or mesh_ref is None:
+                continue
+            mesh_filters.append(
+                {
+                    "mesh_filter_file_id": file_id,
+                    "game_object_id": game_object_id,
+                    "mesh_ref": mesh_ref,
+                }
+            )
+
+    records: list[dict[str, Any]] = []
+    for mesh_filter in mesh_filters:
+        game_object = game_objects.get(mesh_filter["game_object_id"], {"name": "", "active": True})
+        transform = transforms.get(
+            mesh_filter["game_object_id"],
+            {
+                "local_position": (0.0, 0.0, 0.0),
+                "local_scale": (1.0, 1.0, 1.0),
+                "local_rotation": (0.0, 0.0, 0.0, 1.0),
+            },
+        )
+        records.append(
+            {
+                "game_object_name": game_object["name"],
+                "game_object_id": mesh_filter["game_object_id"],
+                "mesh_file_id": mesh_filter["mesh_ref"]["file_id"],
+                "mesh_guid": mesh_filter["mesh_ref"]["guid"],
+                "mesh_type": mesh_filter["mesh_ref"]["type"],
+                "local_position": transform["local_position"],
+                "local_scale": transform["local_scale"],
+                "local_rotation": transform["local_rotation"],
+                "active": bool(game_object["active"]),
+            }
+        )
+    return records
+
+
+def _review_mesh_payload_for_prefab(
+    *,
+    prefab_path: Path,
+    source_repo_root: Path,
+    asset_id: str,
+) -> dict[str, Any] | None:
+    mesh_records = [record for record in _extract_prefab_mesh_records(prefab_path) if record["active"]]
+    if not mesh_records:
+        return None
+
+    guid_to_meta_path = _meta_path_by_guid(source_repo_root)
+    instances: list[dict[str, Any]] = []
+    model_pack_path: Path | None = None
+
+    for record in mesh_records:
+        meta_path = guid_to_meta_path.get(record["mesh_guid"])
+        if meta_path is None:
+            continue
+        file_id_name_map = _unity_meta_file_id_name_map(meta_path)
+        mesh_name = file_id_name_map.get(record["mesh_file_id"])
+        if not mesh_name:
+            continue
+        pack_path = meta_path.with_suffix("")
+        if not pack_path.exists():
+            continue
+        if model_pack_path is None:
+            model_pack_path = pack_path
+        elif model_pack_path != pack_path:
+            return None
+        instances.append(
+            {
+                "mesh_name": mesh_name,
+                "mesh_file_id": record["mesh_file_id"],
+                "game_object_name": record["game_object_name"],
+                "local_position_m": {
+                    "x": round(record["local_position"][0], 6),
+                    "y": round(record["local_position"][1], 6),
+                    "z": round(record["local_position"][2], 6),
+                },
+                "local_scale": {
+                    "x": round(record["local_scale"][0], 6),
+                    "y": round(record["local_scale"][1], 6),
+                    "z": round(record["local_scale"][2], 6),
+                },
+                "local_rotation_xyzw": {
+                    "x": round(record["local_rotation"][0], 6),
+                    "y": round(record["local_rotation"][1], 6),
+                    "z": round(record["local_rotation"][2], 6),
+                    "w": round(record["local_rotation"][3], 6),
+                },
+            }
+        )
+
+    if model_pack_path is None or not instances:
+        return None
+    return {
+        "format": model_pack_path.suffix.lstrip(".") or "bin",
+        "path": str(model_pack_path),
+        "url": f"/api/object-semantics/assets/{asset_id}/source-file/review-mesh",
+        "mesh_instances": instances,
+        "note": "Explorer v0 loads the grouped AI2-THOR source asset and keeps only the mesh nodes referenced by the prefab.",
+    }
+
+
 def _model_pack_path_for_prefab(prefab_path: Path) -> Path | None:
     seen: set[Path] = set()
     for ancestor in prefab_path.parents:
@@ -151,6 +369,11 @@ def _source_refs_for_selection_entry(
     prefab_path = _source_prefab_path(selection_entry, source_repo_root)
     model_pack_path = _model_pack_path_for_prefab(prefab_path)
     preview_path = _preview_path_for_prefab(prefab_path)
+    review_mesh = _review_mesh_payload_for_prefab(
+        prefab_path=prefab_path,
+        source_repo_root=source_repo_root,
+        asset_id=asset_id,
+    )
 
     refs: dict[str, Any] = {
         "prefab": {
@@ -162,6 +385,7 @@ def _source_refs_for_selection_entry(
         "mesh": None,
         "model_pack": None,
         "preview": None,
+        "review_mesh": review_mesh,
     }
     if model_pack_path is not None:
         refs["model_pack"] = {
@@ -208,6 +432,7 @@ def list_object_semantics_assets(config: ObjectSemanticsExplorerConfig) -> list[
                 "has_reviewed_override": asset_id in reviewed_map,
                 "has_preview": source_refs["preview"] is not None,
                 "has_model_pack": source_refs["model_pack"] is not None,
+                "has_review_mesh": source_refs["review_mesh"] is not None,
             }
         )
     return summaries
@@ -305,6 +530,15 @@ def source_file_path_for_asset(
 
     if kind == "prefab":
         return prefab_path
+    if kind == "review-mesh":
+        review_mesh = _review_mesh_payload_for_prefab(
+            prefab_path=prefab_path,
+            source_repo_root=config.source_repo_root,
+            asset_id=asset_id,
+        )
+        if review_mesh is None:
+            raise FileNotFoundError(f"No review-mesh source file could be resolved for {asset_id}")
+        return Path(str(review_mesh["path"]))
     if kind == "model-pack":
         model_pack_path = _model_pack_path_for_prefab(prefab_path)
         if model_pack_path is None:

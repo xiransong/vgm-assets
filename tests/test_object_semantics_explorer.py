@@ -42,6 +42,7 @@ def test_explorer_api_lists_assets_and_resolves_model_pack(tmp_path: Path) -> No
         "ai2thor_bowl_01",
     ]
     assert payload["assets"][0]["has_model_pack"] is True
+    assert payload["assets"][0]["has_review_mesh"] is True
     assert payload["assets"][0]["has_reviewed_override"] is False
 
 
@@ -76,4 +77,5 @@ def test_explorer_detail_exposes_proxy_bounds_and_source_refs(tmp_path: Path) ->
 
     assert detail["source_refs"]["prefab"]["exists"] is True
     assert detail["source_refs"]["model_pack"]["format"] == "fbx"
+    assert detail["source_refs"]["review_mesh"]["mesh_instances"][0]["mesh_name"] == "mug_1"
     assert detail["proxy_bounds"]["measurement_source"] == "bounding_box_collider"

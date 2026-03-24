@@ -48,6 +48,7 @@ notes for `vgm-assets`.
 - `architecture/object_semantics_review_queue_v0.md`
 - `architecture/object_semantics_reviewed_slice_v0.md`
 - `architecture/ai2thor_object_semantics_scene_engine_handoff_v0.md`
+- `architecture/vgm_custom_asset_generation_vs_infinigen_v0.md`
 - `architecture/support_clutter_prop_metadata_v0.md`
 - `architecture/support_clutter_prop_source_selection_v0.md`
 - `architecture/support_clutter_scene_engine_consumer_v0.md`

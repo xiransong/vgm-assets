@@ -1,0 +1,103 @@
+{
+  "queue_id": "ai2thor_object_semantics_review_queue_v0",
+  "version": "object_semantics_review_queue_v0",
+  "source_id": "ai2thor_object_semantics_v0",
+  "candidate_annotation_set_ref": "catalogs/object_semantics_v0/ai2thor_candidate_annotations_v0.json",
+  "reviewed_annotation_set_ref": "catalogs/object_semantics_v0/ai2thor_reviewed_annotations_v0.json",
+  "created_at": "2026-03-24T00:00:00+00:00",
+  "review_scope_v0": [
+    "asset_role",
+    "category",
+    "front_axis",
+    "up_axis",
+    "bottom_support_surface",
+    "support_surfaces_v1",
+    "canonical_bounds"
+  ],
+  "item_count": 6,
+  "batch_count": 2,
+  "notes": "First AI2-THOR object-semantics review queue. The queue is intentionally split into short, category-coherent batches so review can pause and resume cleanly.",
+  "batches": [
+    {
+      "batch_id": "ai2thor_supporting_parents_v0",
+      "title": "Supporting Parents",
+      "status": "pending",
+      "recommended_session_asset_count": 3,
+      "asset_count": 3,
+      "notes": "Review furniture-like supporting parents together so support-surface judgments stay consistent across the batch.",
+      "entries": [
+        {
+          "queue_item_id": "ai2thor_supporting_parents_v0_000",
+          "asset_id": "ai2thor_coffee_table_01",
+          "asset_role": "parent_object",
+          "category": "coffee_table",
+          "sort_key": 0,
+          "priority": "high",
+          "queue_status": "pending",
+          "annotation_review_status": "auto"
+        },
+        {
+          "queue_item_id": "ai2thor_supporting_parents_v0_001",
+          "asset_id": "ai2thor_side_table_01",
+          "asset_role": "parent_object",
+          "category": "side_table",
+          "sort_key": 1,
+          "priority": "high",
+          "queue_status": "pending",
+          "annotation_review_status": "auto"
+        },
+        {
+          "queue_item_id": "ai2thor_supporting_parents_v0_002",
+          "asset_id": "ai2thor_bookshelf_01",
+          "asset_role": "parent_object",
+          "category": "bookshelf",
+          "sort_key": 2,
+          "priority": "high",
+          "queue_status": "pending",
+          "annotation_review_status": "auto",
+          "review_notes": "This asset already has an uncertain geometry/semantics signal from the candidate pass, so reviewers should expect a closer look."
+        }
+      ]
+    },
+    {
+      "batch_id": "ai2thor_tabletop_children_v0",
+      "title": "Tabletop Children",
+      "status": "pending",
+      "recommended_session_asset_count": 3,
+      "asset_count": 3,
+      "notes": "Review tabletop child props together so upright-axis and base-support judgments remain coherent.",
+      "entries": [
+        {
+          "queue_item_id": "ai2thor_tabletop_children_v0_000",
+          "asset_id": "ai2thor_mug_01",
+          "asset_role": "child_object",
+          "category": "mug",
+          "sort_key": 0,
+          "priority": "normal",
+          "queue_status": "pending",
+          "annotation_review_status": "auto"
+        },
+        {
+          "queue_item_id": "ai2thor_tabletop_children_v0_001",
+          "asset_id": "ai2thor_book_01",
+          "asset_role": "child_object",
+          "category": "book",
+          "sort_key": 1,
+          "priority": "normal",
+          "queue_status": "pending",
+          "annotation_review_status": "auto"
+        },
+        {
+          "queue_item_id": "ai2thor_tabletop_children_v0_002",
+          "asset_id": "ai2thor_bowl_01",
+          "asset_role": "child_object",
+          "category": "bowl",
+          "sort_key": 2,
+          "priority": "normal",
+          "queue_status": "pending",
+          "annotation_review_status": "auto"
+        }
+      ]
+    }
+  ]
+}

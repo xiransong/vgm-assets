@@ -45,6 +45,7 @@ from .objaverse import (
     write_stub_objaverse_furniture_review_queue,
 )
 from .object_semantics import validate_object_semantics_annotation_set
+from .object_semantics_review_queue import validate_object_semantics_review_queue
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
     refresh_room_surface_material_catalog,
@@ -500,6 +501,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an Objaverse furniture review-queue artifact against the local vgm-assets schema",
     )
     validate_objaverse_review_queue_parser.add_argument("queue", type=Path)
+
+    validate_object_semantics_review_queue_parser = subparsers.add_parser(
+        "validate-object-semantics-review-queue",
+        help="Validate an object-semantics review-queue artifact against the local vgm-assets schema",
+    )
+    validate_object_semantics_review_queue_parser.add_argument("queue", type=Path)
 
     validate_objaverse_selective_geometry_parser = subparsers.add_parser(
         "validate-objaverse-selective-geometry",
@@ -1193,6 +1200,13 @@ def main() -> int:
         payload = validate_objaverse_furniture_review_queue(args.queue)
         print(
             f"Validated {payload['candidate_count']} Objaverse review candidates in {args.queue}"
+        )
+        return 0
+
+    if args.command == "validate-object-semantics-review-queue":
+        payload = validate_object_semantics_review_queue(args.queue)
+        print(
+            f"Validated {payload['item_count']} object-semantics review items in {args.queue}"
         )
         return 0
 

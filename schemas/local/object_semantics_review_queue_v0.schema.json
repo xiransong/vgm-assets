@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vgm-assets.local/schemas/local/object_semantics_review_queue_v0.schema.json",
+  "title": "Object Semantics Review Queue v0",
+  "description": "Local vgm-assets schema for batched, resumable object-semantics review queues.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "queue_id",
+    "version",
+    "source_id",
+    "candidate_annotation_set_ref",
+    "reviewed_annotation_set_ref",
+    "created_at",
+    "review_scope_v0",
+    "item_count",
+    "batch_count",
+    "batches"
+  ],
+  "properties": {
+    "queue_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "version": {
+      "type": "string",
+      "const": "object_semantics_review_queue_v0"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_annotation_set_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewed_annotation_set_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "review_scope_v0": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reviewTargetV0"
+      }
+    },
+    "item_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "batch_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "notes": {
+      "type": "string"
+    },
+    "batches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/batch"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-]+$"
+    },
+    "reviewTargetV0": {
+      "type": "string",
+      "enum": [
+        "asset_role",
+        "category",
+        "front_axis",
+        "up_axis",
+        "bottom_support_surface",
+        "support_surfaces_v1",
+        "canonical_bounds"
+      ]
+    },
+    "assetRole": {
+      "type": "string",
+      "enum": ["parent_object", "child_object"]
+    },
+    "annotationReviewStatus": {
+      "type": "string",
+      "enum": ["auto", "reviewed", "uncertain", "rejected"]
+    },
+    "queueStatus": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "reviewed", "needs_fix", "rejected", "deferred"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "normal", "low"]
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queue_item_id",
+        "asset_id",
+        "asset_role",
+        "category",
+        "sort_key",
+        "priority",
+        "queue_status",
+        "annotation_review_status"
+      ],
+      "properties": {
+        "queue_item_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asset_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asset_role": {
+          "$ref": "#/$defs/assetRole"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sort_key": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "priority": {
+          "$ref": "#/$defs/priority"
+        },
+        "queue_status": {
+          "$ref": "#/$defs/queueStatus"
+        },
+        "annotation_review_status": {
+          "$ref": "#/$defs/annotationReviewStatus"
+        },
+        "assigned_reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "needs_fix_targets_v0": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reviewTargetV0"
+          }
+        },
+        "review_notes": {
+          "type": "string"
+        }
+      }
+    },
+    "batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch_id",
+        "title",
+        "status",
+        "recommended_session_asset_count",
+        "asset_count",
+        "entries"
+      ],
+      "properties": {
+        "batch_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "completed"]
+        },
+        "recommended_session_asset_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "asset_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entry"
+          }
+        }
+      }
+    }
+  }
+}

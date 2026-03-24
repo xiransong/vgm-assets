@@ -44,6 +44,7 @@ notes for `vgm-assets`.
 - `architecture/objaverse_furniture_normalization_v0.md`
 - `architecture/support_surface_semantics_v1.md`
 - `architecture/object_semantics_explorer_v0.md`
+- `architecture/object_semantics_review_queue_v0.md`
 - `architecture/support_clutter_prop_metadata_v0.md`
 - `architecture/support_clutter_prop_source_selection_v0.md`
 - `architecture/support_clutter_scene_engine_consumer_v0.md`

@@ -62,6 +62,7 @@ See:
 - `docs/architecture/ai2thor_data_pipeline_v0.md`
 - `docs/architecture/object_semantics_explorer_v0.md`
 - `docs/architecture/object_semantics_review_queue_v0.md`
+- `docs/architecture/object_semantics_reviewed_slice_v0.md`
 - `docs/architecture/support_clutter_prop_metadata_v0.md`
 - `docs/architecture/support_clutter_prop_source_selection_v0.md`
 - `docs/architecture/support_clutter_scene_engine_consumer_v0.md`
@@ -179,6 +180,12 @@ Refresh the AI2-THOR object-semantics processed review workspace in
 
 ```bash
 ./scripts/review/refresh_ai2thor_object_semantics_workspace_v0.sh
+```
+
+Promote a reviewed-only AI2-THOR object-semantics slice for downstream use:
+
+```bash
+./scripts/exports/export_ai2thor_reviewed_object_semantics_v0_r1.sh
 ```
 
 Stage the AI2-THOR object-semantics benchmark slice into `RAW_DATA_ROOT`:

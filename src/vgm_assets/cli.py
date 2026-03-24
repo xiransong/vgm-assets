@@ -46,6 +46,7 @@ from .objaverse import (
     write_stub_objaverse_furniture_review_queue,
 )
 from .object_semantics import validate_object_semantics_annotation_set
+from .object_semantics_promotion import promote_reviewed_object_semantics_slice
 from .object_semantics_review_queue import validate_object_semantics_review_queue
 from .paths import default_data_root, default_raw_data_root
 from .room_surface_materials import (
@@ -532,6 +533,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate an object-semantics review-queue artifact against the local vgm-assets schema",
     )
     validate_object_semantics_review_queue_parser.add_argument("queue", type=Path)
+
+    promote_reviewed_object_semantics_slice_parser = subparsers.add_parser(
+        "promote-reviewed-object-semantics-slice",
+        help="Freeze a reviewed-only object-semantics slice for downstream consumers",
+    )
+    promote_reviewed_object_semantics_slice_parser.add_argument(
+        "--reviewed-annotations",
+        type=Path,
+        required=True,
+    )
+    promote_reviewed_object_semantics_slice_parser.add_argument(
+        "--review-queue",
+        type=Path,
+        required=True,
+    )
+    promote_reviewed_object_semantics_slice_parser.add_argument(
+        "--output-dir",
+        type=Path,
+        required=True,
+    )
+    promote_reviewed_object_semantics_slice_parser.add_argument("--export-id", required=True)
+    promote_reviewed_object_semantics_slice_parser.add_argument("--created-at")
+    promote_reviewed_object_semantics_slice_parser.add_argument(
+        "--allow-empty",
+        action="store_true",
+        help="Allow exporting an empty reviewed slice when no assets have been accepted yet",
+    )
 
     validate_objaverse_selective_geometry_parser = subparsers.add_parser(
         "validate-objaverse-selective-geometry",
@@ -1256,6 +1284,18 @@ def main() -> int:
         print(
             f"Validated {payload['item_count']} object-semantics review items in {args.queue}"
         )
+        return 0
+
+    if args.command == "promote-reviewed-object-semantics-slice":
+        summary = promote_reviewed_object_semantics_slice(
+            reviewed_annotations=args.reviewed_annotations,
+            review_queue=args.review_queue,
+            output_dir=args.output_dir,
+            export_id=args.export_id,
+            created_at=args.created_at,
+            allow_empty=args.allow_empty,
+        )
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command == "validate-objaverse-selective-geometry":

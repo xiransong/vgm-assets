@@ -46,6 +46,7 @@ notes for `vgm-assets`.
 - `architecture/ai2thor_data_pipeline_v0.md`
 - `architecture/object_semantics_explorer_v0.md`
 - `architecture/object_semantics_review_queue_v0.md`
+- `architecture/object_semantics_reviewed_slice_v0.md`
 - `architecture/support_clutter_prop_metadata_v0.md`
 - `architecture/support_clutter_prop_source_selection_v0.md`
 - `architecture/support_clutter_scene_engine_consumer_v0.md`

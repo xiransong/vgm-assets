@@ -2322,7 +2322,7 @@ def _default_ai2thor_repo_root() -> Path:
     override = os.environ.get("VGM_AI2THOR_ROOT")
     if override:
         return Path(override).expanduser().resolve()
-    return repo_root().parents[2] / "ai2thor"
+    return repo_root().parents[1] / "ai2thor"
 
 
 def _select_entries(

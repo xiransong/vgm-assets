@@ -1,0 +1,62 @@
+[
+  {
+    "selection_id": "ai2thor_object_semantics_coffee_table_201_master_v0",
+    "asset_role": "parent_object",
+    "category": "coffee_table",
+    "object_type": "CoffeeTable",
+    "asset_id": "ai2thor_coffee_table_01",
+    "display_name": "AI2-THOR Coffee Table 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Living Room and Bedroom Objects/CoffeeTable/Prefabs/Coffee_Table_Master_Prefabs/Coffee_Table_201_Master.prefab",
+    "notes": "First benchmark coffee-table parent candidate using the authored master prefab."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_side_table_202_master_v0",
+    "asset_role": "parent_object",
+    "category": "side_table",
+    "object_type": "SideTable",
+    "asset_id": "ai2thor_side_table_01",
+    "display_name": "AI2-THOR Side Table 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Common Objects/SideTable/Prefabs/Side_Table_Master_Prefabs/Side_Table_202_Master.prefab",
+    "notes": "First benchmark side-table parent candidate using the authored master prefab."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_bookshelf_standing_shelf_v0",
+    "asset_role": "parent_object",
+    "category": "bookshelf",
+    "object_type": "Shelf",
+    "asset_id": "ai2thor_bookshelf_01",
+    "display_name": "AI2-THOR Bookshelf 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Entryway Objects/Furniture/StandingShelf.prefab",
+    "notes": "First benchmark shelf-like parent candidate, mapped into the local bookshelf placement class."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_mug_01_v0",
+    "asset_role": "child_object",
+    "category": "mug",
+    "object_type": "Mug",
+    "asset_id": "ai2thor_mug_01",
+    "display_name": "AI2-THOR Mug 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Kitchen Objects/Mug/Prefabs/Mug_1.prefab",
+    "notes": "First benchmark mug child candidate."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_book_01_v0",
+    "asset_role": "child_object",
+    "category": "book",
+    "object_type": "Book",
+    "asset_id": "ai2thor_book_01",
+    "display_name": "AI2-THOR Book 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Bedroom Objects/Book/Prefabs/Book_1.prefab",
+    "notes": "First benchmark book child candidate."
+  },
+  {
+    "selection_id": "ai2thor_object_semantics_bowl_01_v0",
+    "asset_role": "child_object",
+    "category": "bowl",
+    "object_type": "Bowl",
+    "asset_id": "ai2thor_bowl_01",
+    "display_name": "AI2-THOR Bowl 01",
+    "source_prefab_rel": "unity/Assets/Physics/SimObjsPhysics/Kitchen Objects/Bowl/Prefabs/Bowl_1.prefab",
+    "notes": "First benchmark bowl child candidate."
+  }
+]

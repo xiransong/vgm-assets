@@ -14,6 +14,7 @@ from .ceiling_fixtures import (
     refresh_ceiling_light_fixture_catalog,
     validate_ceiling_light_fixture_catalog,
 )
+from .ai2thor_object_semantics import write_ai2thor_object_semantics_candidates
 from .wall_fixtures import (
     refresh_wall_fixture_catalog,
     validate_wall_fixture_catalog,
@@ -404,6 +405,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     write_ai2thor_support_clutter_measurements_parser.add_argument("--raw-data-root", type=Path)
     write_ai2thor_support_clutter_measurements_parser.add_argument("--created-at")
+
+    write_ai2thor_object_semantics_candidates_parser = subparsers.add_parser(
+        "write-ai2thor-object-semantics-candidates",
+        help="Write a first AI2-THOR-derived object-semantics candidate annotation set for the benchmark review slice",
+    )
+    write_ai2thor_object_semantics_candidates_parser.add_argument("selection", type=Path)
+    write_ai2thor_object_semantics_candidates_parser.add_argument(
+        "--output", type=Path, required=True
+    )
+    write_ai2thor_object_semantics_candidates_parser.add_argument("--source-repo-root", type=Path)
+    write_ai2thor_object_semantics_candidates_parser.add_argument(
+        "--selection-id", action="append", dest="selection_ids"
+    )
+    write_ai2thor_object_semantics_candidates_parser.add_argument("--created-at")
 
     write_support_clutter_prop_annotations_parser = subparsers.add_parser(
         "write-support-clutter-prop-annotations",
@@ -1102,6 +1117,17 @@ def main() -> int:
             selection_manifest_path=args.selection_manifest,
             output_path=args.output,
             raw_data_root=args.raw_data_root,
+            created_at=args.created_at,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "write-ai2thor-object-semantics-candidates":
+        summary = write_ai2thor_object_semantics_candidates(
+            args.selection,
+            output_path=args.output,
+            source_repo_root=args.source_repo_root,
+            selection_ids=args.selection_ids,
             created_at=args.created_at,
         )
         print(json.dumps(summary, indent=2))

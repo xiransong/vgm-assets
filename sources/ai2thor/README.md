@@ -23,6 +23,7 @@ See:
 ## Current Planning Artifacts
 
 - `sources/ai2thor/support_clutter_selection_v0.json`
+- `sources/ai2thor/object_semantics_selection_v0.json`
 
 ## Local Upstream Repo
 

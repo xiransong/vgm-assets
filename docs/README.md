@@ -43,6 +43,7 @@ notes for `vgm-assets`.
 - `architecture/objaverse_geometry_download_runbook_v0.md`
 - `architecture/objaverse_furniture_normalization_v0.md`
 - `architecture/support_surface_semantics_v1.md`
+- `architecture/ai2thor_data_pipeline_v0.md`
 - `architecture/object_semantics_explorer_v0.md`
 - `architecture/object_semantics_review_queue_v0.md`
 - `architecture/support_clutter_prop_metadata_v0.md`
@@ -75,3 +76,4 @@ notes for `vgm-assets`.
 - `plans/maintained_asset_export_alignment_v0_plan.md`
 - `plans/wall_fixtures_v0_plan.md`
 - `plans/object_semantics_review_pipeline_v0_plan.md`
+- `plans/ai2thor_full_staging_and_review_v0_plan.md`

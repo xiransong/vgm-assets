@@ -59,6 +59,7 @@ See:
 - `docs/architecture/objaverse_raw_metadata_acquisition_v0.md`
 - `docs/architecture/objaverse_furniture_review_queue_v0.md`
 - `docs/architecture/support_surface_semantics_v1.md`
+- `docs/architecture/ai2thor_data_pipeline_v0.md`
 - `docs/architecture/object_semantics_explorer_v0.md`
 - `docs/architecture/object_semantics_review_queue_v0.md`
 - `docs/architecture/support_clutter_prop_metadata_v0.md`
@@ -86,6 +87,7 @@ See:
 - `docs/plans/maintained_asset_export_alignment_v0_plan.md`
 - `docs/plans/wall_fixtures_v0_plan.md`
 - `docs/plans/object_semantics_review_pipeline_v0_plan.md`
+- `docs/plans/ai2thor_full_staging_and_review_v0_plan.md`
 
 Current organized real-source subset:
 - `DATA_ROOT/sources/kenney/furniture_kit/normalized/living_room_v0`
